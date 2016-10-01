@@ -7,8 +7,29 @@
  * you have more middleware you may want to group it as separate
  * modules in your project's /lib directory.
  */
+var UserSession = require("../services/UserSession")
 var _ = require('lodash');
+function parseCookies (request) {
+    var list = {},
+        rc = request.headers.cookie;
+    rc && rc.split(';').forEach(function( cookie ) {
+        var parts = cookie.split('=');
+        list[parts.shift().trim()] = decodeURI(parts.join('='));
+    });
+    return list;
+}
 
+//REDIS
+var redis = require("redis");
+var redis_config = require("../config.js").redis_config;
+var redis_client;
+if (redis_config.enable) {
+    redis_client = redis.createClient(redis_config.port, redis_config.host);
+    redis_client.on('connect', function () {
+        console.log("Connected to Redis in middleware.js");
+    });
+
+}
 
 /**
 	Initialises the standard view locals
@@ -52,3 +73,22 @@ exports.requireUser = function (req, res, next) {
 		next();
 	}
 };
+
+//server will know user is authenticated or not
+exports.checkUserAuthentication = function(req, res, next){
+	var locals = res.locals;
+	UserSession.check(req, res, function(result){
+		if (result.status == '000'){
+			locals.authenticated = true;
+		} else{
+			
+			locals.authenticated = false;
+		}
+		next();
+	})
+}
+
+exports.attachRedis = function(req, res, next){
+	res.locals.redis_client = redis_client;
+	next();
+}

@@ -1,6 +1,7 @@
 // Simulate config options from your production environment by
 // customising the .env file in your project's root folder.
 require('dotenv').config();
+var redis = require("redis");
 
 // Require keystone
 var keystone = require('keystone');
@@ -30,6 +31,16 @@ keystone.init({
 // Load your project's Models
 keystone.import('models');
 
+//setting redis - cache object
+var redis_config = require("./config.js").redis_config;
+var redis_client;
+if (redis_config.enable) {
+    redis_client = redis.createClient(redis_config.port, redis_config.host);
+    redis_client.on('connect', function () {
+        console.log("Connected to Redis");
+    });
+
+}
 // Setup common locals for your templates. The following are required for the
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
 // for each request) should be added to ./routes/middleware.js
@@ -38,6 +49,7 @@ keystone.set('locals', {
 	env: keystone.get('env'),
 	utils: keystone.utils,
 	editable: keystone.content.editable,
+	redis_client: redis_client
 });
 
 // Load your project's Routes

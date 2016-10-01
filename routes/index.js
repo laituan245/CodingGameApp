@@ -24,19 +24,28 @@ var importRoutes = keystone.importer(__dirname);
 
 // Common Middleware
 keystone.pre('routes', middleware.initLocals);
+keystone.pre('routes', middleware.attachRedis);
+keystone.pre('routes', middleware.checkUserAuthentication);
 keystone.pre('render', middleware.flashMessages);
+
 
 // Import Route Controllers
 var routes = {
 	views: importRoutes('./views'),
+	apis: importRoutes('./apis'),
 };
+
 
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	// Views
 	app.get('/', routes.views.index);
-
+	app.get('/login', routes.views.UserLogin.login);
+	app.get('/signup', routes.views.UserLogin.signup);
+	app.get('/logout', routes.apis.UserLogin.logout);
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
-
+	app.post('/login', routes.apis.UserLogin.login);
+	
+	app.post('/signup', routes.apis.UserLogin.signup);
 };
