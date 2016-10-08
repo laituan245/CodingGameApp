@@ -1,0 +1,67 @@
+extends ../../layouts/default
+block js
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js', type='text/javascript', charset='utf-8')
+block css
+    style(type='text/css').
+        #editor {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 0px;
+        left: 400px;
+        
+        }
+
+        #game-map{
+            margin: 10px 10px 10px 10px;
+            width: 380px;
+            
+        }
+        .map-header, .instruction-header{
+            width: 100%;
+            font-size: 20px;
+            text-align: center;
+            background-color: rgba(39, 40, 34, 0.07);
+        }
+
+        #instruction{
+            font-size: 17px;
+            padding: 10px 10px 10px 10px;
+        }
+
+block content
+    .left-panel(style="width: 400px")
+        .map-header
+            | Screen
+        img#game-map(src="http://phaser.io/content/tutorials/coding-tips-005/pacman-game.png" )
+        #editor
+            | def foo(items) {
+            | x = "All this is syntax highlighted";
+            | return x;
+            | }
+        
+        .instruction-header
+            | Instruction
+        #instruction
+            p.
+                The robot needs to move to the destination 
+        
+            
+    script.
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/python");
+        editor.setValue("the new text here"); // or session.setValue
+        editor.getValue(); // or session.getValue
+        document.getElementById('editor').style.fontSize='20px';
+
+        editor.commands.addCommand({
+            name: 'myCommand',
+            bindKey: {win: 'Ctrl-M',  mac: 'Command-M'},
+            exec: function(editor) {
+                alert("dm");
+                //...
+            },
+            readOnly: true // false if this command should not apply in readOnly mode
+        });
+

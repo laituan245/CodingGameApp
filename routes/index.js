@@ -49,4 +49,8 @@ exports = module.exports = function (app) {
 	app.post('/login', routes.apis.UserLogin.login);
 	
 	app.post('/signup', routes.apis.UserLogin.signup);
+
+	//games
+	//demo game
+	app.get('/demogame', routes.views.demo.demogame);
 };
