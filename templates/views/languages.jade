@@ -1,0 +1,91 @@
+extends ../layouts/default
+
+block content
+  .container
+      .col-xs-12
+        .page-header
+          h3 Programming languages
+        #myCarousel.carousel.slide
+          .carousel-inner
+            .item.active
+              ul.thumbnails
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      img(src='http://www.bebetterdeveloper.com/img/post_img/python-logo.png', height='200', width='200', alt='')
+                    .caption
+                      h4 Python
+                      a(href='#') » Learn this topic
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      img(src='http://blog.newrelic.com/wp-content/uploads/javalogo.png', height='200', width='200', alt='')
+                    .caption
+                      h4 Java
+                      a(href='#') » Learn this topic
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      img(src='http://www.brandsoftheworld.com/sites/default/files/styles/logo-thumbnail/public/042014/c_0.png?itok=NGrw5nRV', height='200', width='200', alt='')
+                    .caption
+                      h4 C++
+                      a(href='#') » Learn this topic
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      img(src='https://mohsinhussain68.files.wordpress.com/2013/12/javascript.png?w=300&h=300', height='200', width='200', alt='')
+                    .caption
+                      h4 JavaScript
+                      a(href='#') » Learn this topic
+            // /Slide1
+            .item
+              ul.thumbnails
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      a(href='#')
+                        img(src='http://placehold.it/360x240', alt='')
+                    .caption
+                      h4 Praesent commodo
+                      p Nullam Condimentum Nibh Etiam Sem
+                      a.btn.btn-mini(href='#') » Read More
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      a(href='#')
+                        img(src='http://placehold.it/360x240', alt='')
+                    .caption
+                      h4 Praesent commodo
+                      p Nullam Condimentum Nibh Etiam Sem
+                      a.btn.btn-mini(href='#') » Read More
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      a(href='#')
+                        img(src='http://placehold.it/360x240', alt='')
+                    .caption
+                      h4 Praesent commodo
+                      p Nullam Condimentum Nibh Etiam Sem
+                      a.btn.btn-mini(href='#') » Read More
+                li.col-sm-3
+                  .fff
+                    .thumbnail
+                      a(href='#')
+                        img(src='http://placehold.it/360x240', alt='')
+                    .caption
+                      h4 Praesent commodo
+                      p Nullam Condimentum Nibh Etiam Sem
+                      a.btn.btn-mini(href='#') » Read More
+            // /Slide2
+          nav
+            ul.control-box.pager
+              li
+                a(data-slide='prev', href='#myCarousel')
+                  i.glyphicon.glyphicon-chevron-left
+              li
+                a(data-slide='next', href='#myCarousel')
+                  i.glyphicon.glyphicon-chevron-right
+          // /.control-box
+        // /#myCarousel
+      // /.col-xs-12
+    // /.container
