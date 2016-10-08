@@ -100,10 +100,5 @@ ul.thumbnails {
 
 li { list-style-type:none;}
 
-#programming_concepts_label {
-    margin-top: 85px;
-    margin-bottom: 30px;
-}
-
 ::selection { background: #ff5e99; color: #FFFFFF; text-shadow: 0; }
 ::-moz-selection { background: #ff5e99; color: #FFFFFF; }

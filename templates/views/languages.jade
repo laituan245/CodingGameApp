@@ -1,11 +1,13 @@
 extends ../layouts/default
+
 block css
-    link(rel='stylesheet', href='/css/lesson-list.css')
+    link(rel='stylesheet', type='text/css', href='/css/languages.css')
+
 block content
-    .container
+  .container
       .col-xs-12
-        .col-xs-4.col-sm-push-4
-            h2#programming_concepts_label Programming concepts
+        .page-header
+          h3 Programming languages
         #myCarousel.carousel.slide
           .carousel-inner
             .item.active
@@ -13,39 +15,31 @@ block content
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Python_add5_syntax.svg/292px-Python_add5_syntax.svg.png', style='width:200px;height:200px;', alt='')
+                      img(src='http://www.bebetterdeveloper.com/img/post_img/python-logo.png', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Basic Syntax
-                      p 1-2 hours
-                      a(href='#') Learn this topic
+                      h4 Python
+                      a(href='/lessonList') » Learn this topic
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='http://darrencrawford.com/wp-content/uploads/2013/08/variable.png', style='width:200px;height:200px;', alt='')
+                      img(src='http://blog.newrelic.com/wp-content/uploads/javalogo.png', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Variables
-                      p 1-2 hours
-                      a(href='#') Learn this topic
+                      h4 Java
+                      a(href='#') » Learn this topic
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='http://csharp.net-informations.com/statements/img/if_else_csharp.png', style='width:200px;height:200px;', alt='')
+                      img(src='http://www.brandsoftheworld.com/sites/default/files/styles/logo-thumbnail/public/042014/c_0.png?itok=NGrw5nRV', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Conditional statements
-                      p 1-2 hours
-                      a(href='#') Learn this topic
+                      h4 C++
+                      a(href='#') » Learn this topic
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='https://cdn3.iconfinder.com/data/icons/transfers/100/239330-loop_arrows-512.png', style='width:200px;height:200px;', alt='')
+                      img(src='https://mohsinhussain68.files.wordpress.com/2013/12/javascript.png?w=300&h=300', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Loops
-                      p 1-3 hours
-                      a(href='#') Learn this topic
+                      h4 JavaScript
+                      a(href='#') » Learn this topic
             // /Slide1
             .item
               ul.thumbnails
@@ -85,7 +79,7 @@ block content
                       h4 Praesent commodo
                       p Nullam Condimentum Nibh Etiam Sem
                       a.btn.btn-mini(href='#') » Read More
-  
+            // /Slide2
           nav
             ul.control-box.pager
               li
@@ -94,3 +88,7 @@ block content
               li
                 a(data-slide='next', href='#myCarousel')
                   i.glyphicon.glyphicon-chevron-right
+          // /.control-box
+        // /#myCarousel
+      // /.col-xs-12
+    // /.container
