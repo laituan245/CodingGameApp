@@ -1,11 +1,8 @@
-/**
- *
- * Apply your custom CSS here
- *
-*/
-
-body {	
+.container-full {
+  margin: 0 auto;
+  width: 100%;
 }
 
-a {
+.page-container.container{
+	max-width: 100%;
 }

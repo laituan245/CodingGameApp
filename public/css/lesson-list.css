@@ -101,8 +101,8 @@ ul.thumbnails {
 li { list-style-type:none;}
 
 #programming_concepts_label {
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 85px;
+    margin-bottom: 30px;
 }
 
 ::selection { background: #ff5e99; color: #FFFFFF; text-shadow: 0; }

@@ -1,5 +1,8 @@
 extends ../layouts/default
 
+block css
+    link(rel='stylesheet', type='text/css', href='/css/languages.css')
+
 block content
   .container
       .col-xs-12
@@ -15,7 +18,7 @@ block content
                       img(src='http://www.bebetterdeveloper.com/img/post_img/python-logo.png', height='200', width='200', alt='')
                     .caption
                       h4 Python
-                      a(href='#') » Learn this topic
+                      a(href='/lessonList') » Learn this topic
                 li.col-sm-3
                   .fff
                     .thumbnail
