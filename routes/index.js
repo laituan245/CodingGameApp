@@ -40,6 +40,7 @@ var routes = {
 exports = module.exports = function (app) {
 	// Views
 	app.get('/', routes.views.index);
+	app.get('/lessonlist', routes.views.lessonList)
 	app.get('/login', routes.views.UserLogin.login);
 	app.get('/signup', routes.views.UserLogin.signup);
 	app.get('/logout', routes.apis.UserLogin.logout);
