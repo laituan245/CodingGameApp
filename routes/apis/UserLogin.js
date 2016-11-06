@@ -2,6 +2,10 @@ var keystone = require('keystone');
 var User = keystone.list("User");
 var UserSession = require('../../services/UserSession');
 
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 
 
 module.exports = {
@@ -71,7 +75,7 @@ module.exports = {
 		var body = req.body;
 		var password = body.passwd;
 		var username = body.username;
-
+		
 		var newUser = new User.model({
 			email: username,
 			password: password
