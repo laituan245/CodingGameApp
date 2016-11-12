@@ -1,0 +1,88 @@
+extends ../layouts/default
+block js
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js', type='text/javascript', charset='utf-8')
+block js-footer
+    script(src="/js/custom-logic/playgame.js")
+block css
+    style(type='text/css').
+        #editor {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 0px;
+        left: 400px;
+        font-size: 20px;
+        }
+
+        #myCanvas{
+            margin: 10px 10px 10px 10px;
+            width: 380px;
+            
+        }
+        .map-header, .instruction-header{
+            width: 100%;
+            font-size: 20px;
+            text-align: center;
+            background-color: rgba(39, 40, 34, 0.07);
+        }
+
+        .run-container{
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #instruction{
+            font-size: 17px;
+            padding: 10px 10px 10px 10px;
+        }
+
+block content
+    script.
+        var mapTemplate = !{JSON.stringify(mapTemplate)};
+    .left-panel(style="width: 400px")
+        .map-header
+            | Screen
+        //- img#game-map(src="http://phaser.io/content/tutorials/coding-tips-005/pacman-game.png" )
+        canvas#myCanvas(width='400', height='400', style='border:1px solid #c3c3c3;')
+            | Your browser does not support the canvas element.
+            img#robot(src='http://i.imgur.com/PQ3BaPr.png', style='display:none')
+            img#obstacle(src='http://i.istockimg.com/file_thumbview_approve/16563023/3/stock-illustration-16563023-decorative-stone-wall.jpg', style='display:none')
+            img#endFlag(src='https://upload.wikimedia.org/wikipedia/commons/d/d5/Red_flag_waving_transparent.png', style='display:none')
+            img#background(src='/images/map.png', style='display:none')
+        
+        .run-container
+            button#run-btn(type="button" class="btn btn-success")="RUN"
+        #editor
+            | def foo(items) {
+            | x = "All this is syntax highlighted";
+            | return x;
+            | }
+
+        
+        .instruction-header
+            | Instruction
+        #instruction
+            p.
+                The robot needs to move to the destination 
+        
+            
+    script.
+        var editor = ace.edit("editor");
+        document.getElementById('editor').style.fontSize='20px';
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/python");
+        
+        editor.setValue("goRight()\ngoRight()\ngoRight()\ngoRight()\ngoDown()\ngoDown()\ngoDown()\ngoDown()\n"); // or session.setValue
+        editor.getValue(); // or session.getValue
+        
+
+        editor.commands.addCommand({
+            name: 'myCommand',
+            bindKey: {win: 'Ctrl-M',  mac: 'Command-M'},
+            exec: function(editor) {
+                alert("dm");
+                //...
+            },
+            readOnly: true // false if this command should not apply in readOnly mode
+        });
+

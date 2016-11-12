@@ -14,7 +14,7 @@ function createMapTemplate1(req, res){
 				if (i == 0 || j == 4){
 					//empty cells
 					var element = {
-						objectToDisplay: "empty",
+						objectToDisplay: "none",
 						roles: [],
 						message: null
 					}
@@ -27,7 +27,7 @@ function createMapTemplate1(req, res){
 						message: null
 					}
 					tempRow.push(element);
-				}
+				} 
 			}
 			res.push(tempRow);
 		}
@@ -39,6 +39,7 @@ function createMapTemplate1(req, res){
 		return res;
 	}
 	var newMapTemplate = new MapTemplate.model({
+		mapID: "basicsyntax_lgame",
 		name: "L-Map",
 		map_height: 5,
 		map_width: 5,

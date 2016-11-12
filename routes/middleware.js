@@ -77,6 +77,7 @@ exports.requireUser = function (req, res, next) {
 //server will know user is authenticated or not
 exports.checkUserAuthentication = function(req, res, next){
 	var locals = res.locals;
+	console.log("CHECK checkUserAuthentication");
 	UserSession.check(req, res, function(result){
 		if (result.status == '000'){
 			locals.authenticated = true;
@@ -84,6 +85,7 @@ exports.checkUserAuthentication = function(req, res, next){
 			
 			locals.authenticated = false;
 		}
+		console.log("locals authenticated " + locals.authenticated);
 		next();
 	})
 }

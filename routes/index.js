@@ -42,7 +42,7 @@ exports = module.exports = function (app) {
 	// Views
 	app.get('/', routes.views.index);
 	app.get('/languages', routes.views.languages);
-	app.get('/lessonlist', routes.views.lessonList);
+	app.get('/:language/lessonlist', routes.views.lessonList);
 	app.get('/login', routes.views.UserLogin.login);
 	app.get('/signup', routes.views.UserLogin.signup);
 	app.get('/logout', routes.apis.UserLogin.logout);
@@ -53,6 +53,11 @@ exports = module.exports = function (app) {
 	app.post('/signup', routes.apis.UserLogin.signup);
 
 	//games
+	app.get('/play/:language/:lessonID/:gameID', routes.views.playGame);
+
+	//compiler
+	app.post('/compiler', routes.apis.compiler);
+	//"/play/python/basicsyntax/game1"
 	//demo game
 	app.get('/demogame', routes.views.demo.demogame);
 

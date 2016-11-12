@@ -52,6 +52,8 @@ module.exports = {
 					status: "000",
 					data: "ok"
 				}
+				locals.userID = getUserID(session);
+				console.log("local.userID " + locals.userID );
 				return callback(result);
 			} else {
 				var result = {
@@ -90,4 +92,10 @@ module.exports = {
 		});
   	}
 
+
+
+}
+function getUserID(session){
+	var startPos = session.indexOf("codinggame") + 10;
+	return session.substr(startPos);
 }
