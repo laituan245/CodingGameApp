@@ -33,6 +33,7 @@ keystone.pre('render', middleware.flashMessages);
 var routes = {
 	views: importRoutes('./views'),
 	apis: importRoutes('./apis'),
+	oneTimeJobs: importRoutes('./oneTimeJobs')
 };
 
 
@@ -54,4 +55,8 @@ exports = module.exports = function (app) {
 	//games
 	//demo game
 	app.get('/demogame', routes.views.demo.demogame);
+
+
+	//One-time jobs
+	app.get('/onetimejobs/createmap', routes.oneTimeJobs.createMapTemplate.createMap);
 };
