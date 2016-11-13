@@ -79,7 +79,12 @@ exports = module.exports = function (req, res) {
 			  return console.error(err);
 			}
 			codeTemplate = codeTemplate.toString();
-			var fullCode = codeTemplate + '\n' + userCode + "\nprint (toJSONString(instruction_arr))";
+			var lines = userCode.split('\n');
+			userCode = "";
+			for (var i = 0; i < lines.length; i++){
+				userCode += "\n\t"+lines[i];
+			}
+			var fullCode = codeTemplate + '\ntry:\n' + userCode + "\nexcept Exception,e:\n\terrorMessage = str(e)\nfinally:\n\tprint (toJSONString(errorMessage,instruction_arr))";
 			var fullCodeFilePath = __dirname + "/tmp/codeTemplate" + timestamp + ".py";
 			fs.writeFile(fullCodeFilePath, fullCode, function(err) {
 			    if(err) {
@@ -93,22 +98,87 @@ exports = module.exports = function (req, res) {
 					// 	console.log(result);
 					// });
 			  //   }, 2000);
-			    
 
+			    var pid = null;
+			    var processIsDone = false;
+			    
 				exec("python " + fullCodeFilePath + ' ' + fullTemplateFilePath, function(error, stdout, stderr){
+					processIsDone = true;
 					if (error) {
+						//Syntax error
 						console.log("exec error: " + error);
+						var tempPos = stderr.indexOf("line") + 5;
+						stderr = stderr.substr(stderr.indexOf(" ", tempPos) + 1);
+						result.instructions = {
+							startPos: mapTemplate.startPoint,
+							steps: [{
+								'doHere': {
+									action: "showMessage",
+									data: {
+										message: stderr
+									}
+								}, 'doNext': 'none'
+							}]
+						}
+						res.json(result);
 						return;
 					}
 					console.log(stdout);
-					
-					result.instructions = {
-						startPos: startPos,
+					stdout = JSON.parse(stdout);
 
-						steps: JSON.parse(stdout).data
+					result.instructions = {
+						startPos: mapTemplate.startPoint,
+						steps: stdout.data
 					} 
+
+					var realError = stdout.error;
+					if (realError != "none"){
+						result.instructions.steps.push({
+							'doHere': {
+								action: "showMessage",
+								data: {
+									message: realError
+								}
+							}, 'doNext': 'none'
+						})
+					}
 					res.json(result);
 				});
+
+
+				exec("ps -e | grep codeTemplate" + timestamp, function(error, stdout, stderr){
+					var lines = stdout.split('\n');
+					var foundLine = '';
+					for (var i = 0; i < lines.length; i++) {
+						if (lines[i].indexOf('python') >= 0) {
+							foundLine = lines[i];
+							break;
+						}
+					}
+					foundLine = foundLine.trim();
+					pid = foundLine.substring(0, foundLine.indexOf(' '));
+					setTimeout(function(){
+						console.log(processIsDone);
+						if (!processIsDone){
+							exec("kill -9 " + pid, function(error, stdout, stderr){
+								console.log("DONE KILLING TOO LONG PROCESS");
+								result.instructions = {
+									startPos: mapTemplate.startPoint,
+									steps: [{
+										'doHere': {
+											action: "showMessage",
+											data: {
+												message: "Infinitive loop"
+											}
+										}, 'doNext': 'none'
+									}]
+								} 
+								res.json(result);
+								return;
+							})
+						}
+					}, 2000)
+				})
 			})
 		});
 	}); 

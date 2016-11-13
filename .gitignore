@@ -31,4 +31,4 @@ node_modules
 .DS_Store
 
 # Ignore temp folder containing temporary mapTemplate + fullCode (python code)
-routes/apis/tmp
+routes/apis/tmp/*

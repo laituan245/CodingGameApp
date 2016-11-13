@@ -1,45 +1,7 @@
 $( document ).ready(function() {
 	var TIME_PER_STEP = 50;
 	var NUM_FRAMES_PER_STEP = 10;
-	var startPos = [10, 10];
-	var steps = [
-		{
-			"dohere": null,
-			"doNext": "right"
-		},
-		{
-			"dohere": null,
-			"doNext": "right"
-		},
-		{
-			"dohere": null,
-			"doNext": "right"
-		},
-		{
-			"dohere": null,
-			"doNext": "right"
-		},
-		{
-			"dohere": null,
-			"doNext": "down"
-		},
-		{
-			"dohere": null,
-			"doNext": "down"
-		},
-		{
-			"dohere": null,
-			"doNext": "down"
-		},
-		{
-			"dohere": null,
-			"doNext": "down"
-		}
-	];
-	var instructions = {
-		steps: steps,
-		startPos: startPos
-	}
+
     var canvas=document.getElementById('myCanvas');
 	var ctx= canvas.getContext('2d');
 	//get images for all objects 
@@ -111,14 +73,27 @@ $( document ).ready(function() {
 	}
 
 	function executeInstructions(instructions){
-		var curX = instructions.startPos[0];
-		var curY = instructions.startPos[1];
+		var curX = instructions.startPos[0] * 80 + 10;
+		var curY = instructions.startPos[1] * 80 + 10;
 		var steps = instructions.steps;
 		var timeout = 0;
 		for (var i = 0; i < steps.length; i++){
 			var step = steps[i];
 			
 			//What to do now (to be done)
+			if (step.doHere != "none"){
+				if (step.doHere.action === "showVictory") {
+					setTimeout(function(){
+						displayMessage("general_not_error", "You won. Congratulation.");
+					}, timeout)					
+				}
+				if (step.doHere.action === "showMessage"){
+					setTimeout(function(){
+						displayMessage("general_error",step.doHere.data.message);
+					}, timeout)
+				}
+
+			}
 			//What to do next
 			if (step.doNext === "left"){
 				run(timeout, curX, curY, 0, -80);
@@ -157,6 +132,21 @@ $( document ).ready(function() {
 		});
 		
 	})
+
+	/*
+		FUNCTIONS LIBRARY
+    */
+	function displayMessage(type, message){
+		if (type === "general_error"){
+			$("#modalHeader").html("Error");
+			$("#modalBody").html(message); 
+			$("#myModal").modal("show");
+		} else if (type === "general_not_error") {
+			$("#modalHeader").html("Info");
+			$("#modalBody").html(message); 
+			$("#myModal").modal("show");			
+		}
+	}
 
 
 

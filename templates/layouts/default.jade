@@ -49,7 +49,19 @@ html(lang='en')
         // Header
         div(style="margin-top: 50px")
             block content
-        
+            // Modal
+            #myModal.modal.fade(role='dialog')
+                .modal-dialog
+                    // Modal content
+                    .modal-content
+                        .modal-header
+                            button.close(type='button', data-dismiss='modal') ×
+                            h4#modalHeader.modal-title 
+                        .modal-body
+                            p#modalBody 
+                        .modal-footer
+                            button#modalFooter.btn.btn-default(type='button', data-dismiss='modal') Close
+
         // /.intro-header
         // Page Content
         
