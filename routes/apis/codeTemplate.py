@@ -37,15 +37,18 @@ def out_of_board(x, y):
 def is_on_obstacle(x, y):
 	global map
 	my_map = map['map']
-	if 'obstacle' in my_map[x][y]['roles']:
-		return True
+	try:
+		if 'obstacle' in my_map[x][y]['roles']:
+			return True
+	except:
+		pass
 	return False
 
 def raiseExeption(x, y):
 	if out_of_board(x,y):
 		throw_out_of_board_exception()
 	if is_on_obstacle(x,y):
-		throw_running_into_obstacle_exception()	
+		throw_running_into_obstacle_exception()
 
 
 def is_valid(x, y):
@@ -103,4 +106,3 @@ def toJSONString(error, my_data):
 	return json.dumps({"error": error, "data": my_data}, ensure_ascii=False)
 
 errorMessage = "none"
-
