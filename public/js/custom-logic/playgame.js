@@ -4,7 +4,7 @@ $( document ).ready(function() {
 
     var canvas=document.getElementById('myCanvas');
 	var ctx= canvas.getContext('2d');
-	//get images for all objects 
+	//get images for all objects
 	var objectsDic = {};
 	var background = document.getElementById('background');
 	var robot = document.getElementById('robot');
@@ -20,7 +20,7 @@ $( document ).ready(function() {
 	   var ratio  = Math.min ( hRatio, vRatio );
 	   var centerShift_x = ( canvas.width - background.width*ratio ) / 2;
 	   var centerShift_y = ( canvas.height - background.height*ratio ) / 2;
-	 
+
 	function drawAllObjectsExceptRobot(){
 		ctx.clearRect(0,0,canvas.width, canvas.height);
 	    ctx.drawImage(background, 0,0, background.width, background.height,
@@ -33,7 +33,7 @@ $( document ).ready(function() {
 	  			var targetY = 10 + 80 * j;
 
 	  			if (cell.objectToDisplay != "none"){
-	  				draw(cell.objectToDisplay, targetX, targetY);	
+	  				draw(cell.objectToDisplay, targetX, targetY);
 	  			}
 	  		}
 	  	}
@@ -44,22 +44,22 @@ $( document ).ready(function() {
 	  	//draw robot
 	  	draw("robot", 10 + 80 * mapTemplate.startPoint[0],
 	  		10 + 80 * mapTemplate.startPoint[1]);
-	   
-	}
-	
 
-	//ANIMATE 
+	}
+
+
+	//ANIMATE
 	function draw(objectName,x, y){
 	    var targetObject = null; //an square image
 	    targetObject = objectsDic[objectName] || null;
 	    if (targetObject != null){
-	    	ctx.drawImage(targetObject, y, x, 60, 60);	
+	    	ctx.drawImage(targetObject, y, x, 60, 60);
 	    }
-	    
+
 	}
 
 	function run(timeout, curX, curY, deltaX, deltaY){
-	   
+
 	   var numSteps = NUM_FRAMES_PER_STEP;
 	   for (var i = 0; i < numSteps; i++){
 	      timeout += TIME_PER_STEP;
@@ -79,20 +79,29 @@ $( document ).ready(function() {
 		var timeout = 0;
 		for (var i = 0; i < steps.length; i++){
 			var step = steps[i];
-			
+
 			//What to do now (to be done)
 			if (step.doHere != "none"){
 				if (step.doHere.action === "showVictory") {
 					setTimeout(function(){
 						displayMessage("general_not_error", "You won. Congratulation.");
-					}, timeout)					
+					}, timeout)
 				}
 				if (step.doHere.action === "showMessage"){
 					setTimeout(function(){
 						displayMessage("general_error",step.doHere.data.message);
 					}, timeout)
 				}
-
+				if (step.doHere.action === "showLetterContent"){
+					setTimeout(function(){
+						console.log('showLetterContent ' + JSON.stringify(step.doHere))
+					}, timeout)
+				}
+				if (step.doHere.action === "showLetter"){
+					setTimeout(function(){
+						console.log('showLetter');
+					}, timeout)
+				}
 			}
 			//What to do next
 			if (step.doNext === "left"){
@@ -125,12 +134,12 @@ $( document ).ready(function() {
 			if (result.success === true){
 				console.log("Sucessully received instructions");
 				var instructions = result.instructions;
-				executeInstructions(instructions);			
+				executeInstructions(instructions);
 			} else {
 				console.log("ERROR receiving response from compiler");
 			}
 		});
-		
+
 	})
 
 	/*
@@ -139,12 +148,12 @@ $( document ).ready(function() {
 	function displayMessage(type, message){
 		if (type === "general_error"){
 			$("#modalHeader").html("Error");
-			$("#modalBody").html(message); 
+			$("#modalBody").html(message);
 			$("#myModal").modal("show");
 		} else if (type === "general_not_error") {
 			$("#modalHeader").html("Info");
-			$("#modalBody").html(message); 
-			$("#myModal").modal("show");			
+			$("#modalBody").html(message);
+			$("#myModal").modal("show");
 		}
 	}
 
@@ -156,11 +165,11 @@ $( document ).ready(function() {
 
 
 
-		
+
     /*
 		EXECUTION
     */
-	
+
 	//DISPLAY FIRST
 	//displayFirst();
 	window.onload = displayFirst.bind(null);

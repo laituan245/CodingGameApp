@@ -3,15 +3,16 @@ var fs = require('fs');
 var path = require('path');
 var exec = require('child_process').exec;
 
- 
-
+function deleteTmpFile(filePath) {
+  // fs.unlink(filePath, function() {});
+}
 
 
 exports = module.exports = function (req, res) {
 	var locals = res.locals;
-	var result  ={}; 
+	var result  ={};
 	var userID = locals.userID;
-	
+
 	var startPos = [10, 10];
 	var steps = [
 		{
@@ -52,19 +53,19 @@ exports = module.exports = function (req, res) {
 		startPos: startPos
 	}
 
-/*	
-	Get userCode, insert it into the code template 
+/*
+	Get userCode, insert it into the code template
 	Create 2 files:
 	- 2nd file: contains mapTemplate
 	- 1st file: complete code to run (template + userCode)
-	
-*/	
+
+*/
 	var userCode = decodeURIComponent(req.body.userCode);
 	var mapTemplate = req.body.mapTemplate;
 	//Create the first file
 	var d = new Date();
 	var timestamp = d.getTime();
-	var fullTemplateFilePath =  __dirname + "/tmp/map" + mapTemplate.mapID + ".txt";
+	var fullTemplateFilePath =  __dirname + "/tmp/map" + mapTemplate.mapID + "_" + timestamp + "_" + ".txt";
 	fs.writeFile(fullTemplateFilePath, JSON.stringify(mapTemplate), function(err) {
 	    if(err) {
 	        return console.log(err);
@@ -101,7 +102,7 @@ exports = module.exports = function (req, res) {
 
 			    var pid = null;
 			    var processIsDone = false;
-			    
+
 				exec("python " + fullCodeFilePath + ' ' + fullTemplateFilePath, function(error, stdout, stderr){
 					processIsDone = true;
 					if (error) {
@@ -120,6 +121,8 @@ exports = module.exports = function (req, res) {
 								}, 'doNext': 'none'
 							}]
 						}
+            deleteTmpFile(fullCodeFilePath);
+            deleteTmpFile(fullTemplateFilePath);
 						res.json(result);
 						return;
 					}
@@ -129,7 +132,7 @@ exports = module.exports = function (req, res) {
 					result.instructions = {
 						startPos: mapTemplate.startPoint,
 						steps: stdout.data
-					} 
+					}
 
 					var realError = stdout.error;
 					if (realError != "none"){
@@ -142,6 +145,8 @@ exports = module.exports = function (req, res) {
 							}, 'doNext': 'none'
 						})
 					}
+          deleteTmpFile(fullCodeFilePath);
+          deleteTmpFile(fullTemplateFilePath);
 					res.json(result);
 				});
 
@@ -172,7 +177,9 @@ exports = module.exports = function (req, res) {
 											}
 										}, 'doNext': 'none'
 									}]
-								} 
+								}
+                deleteTmpFile(fullCodeFilePath);
+                deleteTmpFile(fullTemplateFilePath);
 								res.json(result);
 								return;
 							})
@@ -181,9 +188,9 @@ exports = module.exports = function (req, res) {
 				})
 			})
 		});
-	}); 
-	
-	
+	});
 
-	
+
+
+
 };

@@ -11,7 +11,8 @@ MapTemplate.add({
 	mapID: { type: Types.Text, initial:true,required: true, index: true, unique: true},
 	name: { type: Types.Text, required: true, index: true },
 	map_height: { type: Types.Number, initial:true, required: true, index: true },
-	map_width: { type: Types.Number, initial:true, required: true }
+	map_width: { type: Types.Number, initial:true, required: true },
+	instruction: {type: Types.Text}
 });
 
 MapTemplate.schema.add({
@@ -25,4 +26,3 @@ MapTemplate.schema.add({
  */
 MapTemplate.defaultColumns = 'name, map_width, map_height';
 MapTemplate.register();
-
