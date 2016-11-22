@@ -1,13 +1,14 @@
 extends ../layouts/default
 
 block css
-    link(rel='stylesheet', type='text/css', href='/css/languages.css')
+    link(rel='stylesheet', href='/css/languages.css')
 
 block content
-  .container
+    - var alert_mes = "This language is not available at this moment. Please come back later."
+    .container
       .col-xs-12
         .page-header
-          h3 Programming languages
+            h2 Programming languages
         #myCarousel.carousel.slide
           .carousel-inner
             .item.active
@@ -15,70 +16,70 @@ block content
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      img(src='http://www.bebetterdeveloper.com/img/post_img/python-logo.png', style='width:200px;height:200px;', alt='')
+                      a(href='/python/lessonList')
+                        img(src='/img/python.png', style='width:200px;height:200px;', alt='')
                     .caption
                       h4 Python
-                      a(href='/python/lessonList') » Learn this topic
+                      a(href='/python/lessonList') » Learn Python
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      img(src='http://blog.newrelic.com/wp-content/uploads/javalogo.png', style='width:200px;height:200px;', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/java.png', style='width:200px;height:200px;', alt='')
                     .caption
                       h4 Java
-                      a(href='#') » Learn this topic
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn Java
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      img(src='http://www.brandsoftheworld.com/sites/default/files/styles/logo-thumbnail/public/042014/c_0.png?itok=NGrw5nRV', style='width:200px;height:200px;', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/cpp.png', style='width:200px;height:200px;', alt='')
                     .caption
                       h4 C++
-                      a(href='#') » Learn this topic
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn C++
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      img(src='https://mohsinhussain68.files.wordpress.com/2013/12/javascript.png?w=300&h=300', style='width:200px;height:200px;', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/javascript.png', style='width:200px;height:200px;', alt='')
                     .caption
                       h4 JavaScript
-                      a(href='#') » Learn this topic
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn JavaScript
             // /Slide1
             .item
               ul.thumbnails
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='http://placehold.it/360x240', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/php.png', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Praesent commodo
-                      p Nullam Condimentum Nibh Etiam Sem
-                      a.btn.btn-mini(href='#') » Read More
+                      h4 PHP
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn PHP
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='http://placehold.it/360x240', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/mysql.png', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Praesent commodo
-                      p Nullam Condimentum Nibh Etiam Sem
-                      a.btn.btn-mini(href='#') » Read More
+                      h4 PHP
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn MySQL
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='http://placehold.it/360x240', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/ruby.png', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Praesent commodo
-                      p Nullam Condimentum Nibh Etiam Sem
-                      a.btn.btn-mini(href='#') » Read More
+                      h4 Ruby
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn Ruby
                 li.col-sm-3
                   .fff
                     .thumbnail
-                      a(href='#')
-                        img(src='http://placehold.it/360x240', alt='')
+                      a(href='#' onClick="alert('"+alert_mes+"')")
+                        img(src='/img/html.png', style='width:200px;height:200px;', alt='')
                     .caption
-                      h4 Praesent commodo
-                      p Nullam Condimentum Nibh Etiam Sem
-                      a.btn.btn-mini(href='#') » Read More
+                      h4 HTML
+                      a(href='#' onClick="alert('"+alert_mes+"')") » Learn HTML
             // /Slide2
           nav
             ul.control-box.pager

@@ -58,7 +58,6 @@ function createMapTemplate1(req, res){
 		console.log("A New MapTemplate is created");
 		return res.json({success: "true"});
 	});
-
 }
 
 
