@@ -2,6 +2,8 @@ $( document ).ready(function() {
 	var TIME_PER_STEP = 50;
 	var NUM_FRAMES_PER_STEP = 10;
 
+	var originalMapTemplate = jQuery.extend(true, {}, mapTemplate);
+
     var canvas=document.getElementById('myCanvas');
 	var ctx= canvas.getContext('2d');
 	//get images for all objects
@@ -13,6 +15,19 @@ $( document ).ready(function() {
 	objectsDic["obstacle"] = obstacle;
 	var endFlag = document.getElementById('endFlag');
 	objectsDic["endFlag"] = endFlag;
+	var letter = document.getElementById('letter');
+	objectsDic["letter"] = letter;
+	
+	var arrowdown = document.getElementById('arrowdown');
+	objectsDic["arrowdown"] = arrowdown;
+	var arrowup = document.getElementById('arrowup');
+	objectsDic["arrowup"] = arrowup;
+	var arrowright = document.getElementById('arrowright');
+	objectsDic["arrowright"] = arrowright;
+	var arrowleft = document.getElementById('arrowleft');
+	objectsDic["arrowleft"] = arrowleft;
+	
+
 
 	var canvas = ctx.canvas ;
 	   var hRatio = canvas.width  / background.width    ;
@@ -58,18 +73,41 @@ $( document ).ready(function() {
 
 	}
 
-	function run(timeout, curX, curY, deltaX, deltaY){
+	function checkExist(value, array){
+		for (var i = 0; i < array.length; i++){
+			if (value === array[i]) return true;
+		}
+		return false;
+	}
 
-	   var numSteps = NUM_FRAMES_PER_STEP;
-	   for (var i = 0; i < numSteps; i++){
-	      timeout += TIME_PER_STEP;
-	      setTimeout(function(){
-	          curX += deltaX / numSteps;
-	          curY += deltaY / numSteps;
-	          drawAllObjectsExceptRobot();
-	          draw("robot", curX, curY);
-	      }, timeout);
-	   }
+
+	function run(timeout, curX, curY, deltaX, deltaY){
+		var finalx = curX + deltaX;
+		var finaly = curY + deltaY;
+	    (function(finalx, finaly){
+	    	var numSteps = NUM_FRAMES_PER_STEP;
+		   for (var i = 0; i < numSteps; i++){
+		      timeout += TIME_PER_STEP;
+		      setTimeout(function(){
+		          curX += deltaX / numSteps;
+		          curY += deltaY / numSteps;
+		          drawAllObjectsExceptRobot();
+		          draw("robot", curX, curY);
+		          if (mapTemplate.mapID === "whileloop_findtreasure"){
+
+		          		if (checkExist("letter", mapTemplate.map[(finalx-10) / 80][(finaly - 10) / 80].roles)){
+		          			console.log("Draw letter in advance")
+		          			draw("letter", finalx, finaly);			
+		          		}
+		          		
+		          	  	
+		          }
+		          
+		          
+		      }, timeout);
+		     }
+	    })(finalx,finaly);
+	  
 	}
 
 	function executeInstructions(instructions){
@@ -77,32 +115,44 @@ $( document ).ready(function() {
 		var curY = instructions.startPos[1] * 80 + 10;
 		var steps = instructions.steps;
 		var timeout = 0;
+
+		if (mapTemplate.mapID === "whileloop_findtreasure"){
+			draw("letter", curX, curY);
+		}
+
 		for (var i = 0; i < steps.length; i++){
 			var step = steps[i];
+			(function (curX, curY){
 
-			//What to do now (to be done)
-			if (step.doHere != "none"){
-				if (step.doHere.action === "showVictory") {
-					setTimeout(function(){
-						displayMessage("general_not_error", "You won. Congratulation.");
-					}, timeout)
+				//What to do now (to be done)
+				if (step.doHere != "none"){
+					if (step.doHere.action === "showVictory") {
+						setTimeout(function(){
+							displayMessage("general_not_error", "You won. Congratulation.");
+						}, timeout)
+					}
+					if (step.doHere.action === "showMessage"){
+						setTimeout(function(){
+							displayMessage("general_error",step.doHere.data.message);
+						}, timeout)
+					}
+					if (step.doHere.action === "showLetterContent"){
+						setTimeout(function(){
+							draw("arrow" + mapTemplate.map[(curX-10)/80][(curY-10)/80].direction, curX, curY);
+							mapTemplate.map[(curX-10)/80][(curY-10)/80].objectToDisplay = 'arrow' + mapTemplate.map[(curX-10)/80][(curY-10)/80].direction;
+							console.log('showLetterContent ' + JSON.stringify(step.doHere))
+						}, timeout)
+					}
+					if (step.doHere.action === "showLetter"){
+						setTimeout(function(){
+							draw("letter", curX, curY);
+							console.log('showLetter');
+						}, timeout)
+					}
 				}
-				if (step.doHere.action === "showMessage"){
-					setTimeout(function(){
-						displayMessage("general_error",step.doHere.data.message);
-					}, timeout)
-				}
-				if (step.doHere.action === "showLetterContent"){
-					setTimeout(function(){
-						console.log('showLetterContent ' + JSON.stringify(step.doHere))
-					}, timeout)
-				}
-				if (step.doHere.action === "showLetter"){
-					setTimeout(function(){
-						console.log('showLetter');
-					}, timeout)
-				}
-			}
+
+			})(curX, curY);
+			
 			//What to do next
 			if (step.doNext === "left"){
 				run(timeout, curX, curY, 0, -80);
@@ -122,6 +172,7 @@ $( document ).ready(function() {
 	}
 
 	$("#run-btn").click(function(){
+		mapTemplate = jQuery.extend(true, {}, originalMapTemplate);
 		var userCode = editor.getValue();
 		userCode = encodeURIComponent(userCode);
 		// console.log(decodeURIComponent(userCode));

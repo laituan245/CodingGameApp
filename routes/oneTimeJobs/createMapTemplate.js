@@ -6,7 +6,7 @@ module.exports = {
 }
 
 function createAllMapTemplates(req, res) {
-	// createMapTemplate1(req, res);
+	//createMapTemplate1(req, res);
 	createMapTemplate2(req, res);
 }
 
@@ -70,7 +70,7 @@ function createMapTemplate2(req, res){
 		startPoint : [0,0],
 		endPoint : [-1, -1], // random
 		map: null,
-		instruction: "The robot needs to find the treasure."
+		instruction: "The robot needs to find the treasure. You are given 6 functions: goLeft(), goRight(), goDown(), goUp(), onTreasure(), readLetter(). onTreasure() returnS true if robot is on the treasure. Otherwise, it returns false. readLetter() return the direction the robot should follow to find the treasure. The possible output of this function are: 'left', 'right', 'up', 'down'."
 	})
 
 	newMapTemplate.save(function(err){

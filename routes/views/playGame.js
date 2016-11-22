@@ -92,7 +92,7 @@ function createMap2(endPointX, endPointY){
 		} else if (cur_y < next_y) {
 			direction = 'right';
 		}
-		res[cur_x][cur_y]['objectToDisplay'] = 'letter';
+		res[cur_x][cur_y]['objectToDisplay'] = 'none';
 		res[cur_x][cur_y]['roles'] = ['letter'];
 		res[cur_x][cur_y]['message'] = 'You should go ' + direction;
 		res[cur_x][cur_y]['direction'] = direction;
