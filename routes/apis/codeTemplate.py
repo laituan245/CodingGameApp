@@ -68,41 +68,82 @@ def goRight():
 		cur_y += 1
 	else:
 		raiseExeption(cur_x, cur_y + 1)
+	if map['mapID'] == "whileloop_findtreasure":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showLetter",
+			'data': None
+		}
 
 def goLeft():
 	global cur_x
 	global cur_y
-	instruction_arr.append({'doHere': 'none', 'doNext': 'left', })
+	instruction_arr.append({'doHere': 'none', 'doNext': 'left', 'pos': [cur_x, cur_y]})
 	if is_valid(cur_x, cur_y - 1):
 		cur_y -= 1
 	else:
 		raiseExeption(cur_x, cur_y - 1)
+	if map['mapID'] == "whileloop_findtreasure":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showLetter",
+			'data': None
+		}
+
+def onTreasure():
+	global cur_x
+	global cur_y
+	global end_x
+	global end_y
+	return (cur_x == end_x and cur_y == end_y)
+
+def readLetter():
+	global cur_x
+	global cur_y
+	global map
+	my_map = map['map']
+	instruction_arr.append({
+		'doHere': {
+			'action': "showLetterContent",
+			'data': {
+				'message': my_map[cur_x][cur_y]['message']
+			}
+		},
+		'doNext': 'none', })
+	return my_map[cur_x][cur_y]['direction']
 
 def goDown():
 	global cur_x
 	global cur_y
-	instruction_arr.append({'doHere': 'none', 'doNext': 'down'})
+	instruction_arr.append({'doHere': 'none', 'doNext': 'down', 'pos': [cur_x, cur_y]})
 	if is_valid(cur_x+1, cur_y):
 		cur_x += 1
 	else:
 		raiseExeption(cur_x + 1, cur_y)
+	if map['mapID'] == "whileloop_findtreasure":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showLetter",
+			'data': None
+		}
 
 def goUp():
 	global cur_x
 	global cur_y
-	instruction_arr.append({'doHere': 'none', 'doNext': 'up'})
+	instruction_arr.append({'doHere': 'none', 'doNext': 'up', 'pos': [cur_x, cur_y]})
 	if is_valid(cur_x-1, cur_y):
 		cur_x -= 1
 	else:
 		raiseExeption(cur_x-1, cur_y)
-
+	if map['mapID'] == "whileloop_findtreasure":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showLetter",
+			'data': None
+		}
 
 def toJSONString(error, my_data):
 	if error == "none":
 		do_here = 'none'
 		if cur_x == end_x and cur_y == end_y:
 			do_here =  {"action": 'showVictory', "data": []}
-		my_data.append({'doHere': do_here, 'doNext': 'none', 'pos': [cur_x, cur_y]})
+			my_data.append({'doHere': do_here, 'doNext': 'none', 'pos': [cur_x, cur_y]})
 	return json.dumps({"error": error, "data": my_data}, ensure_ascii=False)
 
 errorMessage = "none"
