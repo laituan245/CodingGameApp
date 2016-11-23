@@ -157,7 +157,7 @@ $( document ).ready(function() {
 					if (step.doHere.action === "showVictory") {
 						setTimeout(function(){
 							if (mapTemplate.mapID !== "variables_lgamevariable")
-								displayMessage("general_not_error", "You won. Congratulation.");
+								displayMessage("general_not_error", "You won! Congratulation ^^");
 						}, timeout)
 					}
 					if (step.doHere.action === "showMessage"){
@@ -221,6 +221,7 @@ $( document ).ready(function() {
 
 	$("#run-btn").click(function(){
 		$("#variable-game-notify").hide();
+		$("#noti-message").hide();
 		mapTemplate = jQuery.extend(true, {}, originalMapTemplate);
 		var userCode = editor.getValue();
 		userCode = encodeURIComponent(userCode);
@@ -246,14 +247,21 @@ $( document ).ready(function() {
 		FUNCTIONS LIBRARY
     */
 	function displayMessage(type, message){
-		if (type === "general_error"){
-			$("#modalHeader").html("Error");
-			$("#modalBody").html(message);
-			$("#myModal").modal("show");
-		} else if (type === "general_not_error") {
-			$("#modalHeader").html("Info");
-			$("#modalBody").html(message);
-			$("#myModal").modal("show");
+		if (type === "general_not_error"){
+			// $("#modalHeader").html("Error");
+			// $("#modalBody").html(message);
+			// $("#myModal").modal("show");noti-message-header
+			$("#noti-message").css("font-size", "30px").show();
+			$("#noti-message-header").html("Information")
+			$("#noti-message-content").html(message)/*.css("font-size", "40px")*/;
+
+		} else if (type === "general_error") {
+			// $("#modalHeader").html("Info");
+			// $("#modalBody").html(message);
+			// $("#myModal").modal("show");
+			$("#noti-message").css("font-size", "30px").css("background-color", "#f2dede").css("color","#a94442").css("border-color", "#ebcccc").show();
+			$("#noti-message-header").html("Error")
+			$("#noti-message-content").html(message);
 		}
 	}
 
@@ -261,6 +269,7 @@ $( document ).ready(function() {
 		$("#variable-game-notify").show();
 		if (valueSum !== correctValueSum || wordSum !== correctWordSum){
 			$("#variable-game-result").html("Wrong answer");
+			$("#variable-game-notify").css("background-color", "#f2dede").css("color","#a94442").css("border-color", "#ebcccc");
 			console.log("Wrong answer the correct result is (valueSum = " + correctValueSum + ", wordSum = " + wordSum + ")" );
 		} else {
 			$("#variable-game-result").html("Correct answer");
@@ -274,7 +283,6 @@ $( document ).ready(function() {
 	}
 
 	function initialize(){
-		$("#variable-game-notify").hide();
 		$(".instruction-content").html(mapTemplate.instruction);
 	}
 
