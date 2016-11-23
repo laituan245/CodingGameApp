@@ -7,7 +7,8 @@ module.exports = {
 
 function createAllMapTemplates(req, res) {
 	//createMapTemplate1(req, res);
-	createMapTemplate2(req, res);
+	//createMapTemplate2(req, res);
+	createMapTemplateCondition(req, res);
 }
 
 function createMapTemplate1(req, res){
@@ -60,7 +61,6 @@ function createMapTemplate1(req, res){
 	});
 }
 
-
 function createMapTemplate2(req, res){
 	var newMapTemplate = new MapTemplate.model({
 		mapID: "whileloop_findtreasure",
@@ -77,5 +77,22 @@ function createMapTemplate2(req, res){
 		console.log("A New MapTemplate is created");
 		return res.json({success: "true"});
 	});
+}
 
+function createMapTemplateCondition(req, res){
+	var newMapTemplate = new MapTemplate.model({
+		mapID: "condition_cgame",
+		name: "If-else",
+		map_height: 5,
+		map_width: 5,
+		startPoint : [0,0],
+		endPoint : [-1, -1], // random
+		map: null,
+		instruction: "There is 2 finish flags on the map, but only one of them is real. Use function readLetter(), which returns 'right' or 'down' to find the direction, then follow the direction and functions goDown(), goRight() to go to the real end point, or you will be trapped by the fake endPoint."
+	})
+
+	newMapTemplate.save(function(err){
+		console.log("A New MapTemplate is created");
+		return res.json({success: "true"});
+	});
 }
