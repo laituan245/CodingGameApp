@@ -5,12 +5,17 @@ module.exports = {
 	createMap: createAllMapTemplates
 }
 
-function createAllMapTemplates(req, res) {
-	//createMapTemplate1(req, res);
-	createMapTemplate2(req, res);
+function createAllMapTemplates(req, res, callback) {
+	createMapTemplate1(function() {
+		console.log("MapTemplate 1 is created");
+		createMapTemplate2(function() {
+			console.log("MapTemplate 2 is created");
+			return res.json({success: "true", message: "Two MapTemplates have been created"});
+		});
+	});
 }
 
-function createMapTemplate1(req, res){
+function createMapTemplate1(successCallback){
 	function createMatrix1(map_height, map_width, startPoint, endPoint){
 		var res = [];
 		for (var i = 0; i < 5; i++){
@@ -55,13 +60,12 @@ function createMapTemplate1(req, res){
 	})
 
 	newMapTemplate.save(function(err){
-		console.log("A New MapTemplate is created");
-		return res.json({success: "true"});
+		successCallback();
 	});
 }
 
 
-function createMapTemplate2(req, res){
+function createMapTemplate2(successCallback){
 	var newMapTemplate = new MapTemplate.model({
 		mapID: "whileloop_findtreasure",
 		name: "Finding treasure",
@@ -74,8 +78,7 @@ function createMapTemplate2(req, res){
 	})
 
 	newMapTemplate.save(function(err){
-		console.log("A New MapTemplate is created");
-		return res.json({success: "true"});
+		successCallback();
 	});
 
 }
