@@ -1,0 +1,29 @@
+extends ../layouts/default
+block css
+  style(type='text/css').
+    #lessonTitle {
+      margin-top: 60px;
+    }
+    #lessonTutorialCtn {
+      padding: 20px;
+    }
+    #start-exercise-btn-ctn {
+      margin-bottom:10px;
+    }
+    #skip-lesson-btn-ctn {
+      margin-bottom:10px;
+    }
+block content
+  #lessonTitle.h1(align="center").
+    #{lessonTutorial.title}
+  .div#skip-lesson-btn-ctn(align="center")
+    a#skip-lesson-btn(type="button" class="btn btn-info", href='/play/' + language + "/" + lessonID + "/" + gameID)="Skip Lesson. Start Exercise :)"
+  #lessonTutorialCtn.div
+    | No content yet
+  .div#start-exercise-btn-ctn(align="center")
+    a#start-exercise-btn(type="button" class="btn btn-success", href='/play/' + language + "/" + lessonID + "/" + gameID)="Start Exercise"
+  
+block js-footer
+  script.
+    var lessonTutorial = !{JSON.stringify(lessonTutorial)};
+    $("#lessonTutorialCtn").html(lessonTutorial.content)

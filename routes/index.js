@@ -49,11 +49,14 @@ exports = module.exports = function (app) {
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 	app.post('/login', routes.apis.UserLogin.login);
-	
+
 	app.post('/signup', routes.apis.UserLogin.signup);
 
 	//games
 	app.get('/play/:language/:lessonID/:gameID', routes.views.playGame);
+
+	// tutorials
+	app.get('/study/:language/:lessonID', routes.views.studyTutorial);
 
 	//compiler
 	app.post('/compiler', routes.apis.compiler);
@@ -64,4 +67,5 @@ exports = module.exports = function (app) {
 
 	//One-time jobs
 	app.get('/onetimejobs/createmap', routes.oneTimeJobs.createMapTemplate.createMap);
+	app.get('/onetimejobs/createtutorial', routes.oneTimeJobs.createLessonTutorials.createLessonTutorials);	
 };
