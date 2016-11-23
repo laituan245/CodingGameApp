@@ -1,0 +1,125 @@
+<div>
+  <h3>Python Identifiers</h3>
+  A Python identifier is a name used to identify a variable, function, class, module or other object. An identifier starts with a letter A to Z or a to z or an underscore (_) followed by zero or more letters, underscores and digits (0 to 9).
+  </br>
+  </br>
+  Python does not allow punctuation characters such as @, $, and % within identifiers. Python is a case sensitive programming language. Thus, Manpower and manpower are two different identifiers in Python.
+  </br>
+  </br>
+  Here are naming conventions for Python identifiers:
+  </br>
+  <ul>
+    <li>Class names start with an uppercase letter. All other identifiers start with a lowercase letter.</li>
+    <li>Starting an identifier with a single leading underscore indicates that the identifier is private.</li>
+    <li>Starting an identifier with two leading underscores indicates a strongly private identifier.</li>
+    <li>If the identifier also ends with two trailing underscores, the identifier is a language-defined special name.</li>
+  </ul>
+  </br>
+
+  <h3>Reserved Words</h3>
+  The following list shows the Python keywords. These are reserved words and you cannot use them as constant or variable or any other identifier names. All the Python keywords contain lowercase letters only.
+
+  <table class="table table-bordered">
+  <tbody><tr><td>and</td><td>exec</td><td>not</td></tr>
+  <tr><td>assert</td><td>finally</td><td>or</td></tr>
+  <tr><td>break</td><td>for</td><td>pass</td></tr>
+  <tr><td>class</td><td>from</td><td>print</td></tr>
+  <tr><td>continue</td><td>global</td><td>raise</td></tr>
+  <tr><td>def</td><td>if</td><td>return</td></tr>
+  <tr><td>del</td><td>import</td><td>try</td></tr>
+  <tr><td>elif</td><td>in</td><td>while</td></tr>
+  <tr><td>else</td><td>is</td><td>with </td></tr>
+  <tr><td>except</td><td>lambda</td><td>yield</td></tr>
+  </tbody></table>
+  </br>
+
+  <h3>Lines and Indentation</h3>
+  Python provides no braces to indicate blocks of code for class and function definitions or flow control. Blocks of code are denoted by line indentation, which is rigidly enforced.
+  </br></br>
+  The number of spaces in the indentation is variable, but all statements within the block must be indented the same amount. For example −
+  <pre><code class="python">if True:
+    print "True"
+else:
+  print "False"</code></pre>
+  However, the following block generates an error −
+  <pre><code class="python">if True:
+    print "Answer"
+    print "True"
+else:
+    print "Answer"
+  print "False"</code></pre>
+  Thus, in Python all the continuous lines indented with same number of spaces would form a block. The following example has various statement blocks −
+  </br>
+  </br>
+  <b>Note:</b> Do not try to understand the logic at this point of time. Just make sure you understood various blocks even if they are without braces.
+  <pre><code class="python">#!/usr/bin/python
+
+import sys
+
+try:
+  # open file stream
+  file = open(file_name, "w")
+except IOError:
+  print "There was an error writing to", file_name
+  sys.exit()
+print "Enter '", file_finish,
+print "' When finished"
+while file_text != file_finish:
+  file_text = raw_input("Enter text: ")
+  if file_text == file_finish:
+    # close the file
+    file.close
+    break
+  file.write(file_text)
+  file.write("\n")
+file.close()
+file_name = raw_input("Enter filename: ")
+if len(file_name) == 0:
+  print "Next time please enter something"
+  sys.exit()
+try:
+  file = open(file_name, "r")
+except IOError:
+  print "There was an error reading file"
+  sys.exit()
+file_text = file.read()
+file.close()
+print file_text</code></pre>
+  </br>
+<h3>Quotation in Python</h3>
+Python accepts single ('), double (") and triple (''' or """) quotes to denote string literals, as long as the same type of quote starts and ends the string.
+</br></br>
+The triple quotes are used to span the string across multiple lines. For example, all the following are legal −
+  <pre><code class="python">word = 'word'
+sentence = "This is a sentence."
+paragraph = """This is a paragraph. It is
+made up of multiple lines and sentences."""
+</code></pre>
+</br>
+  <h3>Comments in Python</h3>
+  A hash sign (#) that is not inside a string literal begins a comment. All characters after the # and up to the end of the physical line are part of the comment and the Python interpreter ignores them.
+  <pre><code class="python">#!/usr/bin/python
+
+# First comment
+print "Hello, Python!" # second comment</code></pre>
+This produces the following result −
+
+<pre><code>Hello, Python!</code></pre>
+You can type a comment on the same line after a statement or expression −
+<pre><code class="python">name = "Madisetti" # This is again comment
+</code></pre>
+
+You can comment multiple lines as follows −
+<pre><code class="python"># This is a comment.
+# This is a comment, too.
+# This is a comment, too.
+# I said that already.</code></pre>
+</br>
+
+<h3>Using Blank Lines</h3>
+A line containing only whitespace, possibly with a comment, is known as a blank line and Python totally ignores it.
+</br>
+In an interactive interpreter session, you must enter an empty physical line to terminate a multiline statement.
+
+
+</div>

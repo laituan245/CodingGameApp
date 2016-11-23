@@ -1,0 +1,241 @@
+<div>
+  Variables are nothing but reserved memory locations to store values. This means that when you create a variable you reserve some space in memory.
+  </br>
+  Based on the data type of a variable, the interpreter allocates memory and decides what can be stored in the reserved memory. Therefore, by assigning different data types to variables, you can store integers, decimals or characters in these variables.
+
+  <h3>Assigning Values to Variables</h3>
+  Python variables do not need explicit declaration to reserve memory space. The declaration happens automatically when you assign a value to a variable. The equal sign (=) is used to assign values to variables.
+  </br>
+  The operand to the left of the = operator is the name of the variable and the operand to the right of the = operator is the value stored in the variable. For example −
+  <pre><code class="python">#!/usr/bin/python
+
+counter = 100          # An integer assignment
+miles   = 1000.0       # A floating point
+name    = "John"       # A string
+
+print counter
+print miles
+print name</pre></code>
+  </br>
+  Here, 100, 1000.0 and "John" are the values assigned to counter, miles, and name variables, respectively. This produces the following result −
+  <pre><code>100
+1000.0
+John</pre></code>
+  </br>
+
+  <h3>Multiple Assignment</h3>
+  Python allows you to assign a single value to several variables simultaneously. For example −
+  <pre><code class="python">a = b = c = 1</pre></code>
+  Here, an integer object is created with the value 1, and all three variables are assigned to the same memory location. You can also assign multiple objects to multiple variables. For example −
+  <pre><code class="python">a, b, c = 1, 2, "john"</pre></code>
+  Here, two integer objects with values 1 and 2 are assigned to variables a and b respectively, and one string object with the value "john" is assigned to the variable c.
+  </br>
+
+  <h3>Standard Data Types</h3>
+  The data stored in memory can be of many types. For example, a person's age is stored as a numeric value and his or her address is stored as alphanumeric characters. Python has various standard data types that are used to define the operations possible on them and the storage method for each of them.
+
+  Python has five standard data types −
+  <ul>
+    <li>Numbers</li>
+
+    <li>String</li>
+
+    <li>List</li>
+
+    <li>Tuple</li>
+
+    <li>Dictionary</li>
+
+  </ul>
+  </br>
+
+  <h3>Python Numbers</h3>
+  Number data types store numeric values. Number objects are created when you assign a value to them. For example −
+  <pre><code class="python">var1 = 1
+var2 = 10</code></pre>
+
+  Here are some examples of numbers −
+  <table class="table table-bordered">
+  <tbody><tr><th>int</th><th>long</th><th>float</th><th>complex</th></tr>
+  <tr><td>10</td><td>51924361L</td><td>0.0</td><td>3.14j</td></tr>
+  <tr><td>100</td><td>-0x19323L</td><td>15.20</td><td>45.j</td></tr>
+  <tr><td>-786</td><td>0122L</td><td>-21.9</td><td>9.322e-36j</td></tr>
+  <tr><td>080</td><td>0xDEFABCECBDAECBFBAEl</td><td>32.3+e18</td><td>.876j</td></tr>
+  <tr><td>-0490</td><td>535633629843L</td><td>-90.</td><td>-.6545+0J</td></tr>
+  <tr><td>-0x260</td><td>-052318172735L</td><td>-32.54e100</td><td>3e+26J</td></tr>
+  <tr><td>0x69</td><td>-4721885298529L</td><td>70.2-E12</td><td>4.53e-7j</td></tr>
+  </tbody></table>
+  </br>
+
+
+  <h3>Python Strings</h3>
+  Strings in Python are identified as a contiguous set of characters represented in the quotation marks. Python allows for either pairs of single or double quotes. Subsets of strings can be taken using the slice operator ([ ] and [:] ) with indexes starting at 0 in the beginning of the string and working their way from -1 at the end.
+</br></br>
+  The plus (+) sign is the string concatenation operator and the asterisk (*) is the repetition operator. For example −
+  <pre><code class="python">#!/usr/bin/python
+
+str = 'Hello World!'
+
+print str          # Prints complete string
+print str[0]       # Prints first character of the string
+print str[2:5]     # Prints characters starting from 3rd to 5th
+print str[2:]      # Prints string starting from 3rd character
+print str * 2      # Prints string two times
+print str + "TEST" # Prints concatenated string</code></pre>
+This will produce the following result −
+
+  <pre><code>Hello World!
+H
+llo
+llo World!
+Hello World!Hello World!
+Hello World!TEST
+</pre></code>
+  </br>
+
+  <h3>Data Type Conversion</h3>
+  Sometimes, you may need to perform conversions between the built-in types. To convert between types, you simply use the type name as a function.
+</br>
+  There are several built-in functions to perform conversion from one data type to another. These functions return a new object representing the converted value.
+
+  <table class="table table-bordered">
+<tbody><tr><th>Function</th><th>Description</th></tr>
+<tr valign="top">
+<td>
+<p>int(x [,base])</p>
+</td>
+<td>
+<p>Converts x to an integer. base specifies the base if x is a string.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>long(x [,base] )</p>
+</td>
+<td>
+<p>Converts x to a long integer. base specifies the base if x is a string.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>float(x)</p>
+</td>
+<td>
+<p>Converts x to a floating-point number.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>complex(real [,imag])</p>
+</td>
+<td>
+<p>Creates a complex number.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>str(x)</p>
+</td>
+<td>
+<p>Converts object x to a string representation.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>repr(x)</p>
+</td>
+<td>
+<p>Converts object x to an expression string.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>eval(str)</p>
+</td>
+<td>
+<p>Evaluates a string and returns an object.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>tuple(s)</p>
+</td>
+<td>
+<p>Converts s to a tuple.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>list(s)</p>
+</td>
+<td>
+<p>Converts s to a list.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>set(s)</p>
+</td>
+<td>
+<p>Converts s to a set.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>dict(d)</p>
+</td>
+<td>
+<p>Creates a dictionary. d must be a sequence of (key,value) tuples.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>frozenset(s)</p>
+</td>
+<td>
+<p>Converts s to a frozen set.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>chr(x)</p>
+</td>
+<td>
+<p>Converts an integer to a character.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>unichr(x)</p>
+</td>
+<td>
+<p>Converts an integer to a Unicode character.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>ord(x)</p>
+</td>
+<td>
+<p>Converts a single character to its integer value.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>hex(x)</p>
+</td>
+<td>
+<p>Converts an integer to a hexadecimal string.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p>oct(x)</p>
+</td>
+<td>
+<p>Converts an integer to an octal string.</p>
+</td>
+</tr>
+</tbody></table>
+  </br>
+</div>
