@@ -30,7 +30,7 @@ exports = module.exports = function (req, res) {
 
 		if (gameID === "lgamevariable"){
 			createMap3(myMapTemplate);
-
+		}
 		if (gameID === "cgame"){
 			var rand = Math.floor(Math.random() * 2) * 4; // 0 or 4
 			myMapTemplate.endPoint = [rand, 4 - rand];
@@ -129,7 +129,7 @@ function createMap3(myMapTemplate){
 				console.log(map[i][j].word + ".");
 			}
 		}
-
+}
 function createMapCondition(endPointX, endPointY){
 	var res = [];
 

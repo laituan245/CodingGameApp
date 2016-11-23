@@ -8,10 +8,10 @@ module.exports = {
 function createAllMapTemplates(req, res) {
 	//createMapTemplate1(req, res);
 
-	createMapTemplate3(req, res);
+	//createMapTemplate3(req, res);
 
 	//createMapTemplate2(req, res);
-	//createMapTemplateCondition(req, res);
+	createMapTemplateCondition(req, res);
 
 }
 
