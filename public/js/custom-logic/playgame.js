@@ -48,7 +48,14 @@ $( document ).ready(function() {
 	  			var targetY = 10 + 80 * j;
 
 	  			if (cell.objectToDisplay != "none"){
-	  				draw(cell.objectToDisplay, targetX, targetY);
+	  				if (cell.objectToDisplay === "number"){
+	  					console.log("here " );
+	  					console.log(JSON.stringify(cell));
+	  					drawNumber(cell.value, cell.word, targetX, targetY);
+	  				} else {
+	  					draw(cell.objectToDisplay, targetX, targetY);	
+	  				}
+	  				
 	  			}
 	  		}
 	  	}
@@ -72,6 +79,16 @@ $( document ).ready(function() {
 	    }
 
 	}
+
+	function drawNumber(number,word,x, y){
+		ctx.font = "30px Verdana";
+		ctx.fillStyle = 'white';
+		ctx.fillText(number,y + 10, x + 20, 60, 60);
+		ctx.font = "20px Verdana";
+		ctx.fillStyle = 'white';
+		ctx.fillText(word,y + 5, x + 50, 60, 60);
+	}
+
 
 	function checkExist(value, array){
 		for (var i = 0; i < array.length; i++){
@@ -102,6 +119,16 @@ $( document ).ready(function() {
 		          		
 		          	  	
 		          }
+
+		          // if (mapTemplate.mapID === "whileloop_findtreasure"){
+
+		          // 		if (!checkExist("obstacle", mapTemplate.map[(finalx-10) / 80][(finaly - 10) / 80].roles)){
+		          // 			console.log("Draw number in advance")
+		          // 			draw("letter", finalx, finaly);			
+		          // 		}
+		          		
+		          	  	
+		          // }
 		          
 		          
 		      }, timeout);
@@ -128,7 +155,8 @@ $( document ).ready(function() {
 				if (step.doHere != "none"){
 					if (step.doHere.action === "showVictory") {
 						setTimeout(function(){
-							displayMessage("general_not_error", "You won. Congratulation.");
+							if (mapTemplate.mapID !== "variables_lgamevariable")
+								displayMessage("general_not_error", "You won. Congratulation.");
 						}, timeout)
 					}
 					if (step.doHere.action === "showMessage"){
@@ -143,10 +171,28 @@ $( document ).ready(function() {
 							console.log('showLetterContent ' + JSON.stringify(step.doHere))
 						}, timeout)
 					}
+
+					if (step.doHere.action === "showNumber"){
+						setTimeout(function(){
+							drawNumber(mapTemplate.map[(curX-10)/80][(curY-10)/80].value, curX, curY);
+							mapTemplate.map[(curX-10)/80][(curY-10)/80].objectToDisplay = "number";
+							console.log('showNumber ' + JSON.stringify(step.doHere))
+						}, timeout)
+					}
+
 					if (step.doHere.action === "showLetter"){
 						setTimeout(function(){
 							draw("letter", curX, curY);
 							console.log('showLetter');
+						}, timeout)
+					}
+					if (step.doHere.action === "announceSums"){
+						var data = step.doHere.data;
+						setTimeout(function(){
+							
+							console.log("announceSums");
+							console.log(JSON.stringify(data));
+							announceSums(data.correctValueSum, data.correctWordSum, data.valueSum, data.wordSum)
 						}, timeout)
 					}
 				}
@@ -172,6 +218,7 @@ $( document ).ready(function() {
 	}
 
 	$("#run-btn").click(function(){
+		$("#variable-game-notify").hide();
 		mapTemplate = jQuery.extend(true, {}, originalMapTemplate);
 		var userCode = editor.getValue();
 		userCode = encodeURIComponent(userCode);
@@ -208,6 +255,27 @@ $( document ).ready(function() {
 		}
 	}
 
+	function announceSums(correctValueSum, correctWordSum, valueSum, wordSum){
+		$("#variable-game-notify").show();
+		if (valueSum !== correctValueSum || wordSum !== correctWordSum){
+			$("#variable-game-result").html("Wrong answer");
+			console.log("Wrong answer the correct result is (valueSum = " + correctValueSum + ", wordSum = " + wordSum + ")" );
+		} else {
+			$("#variable-game-result").html("Correct answer");
+			console.log("Correct answer !");
+		}
+		$("#valueSum").html("Your sum of values = " + valueSum);
+		$("#wordSum").html("Your final string: \"" + wordSum + "\"");
+		$("#correctValueSum").html("Correct sum of values = " + correctValueSum);
+		$("#correctWordSum").html("Correct final string: \"" + correctWordSum + "\"");
+
+	}
+
+	function initialize(){
+		$("#variable-game-notify").hide();
+		$(".instruction-content").html(mapTemplate.instruction);
+	}
+
 
 
 
@@ -223,5 +291,6 @@ $( document ).ready(function() {
 
 	//DISPLAY FIRST
 	//displayFirst();
+	initialize();
 	window.onload = displayFirst.bind(null);
 });

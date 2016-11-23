@@ -27,6 +27,9 @@ exports = module.exports = function (req, res) {
 			myMapTemplate.endPoint = getEndPoint()
 			myMapTemplate.map = createMap2(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
 		}
+		if (gameID === "lgamevariable"){
+			createMap3(myMapTemplate);
+		}
 		locals.mapTemplate = myMapTemplate;
 		//Lecture
 		view.render('playgame');
@@ -103,4 +106,19 @@ function createMap2(endPointX, endPointY){
 	res[endPointX][endPointY].roles = ["endPoint"];
 	console.log(endPointX + ' ' + endPointY);
 	return res;
+}
+
+function createMap3(myMapTemplate){
+	var words = ['bullwhip','atomic', 'settler', 'dogtooth', 'painkiller', 'eternity',
+	'detainee', 'heaviest','chilly', 'detox', 'rose', 'insect', 'accepting', 'beard', 'silence', 'periodic'];
+	var map = myMapTemplate.map;
+	for (var i = 0; i < myMapTemplate.map_height; i++)
+		for (var j = 0; j < myMapTemplate.map_width; j++){
+			if (map[i][j].objectToDisplay !== "obstacle"){
+				console.log("empty cell " + i + "," + j);
+				map[i][j].value = Math.floor((Math.random() * 1000));
+				map[i][j].word = words[Math.floor((Math.random() * words.length))] + " ";
+				console.log(map[i][j].word + ".");
+			}
+		}
 }

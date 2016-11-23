@@ -19,6 +19,9 @@ end_x, end_y = map['endPoint']
 end_x = int(end_x)
 end_y = int(end_y)
 instruction_arr = []
+#for game 3: lgamevariables
+correctWordSum = ""
+correctValueSum = 0
 
 class OutOfBoardException(Exception):
 	pass
@@ -73,6 +76,11 @@ def goRight():
 			'action': "showLetter",
 			'data': None
 		}
+	if map['mapID'] == "variables_lgamevariable":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showNumber",
+			'data': None
+		}
 
 def goLeft():
 	global cur_x
@@ -85,6 +93,11 @@ def goLeft():
 	if map['mapID'] == "whileloop_findtreasure":
 		instruction_arr[-1]['doHere'] = {
 			'action': "showLetter",
+			'data': None
+		}
+	if map['mapID'] == "variables_lgamevariable":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showNumber",
 			'data': None
 		}
 
@@ -110,6 +123,41 @@ def readLetter():
 		'doNext': 'none', })
 	return my_map[cur_x][cur_y]['direction']
 
+def readValue():
+	global cur_x
+	global cur_y
+	global map
+	global correctValueSum
+	my_map = map['map']
+	correctValueSum += int(my_map[cur_x][cur_y]['value'])
+	return int(my_map[cur_x][cur_y]['value'])
+
+def readWord():
+	global cur_x
+	global cur_y
+	global map
+	global correctWordSum
+	my_map = map['map']
+	correctWordSum += my_map[cur_x][cur_y]['word']
+	return my_map[cur_x][cur_y]['word']
+
+def announceSums(valueSum, wordSum):
+	global correctWordSum
+	global correctValueSum
+	instruction_arr.append({
+		'doHere': {
+			'action': "announceSums",
+			'data': {
+				'valueSum': valueSum,
+				'wordSum': wordSum,
+				'correctWordSum': correctWordSum,
+				'correctValueSum': correctValueSum
+			}
+		},
+		'doNext': 'none', })
+
+
+
 def goDown():
 	global cur_x
 	global cur_y
@@ -121,6 +169,11 @@ def goDown():
 	if map['mapID'] == "whileloop_findtreasure":
 		instruction_arr[-1]['doHere'] = {
 			'action': "showLetter",
+			'data': None
+		}
+	if map['mapID'] == "variables_lgamevariable":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showNumber",
 			'data': None
 		}
 
@@ -135,6 +188,11 @@ def goUp():
 	if map['mapID'] == "whileloop_findtreasure":
 		instruction_arr[-1]['doHere'] = {
 			'action': "showLetter",
+			'data': None
+		}
+	if map['mapID'] == "variables_lgamevariable":
+		instruction_arr[-1]['doHere'] = {
+			'action': "showNumber",
 			'data': None
 		}
 
