@@ -7,9 +7,7 @@ module.exports = {
 
 function createAllMapTemplates(req, res, callback) {
 	createMapTemplate1(function() {
-		console.log("MapTemplate 1 is created");
 		createMapTemplate2(function() {
-			console.log("MapTemplate 2 is created");
 			return res.json({success: "true", message: "Two MapTemplates have been created"});
 		});
 	});
