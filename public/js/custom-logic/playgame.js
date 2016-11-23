@@ -109,16 +109,14 @@ $( document ).ready(function() {
 		          curX += deltaX / numSteps;
 		          curY += deltaY / numSteps;
 		          drawAllObjectsExceptRobot();
-		          draw("robot", curX, curY);
 		          if (mapTemplate.mapID === "whileloop_findtreasure"){
 
 		          		if (checkExist("letter", mapTemplate.map[(finalx-10) / 80][(finaly - 10) / 80].roles)){
 		          			console.log("Draw letter in advance")
 		          			draw("letter", finalx, finaly);			
 		          		}
-		          		
-		          	  	
 		          }
+
 
 		          // if (mapTemplate.mapID === "whileloop_findtreasure"){
 
@@ -131,6 +129,9 @@ $( document ).ready(function() {
 		          // }
 		          
 		          
+
+		          draw("robot", curX, curY); 
+
 		      }, timeout);
 		     }
 	    })(finalx,finaly);
@@ -151,7 +152,7 @@ $( document ).ready(function() {
 			var step = steps[i];
 			(function (curX, curY){
 
-				//What to do now (to be done)
+				//What to do now
 				if (step.doHere != "none"){
 					if (step.doHere.action === "showVictory") {
 						setTimeout(function(){
@@ -162,6 +163,7 @@ $( document ).ready(function() {
 					if (step.doHere.action === "showMessage"){
 						setTimeout(function(){
 							displayMessage("general_error",step.doHere.data.message);
+							drawAllObjectsExceptRobot();
 						}, timeout)
 					}
 					if (step.doHere.action === "showLetterContent"){

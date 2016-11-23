@@ -47,21 +47,36 @@ def is_on_obstacle(x, y):
 		pass
 	return False
 
+def is_on_fake_endPoint(x, y):
+	global map
+	my_map = map['map']
+	try:
+		if 'fakeEndPoint' in my_map[x][y]['roles']:
+			return True
+	except:
+		pass
+	return False
+
 def raiseExeption(x, y):
 	if out_of_board(x,y):
 		throw_out_of_board_exception()
 	if is_on_obstacle(x,y):
 		throw_running_into_obstacle_exception()
+	if is_on_fake_endPoint(x,y):
+		throw_running_into_fake_endpoint_exception()
 
 
 def is_valid(x, y):
-	return (not out_of_board(x,y)) and (not is_on_obstacle(x, y))
+	return (not out_of_board(x,y)) and (not is_on_obstacle(x, y) and (not is_on_fake_endPoint(x, y)))
 
 def throw_out_of_board_exception():
 	raise OutOfBoardException("Your robot is running out of the board")
 
 def throw_running_into_obstacle_exception():
 	raise RunningIntoObstacleException("Your robot is running into an obstacle");
+
+def throw_running_into_fake_endpoint_exception():
+	raise RunningIntoObstacleException("Sorry! Your robot is trapped by the fake endpoint! Game over!");
 
 def goRight():
 	global cur_x

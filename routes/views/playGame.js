@@ -27,8 +27,15 @@ exports = module.exports = function (req, res) {
 			myMapTemplate.endPoint = getEndPoint()
 			myMapTemplate.map = createMap2(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
 		}
+
 		if (gameID === "lgamevariable"){
 			createMap3(myMapTemplate);
+
+		if (gameID === "cgame"){
+			var rand = Math.floor(Math.random() * 2) * 4; // 0 or 4
+			myMapTemplate.endPoint = [rand, 4 - rand];
+			myMapTemplate.map = createMapCondition(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
+
 		}
 		locals.mapTemplate = myMapTemplate;
 		//Lecture
@@ -108,6 +115,7 @@ function createMap2(endPointX, endPointY){
 	return res;
 }
 
+
 function createMap3(myMapTemplate){
 	var words = ['bullwhip','atomic', 'settler', 'dogtooth', 'painkiller', 'eternity',
 	'detainee', 'heaviest','chilly', 'detox', 'rose', 'insect', 'accepting', 'beard', 'silence', 'periodic'];
@@ -121,4 +129,44 @@ function createMap3(myMapTemplate){
 				console.log(map[i][j].word + ".");
 			}
 		}
+
+function createMapCondition(endPointX, endPointY){
+	var res = [];
+
+	for (var i = 0; i < 5; i++){
+		var tempRow = [];
+		for (var j = 0; j < 5; j++){
+			if (i == 0 || j == 0){
+				//empty cells
+				var element = {
+					objectToDisplay: "none",
+					roles: [],
+					message: null
+				}
+				tempRow.push(element);
+			} else {
+				//obstacle
+				var element = {
+					objectToDisplay: "obstacle",
+					roles: ["obstacle"],
+					message: null
+				}
+				tempRow.push(element);
+			}
+		}
+		res.push(tempRow);
+	}
+
+	var direction = endPointX == 4 ? 'down' : 'right';
+	res[0][0].roles = ["startPoint", "letter"];
+	res[0][0].objectToDisplay = "letter";
+	res[0][0]['message'] = 'You should go ' + direction;
+	res[0][0]['direction'] = direction;
+	res[endPointX][endPointY].roles = ["endPoint"];
+	res[endPointY][endPointX].roles = ["fakeEndPoint"];
+	res[endPointX][endPointY].objectToDisplay = "endFlag";
+	res[endPointY][endPointX].objectToDisplay = "endFlag";
+	console.log(endPointX + ' ' + endPointY);
+	return res;
+
 }
