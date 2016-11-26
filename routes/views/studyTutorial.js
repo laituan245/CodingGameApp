@@ -7,6 +7,10 @@ exports = module.exports = function (req, res) {
   var locals = res.locals;
   var language = req.params.language || "none";
   var lessonID = req.params.lessonID || "none";
+	if (!locals.authenticated) {
+		res.redirect('/login');
+		return;
+	}
   locals.language = language;
   locals.lessonID = lessonID;
   //read database

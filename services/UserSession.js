@@ -50,7 +50,8 @@ module.exports = {
 			if (reply){
 				var result = {
 					status: "000",
-					data: "ok"
+					data: "ok",
+          hashInfo: reply
 				}
 				locals.userID = getUserID(session);
 				console.log("local.userID " + locals.userID );
@@ -68,7 +69,7 @@ module.exports = {
   	delete: function(req, res, callback){
 		var locals = res.locals;
 		var redis = locals.redis_client;
-	
+
 		var cookies = parseCookies(req);
 		cookies.dsid = decodeURIComponent(cookies.dsid);
 		var session = cookies.dsid.split("@")[0];

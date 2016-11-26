@@ -65,7 +65,10 @@ exports = module.exports = function (app) {
 	app.get('/demogame', routes.views.demo.demogame);
 
 
+	// Get user results
+	app.post('/get_user_result', routes.apis.getUserResult);
+
 	//One-time jobs
 	app.get('/onetimejobs/createmap', routes.oneTimeJobs.createMapTemplate.createMap);
-	app.get('/onetimejobs/createtutorial', routes.oneTimeJobs.createLessonTutorials.createLessonTutorials);	
+	app.get('/onetimejobs/createtutorial', routes.oneTimeJobs.createLessonTutorials.createLessonTutorials);
 };

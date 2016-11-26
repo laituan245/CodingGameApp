@@ -1,4 +1,10 @@
 $( document ).ready(function() {
+	if (!shouldShowTimer) {
+		$('#timer').hide();
+	}
+	var initialSeconds = new Date().getTime() / 1000;
+	var shouldStopTimer = false;
+	startTime();
 	var TIME_PER_STEP = 50;
 	var NUM_FRAMES_PER_STEP = 10;
 
@@ -17,7 +23,7 @@ $( document ).ready(function() {
 	objectsDic["endFlag"] = endFlag;
 	var letter = document.getElementById('letter');
 	objectsDic["letter"] = letter;
-	
+
 	var arrowdown = document.getElementById('arrowdown');
 	objectsDic["arrowdown"] = arrowdown;
 	var arrowup = document.getElementById('arrowup');
@@ -26,7 +32,7 @@ $( document ).ready(function() {
 	objectsDic["arrowright"] = arrowright;
 	var arrowleft = document.getElementById('arrowleft');
 	objectsDic["arrowleft"] = arrowleft;
-	
+
 
 
 	var canvas = ctx.canvas ;
@@ -53,9 +59,9 @@ $( document ).ready(function() {
 	  					console.log(JSON.stringify(cell));
 	  					drawNumber(cell.value, cell.word, targetX, targetY);
 	  				} else {
-	  					draw(cell.objectToDisplay, targetX, targetY);	
+	  					draw(cell.objectToDisplay, targetX, targetY);
 	  				}
-	  				
+
 	  			}
 	  		}
 	  	}
@@ -113,7 +119,7 @@ $( document ).ready(function() {
 
 		          		if (checkExist("letter", mapTemplate.map[(finalx-10) / 80][(finaly - 10) / 80].roles)){
 		          			console.log("Draw letter in advance")
-		          			draw("letter", finalx, finaly);			
+		          			draw("letter", finalx, finaly);
 		          		}
 		          }
 
@@ -122,20 +128,77 @@ $( document ).ready(function() {
 
 		          // 		if (!checkExist("obstacle", mapTemplate.map[(finalx-10) / 80][(finaly - 10) / 80].roles)){
 		          // 			console.log("Draw number in advance")
-		          // 			draw("letter", finalx, finaly);			
+		          // 			draw("letter", finalx, finaly);
 		          // 		}
-		          		
-		          	  	
-		          // }
-		          
-		          
 
-		          draw("robot", curX, curY); 
+
+		          // }
+
+
+
+		          draw("robot", curX, curY);
 
 		      }, timeout);
 		     }
 	    })(finalx,finaly);
-	  
+
+	}
+
+	function startTime() {
+	    var today = new Date();
+			var curTimeStamp = today.getTime();
+	    var seconds = curTimeStamp / 1000;
+			seconds = seconds - initialSeconds;
+			var h = parseInt(seconds / 3600);
+			seconds = seconds - 3600 * h;
+			var m = parseInt(seconds / 60);
+			seconds = seconds - 60 * m;
+			var s = parseInt(seconds);
+			if (!shouldStopTimer) {
+		    document.getElementById('timer').innerHTML =
+		    h + ":" + m + ":" + s;
+		    var t = setTimeout(startTime, 500);
+			}
+	}
+	function checkTime(i) {
+	    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+	    return i;
+	}
+
+	function sendUserResult() {
+		shouldStopTimer = true;
+		var finalSeconds = new Date().getTime() / 1000;
+		var dataToSend = finalSeconds - initialSeconds;
+		var endPoint = "/get_user_result";
+		console.log('Starting sending result');
+		console.log(dataToSend);
+		post(endPoint, {'timeToFinish': dataToSend, 'mapID': mapID}, function(result){
+			if (result){
+				console.log("Sucessully sent result");
+				var rankingTableData = result;
+				showRankingTable(rankingTableData);
+			}
+		});
+	}
+
+
+
+	function showRankingTable(rankingTableData) {
+		$('#run-btn').hide();
+		$('#reset-btn').show();
+		var tBody = $('#rankingTableBody');
+		tBody.empty();
+		for (var i = 0; i < Math.min(rankingTableData.length, 10); i++) {
+			var newTr = document.createElement('tr');
+			var userTd = document.createElement('td');
+			userTd.innerHTML = (rankingTableData[i].email);
+			var timeTd = document.createElement('td');
+			timeTd.innerHTML = (rankingTableData[i].time) + ' seconds';
+			$(newTr).append(userTd);
+			$(newTr).append(timeTd);
+			$(tBody).append(newTr);
+		}
+		$('#rankingModal').modal('show');
 	}
 
 	function executeInstructions(instructions){
@@ -158,6 +221,7 @@ $( document ).ready(function() {
 						setTimeout(function(){
 							if (mapTemplate.mapID !== "variables_lgamevariable")
 								displayMessage("general_not_error", "You won! Congratulation ^^");
+								sendUserResult();
 						}, timeout)
 					}
 					if (step.doHere.action === "showMessage"){
@@ -191,7 +255,7 @@ $( document ).ready(function() {
 					if (step.doHere.action === "announceSums"){
 						var data = step.doHere.data;
 						setTimeout(function(){
-							
+
 							console.log("announceSums");
 							console.log(JSON.stringify(data));
 							announceSums(data.correctValueSum, data.correctWordSum, data.valueSum, data.wordSum)
@@ -200,7 +264,7 @@ $( document ).ready(function() {
 				}
 
 			})(curX, curY);
-			
+
 			//What to do next
 			if (step.doNext === "left"){
 				run(timeout, curX, curY, 0, -80);
@@ -218,6 +282,11 @@ $( document ).ready(function() {
 			timeout += TIME_PER_STEP * NUM_FRAMES_PER_STEP;
 		}
 	}
+
+	$("#reset-btn").click(function(){
+		location.reload();
+	});
+
 
 	$("#run-btn").click(function(){
 		$("#variable-game-notify").hide();
@@ -274,6 +343,7 @@ $( document ).ready(function() {
 		} else {
 			$("#variable-game-result").html("Correct answer");
 			console.log("Correct answer !");
+			sendUserResult();
 		}
 		$("#valueSum").html("Your sum of values = " + valueSum);
 		$("#wordSum").html("Your final string: \"" + wordSum + "\"");

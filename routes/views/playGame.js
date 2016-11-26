@@ -1,5 +1,6 @@
 var keystone = require('keystone');
 var MapTemplate = keystone.list("MapTemplate");
+var User = keystone.list("User");
 
 exports = module.exports = function (req, res) {
 
@@ -8,6 +9,10 @@ exports = module.exports = function (req, res) {
 	var language = req.params.language || "none";
 	var lessonID = req.params.lessonID || "none";
 	var gameID = req.params.gameID || "none";
+	if (!locals.authenticated) {
+		res.redirect('/login');
+		return;
+	}
 	// locals.section is used to set the currently selected
 	// item in the header navigation.
 	locals.section = 'home';
@@ -38,8 +43,18 @@ exports = module.exports = function (req, res) {
 
 		}
 		locals.mapTemplate = myMapTemplate;
-		//Lecture
-		view.render('playgame');
+		locals.mapID = params.mapID;
+
+
+		User.model.findById(userID, function(err, user){
+			var tmpObj = JSON.parse(user.timeToFinish || '{}')
+			if (tmpObj[locals.mapID]) {
+				locals.shouldShowTimer = false;
+			} else {
+				locals.shouldShowTimer = true;
+			}
+			view.render('playgame');
+		})
 	})
 };
 

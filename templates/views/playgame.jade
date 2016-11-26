@@ -52,6 +52,36 @@ block css
 block content
     script.
         var mapTemplate = !{JSON.stringify(mapTemplate)};
+        var mapID = !{JSON.stringify(mapID)};
+        var shouldShowTimer = !{JSON.stringify(shouldShowTimer)};
+
+    #rankingModal.modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                    h3.modal-title.text-center Ranking Table
+                .modal-body
+                    h5.text-center #{mapTemplate.name}
+                    table#tblGrid.table.table-striped
+                        thead#tblHead
+                            tr
+                                th User
+                                th Time To Finish
+                        tbody#rankingTableBody
+                            tr
+                                td Long Island, NY, USA
+                                td 3
+                            tr
+                                td Chicago, Illinois, USA
+                                td 5
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Close
+            // /.modal-content
+        // /.modal-dialog
+    // /.modal
+
+
     .fixed#variable-game-notify(style='display:none')
         h1#variable-game-result
         p#valueSum
@@ -64,6 +94,8 @@ block content
     .left-panel(style="width: 400px")
         .map-header
             | Screen
+        center(style="margin-top:10px")
+          #timer
         //- img#game-map(src="http://phaser.io/content/tutorials/coding-tips-005/pacman-game.png" )
         canvas#myCanvas(width='400', height='400', style='border:1px solid #c3c3c3;')
             | Your browser does not support the canvas element.
@@ -81,6 +113,7 @@ block content
                     
         .run-container
             button#run-btn(type="button" class="btn btn-success")="RUN"
+            button#reset-btn(type="button", class="btn btn-success", style="display:none")="RESET"
         #editor
             | def foo(items) {
             | x = "All this is syntax highlighted";

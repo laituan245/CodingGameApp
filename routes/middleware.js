@@ -79,10 +79,12 @@ exports.checkUserAuthentication = function(req, res, next){
 	var locals = res.locals;
 	console.log("CHECK checkUserAuthentication");
 	UserSession.check(req, res, function(result){
+    console.log(result.hashInfo);
 		if (result.status == '000'){
 			locals.authenticated = true;
+      locals.userID = JSON.parse(result.hashInfo).userID;
 		} else{
-			
+
 			locals.authenticated = false;
 		}
 		console.log("locals authenticated " + locals.authenticated);
