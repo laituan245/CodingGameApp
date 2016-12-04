@@ -34,7 +34,7 @@ exports = module.exports = function (req, res) {
   User.model.findById(userID, function(err, user){
     var tmpObj = JSON.parse(user.timeToFinish || '{}')
     if (tmpObj[mapID]) {
-      tmpObj[mapID] = Math.min(userTimeToFinish, tmpObj[mapID]);
+      // tmpObj[mapID] = Math.min(userTimeToFinish, tmpObj[mapID]);
     } else {
       tmpObj[mapID] = userTimeToFinish;
     }
