@@ -26,7 +26,7 @@ exports = module.exports = function (req, res) {
 
 	MapTemplate.model.findOne(params, function(err, myMapTemplate){
 		console.log("mapID " + params.mapID);
-
+		myMapTemplate = JSON.parse(JSON.stringify(myMapTemplate));
 		// Render the view based on the map template for this game
 		if (gameID === "findtreasure") {
 			myMapTemplate.endPoint = getEndPoint()
@@ -35,6 +35,8 @@ exports = module.exports = function (req, res) {
 
 		if (gameID === "lgamevariable"){
 			createMap3(myMapTemplate);
+			console.log("lgamevariable map");
+			console.log(JSON.stringify(myMapTemplate));
 		}
 		if (gameID === "cgame"){
 			var rand = Math.floor(Math.random() * 2) * 4; // 0 or 4
@@ -134,13 +136,21 @@ function createMap2(endPointX, endPointY){
 function createMap3(myMapTemplate){
 	var words = ['bullwhip','atomic', 'settler', 'dogtooth', 'painkiller', 'eternity',
 	'detainee', 'heaviest','chilly', 'detox', 'rose', 'insect', 'accepting', 'beard', 'silence', 'periodic'];
+	
 	var map = myMapTemplate.map;
+	myMapTemplate.correctWordSum = "";
+	myMapTemplate.correctValueSum = 0;
 	for (var i = 0; i < myMapTemplate.map_height; i++)
 		for (var j = 0; j < myMapTemplate.map_width; j++){
 			if (map[i][j].objectToDisplay !== "obstacle"){
 				console.log("empty cell " + i + "," + j);
 				map[i][j].value = Math.floor((Math.random() * 1000));
 				map[i][j].word = words[Math.floor((Math.random() * words.length))] + " ";
+				if (i != myMapTemplate.map_height -1 || j != myMapTemplate.map_width - 1){
+					myMapTemplate.correctWordSum += map[i][j].word;
+					myMapTemplate.correctValueSum += map[i][j].value;
+				}
+				
 				console.log(map[i][j].word + ".");
 			}
 		}
