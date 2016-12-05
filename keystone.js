@@ -13,6 +13,7 @@ var keystone = require('keystone');
 keystone.init({
 	'name': 'CodingGameApp',
 	'brand': 'CodingGameApp',
+	'port': process.env.PORT || 80,
 
 	'less': 'public',
 	'static': 'public',
