@@ -23,9 +23,9 @@ exports = module.exports = function (req, res) {
 
 	function section1(callback) {
 		//Tuan - data in this section has to be in userData.section1
-	    
+
 	    callback(null);
-	    
+
 	}
 	function section2(callback) {
 	    // Duong - data in this section has to be in userData.section2
@@ -34,7 +34,7 @@ exports = module.exports = function (req, res) {
 	function section3(callback) {
 		// Cuong - data in this section has to be in userData.section3
 	    //time, isSuccess, mapID, language, code
-		Submission.model.find
+		Submission.model.find()
 		.limit(20)
 		.sort({createdAt: -1})
 		.exec(function(err, submissions){
@@ -45,17 +45,17 @@ exports = module.exports = function (req, res) {
 
 	function section4(callback) {
 		// Cuong - data in this section has to be in userData.section4
-	    
+
 	    callback(null);
 	}
 
-	
+
 	async.waterfall([
 	    section1,
 	    section2,
 	    section3,
 	    section4
-	], function (err, userData) {
+	], function (err, data) {
 		if (err){
 			res.json({success: false, message: err});
 			return;
@@ -65,6 +65,6 @@ exports = module.exports = function (req, res) {
 
 	    view.render("userAnalytic");
 	});
-	
+
 
 }
