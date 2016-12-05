@@ -111,7 +111,7 @@ exports = module.exports = function (req, res) {
 					if (error) {
 						//(*) not success 1: syntax error
 						var errorType = processError(error, 1);
-						createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, "python", originalUserCode, function(error){
+						createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, mapTemplate.name, "python", originalUserCode, function(error){
 							//done adding submission instance
 						})
 						console.log("exec error: " + error);
@@ -145,7 +145,7 @@ exports = module.exports = function (req, res) {
 					if (realError != "none"){
 						//(*) not success 2: process error (semantic, runtime)
 						var errorType = processError(realError, 2);
-						createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, "python", decodeURIComponent(req.body.userCode), function(error){
+						createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, mapTemplate.name, "python", decodeURIComponent(req.body.userCode), function(error){
 								//done adding submission instance
 						})
 						result.instructions.steps.push({
@@ -158,7 +158,7 @@ exports = module.exports = function (req, res) {
 						})
 					} else {
 						//(*) success 
-						createSubmissionInstance(userID, true, null, mapTemplate.mapID, "python", decodeURIComponent(req.body.userCode), function(error){
+						createSubmissionInstance(userID, true, null, mapTemplate.mapID, mapTemplate.name, "python", decodeURIComponent(req.body.userCode), function(error){
 							//done adding submission instance
 						})
 						
@@ -187,7 +187,7 @@ exports = module.exports = function (req, res) {
 						if (!processIsDone){
 							//(*) not success 3: error: infinitive loop
 							var errorType = processError("Infinitive loop", 3);
-							createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, "python", decodeURIComponent(req.body.userCode), function(error){
+							createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, mapTemplate.name, "python", decodeURIComponent(req.body.userCode), function(error){
 									//done adding submission instance
 							})
 							exec("kill -9 " + pid, function(error, stdout, stderr){
@@ -241,20 +241,27 @@ function processError(error, type){
 }
 
 
-function createSubmissionInstance(userID, isSuccess, errorType, mapID, language, code, callback){
-	console.log("userCode ");
-	console.log(code);
+function createSubmissionInstance(userID, isSuccess, errorType, mapID, mapName, language, code, callback){
+	var lessonAndGameID = mapID.split("_");
+
+	var codeUrl = "/play/" + language + "/" + lessonAndGameID[0] + "/" + lessonAndGameID[1] + "?submissionID=";
 	var newSubmission = new Submission.model({
 		userID: userID,
 		isSuccess: isSuccess,
 		errorType: errorType,
 		mapID: mapID,
-		language: language, 
-		code: code
+		mapName: mapName,
+		language: language,
+		code: code,  
+		codeUrl: codeUrl
 	})
 
 	newSubmission.save(function(err){
 		console.log("New Submission created ");
-		callback(null);
+		newSubmission.codeUrl = newSubmission.codeUrl + newSubmission._id;
+		newSubmission.save(function(err){
+			callback(null);
+		})
+		
 	});
 }

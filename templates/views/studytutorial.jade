@@ -17,11 +17,11 @@ block content
   #lessonTitle.h1(align="center").
     #{lessonTutorial.title}
   .div#skip-lesson-btn-ctn(align="center")
-    a#skip-lesson-btn(type="button" class="btn btn-info", href='/play/' + language + "/" + lessonID + "/" + gameID)="Skip Lesson. Start Exercise :)"
+    a#skip-lesson-btn(type="button" class="btn btn-info", href='/play/' + language + "/" + lessonID + "/" + gameID )="Skip Lesson. Start Exercise :)"
   #lessonTutorialCtn.div
     | No content yet
   .div#start-exercise-btn-ctn(align="center")
-    a#start-exercise-btn(type="button" class="btn btn-success", href='/play/' + language + "/" + lessonID + "/" + gameID)="Start Exercise"
+    a#start-exercise-btn(type="button" class="btn btn-success", href='/play/' + language + "/" + lessonID + "/" + gameID )="Start Exercise"
   
 block js-footer
   script.

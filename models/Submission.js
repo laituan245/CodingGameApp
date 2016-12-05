@@ -9,15 +9,21 @@ var Submission = new keystone.List('Submission');
 
 Submission.add({
 	userID: {type: Types.Text},
-	createdAt: { type: Types.Datetime, default: Date.now },
+	createdAt: { type: Types.Date, default: Date.now },
 	isSuccess: {type: Types.Boolean},
 	errorType: {type: Types.Text},
 	///
 	mapID: { type: Types.Text},
+	mapName: { type: Types.Text},
 	language: {type: Types.Text},
 	code: {type: Types.Text},
+	codeUrl: {type: Types.Text},
 	timeToFinish: {type: Types.Number}, //second
 	rank: {type: Types.Number} 
+});
+
+Submission.schema.add({
+    time : { type : Date, default: Date.now }
 });
 
 

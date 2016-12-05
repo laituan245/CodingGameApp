@@ -44,20 +44,31 @@ block content
                         td july@example.com
 
         div.row#section3
-            h2 Submissions
-            
-            table.table.table-striped
-                thead
-                    tr
-                        th Time
-                        th Game
-                        th Language
-                tbody
-                    each sub, i in section3Subs
+            if (section3Subs.length > 0)
+                h2 Submissions
+                
+                table.table.table-striped
+                    thead
                         tr
-                            td = moment(sub._.createdAt).format('MM/DD/YYYY')
-                            td = "Game"
-                            td = "Game"
+                            th Time
+                            th Game
+                            th Language
+                            th Status
+                            th Code
+                    tbody
+                        each sub, i in section3Subs
+                            tr
+                                td #{moment(sub.time).format("Do MMM YYYY hh:mm:ss a")}
+
+                                td #{sub.mapName}
+                                td #{sub.language}
+                                td 
+                                    if (sub.isSuccess)
+                                        | Completed
+                                    else
+                                        | Not completed
+                                td 
+                                    a(href=sub.codeUrl) Link to code
 
                     
 

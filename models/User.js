@@ -9,7 +9,9 @@ var User = new keystone.List('User');
 
 User.add({
 	name: { type: Types.Name, required: true, index: true },
-	email: { type: Types.Email, initial: true, required: true, index: true },
+	nickname: {type: Types.Text},
+	email: {type: Types.Email},
+	//useremail: { type: Types.Text },
 	password: { type: Types.Password, initial: true, required: true },
 	timeToFinish : {type: Types.Text}
 
@@ -26,5 +28,5 @@ User.schema.virtual('canAccessKeystone').get(function () {
 /**
  * Registration
  */
-User.defaultColumns = 'name, email, isAdmin';
+User.defaultColumns = 'name, nickname, useremail, isAdmin';
 User.register();

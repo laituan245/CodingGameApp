@@ -27,6 +27,7 @@ keystone.pre('routes', middleware.initLocals);
 keystone.pre('routes', middleware.attachRedis);
 keystone.pre('routes', middleware.checkUserAuthentication);
 keystone.pre('render', middleware.flashMessages);
+keystone.pre('routes', middleware.addMoment);
 
 
 // Import Route Controllers

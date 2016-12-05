@@ -8,6 +8,7 @@ function readAllUsers(mapID, callback) {
       if (users[i].timeToFinish && JSON.parse(users[i].timeToFinish)[mapID]) {
         tmpUsers.push({
             email: users[i].email,
+            nickname: users[i].nickname,
             time: parseInt(JSON.parse(users[i].timeToFinish)[mapID])
           });
       }

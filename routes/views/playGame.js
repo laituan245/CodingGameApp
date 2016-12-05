@@ -1,6 +1,7 @@
 var keystone = require('keystone');
 var MapTemplate = keystone.list("MapTemplate");
 var User = keystone.list("User");
+var Submission = keystone.list("Submission");
 
 exports = module.exports = function (req, res) {
 
@@ -9,6 +10,8 @@ exports = module.exports = function (req, res) {
 	var language = req.params.language || "none";
 	var lessonID = req.params.lessonID || "none";
 	var gameID = req.params.gameID || "none";
+	var submissionID = req.query.submissionID || null;
+	console.log("submissionID " + submissionID );
 	if (!locals.authenticated) {
 		res.redirect('/login');
 		return;
@@ -55,7 +58,16 @@ exports = module.exports = function (req, res) {
 			} else {
 				locals.shouldShowTimer = true;
 			}
-			view.render('playgame');
+			if (submissionID != null){
+				Submission.model.findById(submissionID, function(err, submission){
+					locals.initialCode = submission.code;
+					view.render('playgame');
+				})
+			} else {
+				view.render('playgame');
+			}
+			
+			
 		})
 	})
 };

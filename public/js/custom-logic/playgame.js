@@ -191,7 +191,7 @@ $( document ).ready(function() {
 		for (var i = 0; i < Math.min(rankingTableData.length, 10); i++) {
 			var newTr = document.createElement('tr');
 			var userTd = document.createElement('td');
-			userTd.innerHTML = (rankingTableData[i].email);
+			userTd.innerHTML = (rankingTableData[i].nickname);
 			var timeTd = document.createElement('td');
 			timeTd.innerHTML = (rankingTableData[i].time) + ' seconds';
 			$(newTr).append(userTd);

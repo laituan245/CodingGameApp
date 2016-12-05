@@ -114,11 +114,11 @@ block content
         .run-container
             button#run-btn(type="button" class="btn btn-success")="RUN"
             button#reset-btn(type="button", class="btn btn-success", style="display:none")="RESET"
-        #editor
-            | def foo(items) {
-            | x = "All this is syntax highlighted";
-            | return x;
-            | }
+        #editor #{initialCode}
+            //- | def foo(items) {
+            //- | x = "All this is syntax highlighted";
+            //- | return x;
+            //- | }
 
 
         .instruction-header
@@ -133,7 +133,7 @@ block content
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/python");
 
-        editor.setValue(""); // or session.setValue
+        //editor.setValue(); // or session.setValue
         editor.getValue(); // or session.getValue
 
 
