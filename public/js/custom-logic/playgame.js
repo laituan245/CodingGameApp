@@ -372,5 +372,9 @@ $( document ).ready(function() {
 	//DISPLAY FIRST
 	//displayFirst();
 	initialize();
-	window.onload = displayFirst.bind(null);
+	$(window).on("load", function() {
+		displayFirst()
+	    // weave your magic here.
+	});
+	//window.onload = displayFirst.bind(null);
 });
