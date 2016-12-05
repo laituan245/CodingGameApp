@@ -1,31 +1,18 @@
 extends ../layouts/default
+block js
+    script(src='https://code.highcharts.com/highcharts.js')
+    script(src='https://code.highcharts.com/modules/data.js')
+    script(src='https://code.highcharts.com/modules/drilldown.js')
 block js-footer
     script(src="/js/custom-logic/userAnalytic.js")
 
 block content
     .container
         div.row#section1
-            h2 Striped Rows
-            p The .table-striped class adds zebra-stripes to a table:
-            table.table.table-striped
-                thead
-                    tr
-                        th Firstname
-                        th Lastname
-                        th Email
-                tbody
-                    tr
-                        td John
-                        td Doe
-                        td john@example.com
-                    tr
-                        td Mary
-                        td Moe
-                        td mary@example.com
-                    tr
-                        td July
-                        td Dooley
-                        td july@example.com
+            h2 Overall Statistics
+            .col-xs-12
+                #overall_stat_piechart_container
+
 
         div.row#section2
             h2 Striped Rows
@@ -56,5 +43,3 @@ block content
     
 
             
-
-
