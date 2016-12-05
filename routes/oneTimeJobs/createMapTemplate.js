@@ -6,16 +6,18 @@ module.exports = {
 }
 
 function createAllMapTemplates(req, res) {
-	//createMapTemplate1(req, res);
-
-	//createMapTemplate3(req, res);
-
-	//createMapTemplate2(req, res);
-	createMapTemplateCondition(req, res);
-
+	createMapTemplate1(req, res, function() {
+		createMapTemplate2(req, res, function() {
+			createMapTemplate3(req, res, function() {
+				createMapTemplateCondition(req, res, function() {
+					return res.json({success: "true", message: "Four map templates have been created"});
+				});
+			});
+		});
+	});
 }
 
-function createMapTemplate1(req, res){
+function createMapTemplate1(req, res, callback){
 	function createMatrix1(map_height, map_width, startPoint, endPoint){
 		var res = [];
 		for (var i = 0; i < 5; i++){
@@ -60,12 +62,12 @@ function createMapTemplate1(req, res){
 	})
 
 	newMapTemplate.save(function(err){
-		console.log("A New MapTemplate is created");
-		return res.json({success: "true"});
+		console.log("MapTemplate 1 is created");
+		callback();
 	});
 }
 
-function createMapTemplate2(req, res){
+function createMapTemplate2(req, res, callback){
 	var newMapTemplate = new MapTemplate.model({
 		mapID: "whileloop_findtreasure",
 		name: "Finding treasure",
@@ -78,12 +80,12 @@ function createMapTemplate2(req, res){
 	})
 
 	newMapTemplate.save(function(err){
-		console.log("A New MapTemplate is created");
-		return res.json({success: "true"});
+		console.log("MapTemplate 2 is created");
+		callback();
 	});
 }
 
-function createMapTemplateCondition(req, res){
+function createMapTemplateCondition(req, res, callback){
 	var newMapTemplate = new MapTemplate.model({
 		mapID: "condition_cgame",
 		name: "If-else",
@@ -96,12 +98,12 @@ function createMapTemplateCondition(req, res){
 	})
 
 	newMapTemplate.save(function(err){
-		console.log("A New MapTemplate is created");
-		return res.json({success: "true"});
+		console.log("MapTemplate for Condtions is created");
+		callback();
 	});
 }
 
-function createMapTemplate3(req, res){
+function createMapTemplate3(req, res, callback){
 	function createMatrix3(map_height, map_width, startPoint, endPoint){
 		var res = [];
 		for (var i = 0; i < 5; i++){
@@ -148,7 +150,7 @@ function createMapTemplate3(req, res){
 	})
 
 	newMapTemplate.save(function(err){
-		console.log("A New MapTemplate is created");
-		return res.json({success: "true"});
+		console.log("MapTemplate 3 is created");
+		callback();
 	});
 }
