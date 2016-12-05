@@ -7,11 +7,16 @@ block js-footer
     script(src="/js/custom-logic/userAnalytic.js")
 
 block content
+    script.
+        var submissionDataForSection1 = !{JSON.stringify(userData.section1.submissions)};
+
     - var section3Subs = userData.section3.submissions
     .container
         div.row#section1
             h2 Overall Statistics
             .col-xs-12
+                h2#nosubmissions_h2.text-center(style='display:none')
+                    | You have no submissions
                 #overall_stat_piechart_container
 
 

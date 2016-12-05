@@ -23,7 +23,13 @@ exports = module.exports = function (req, res) {
 
 	function section1(callback) {
 		//Tuan - data in this section has to be in userData.section1
-
+		var params = {
+			userID : userID
+		}
+		Submission.model.find(params)
+		.exec(function(err, submissions){
+			userData.section1.submissions = submissions;
+		})
 	    callback(null);
 
 	}
