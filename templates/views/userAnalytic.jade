@@ -3,6 +3,7 @@ block js-footer
     script(src="/js/custom-logic/userAnalytic.js")
 
 block content
+    - var section3Subs = userData.section3.submissions
     .container
         div.row#section1
             h2 Striped Rows
@@ -51,6 +52,22 @@ block content
                         td july@example.com
 
         div.row#section3
+            h2 Submissions
+            
+            table.table.table-striped
+                thead
+                    tr
+                        th Time
+                        th Game
+                        th Language
+                tbody
+                    each sub, i in section3Subs
+                        tr
+                            td = moment(sub._.createdAt).format('MM/DD/YYYY')
+                            td = "Game"
+                            td = "Game"
+
+                    
 
         div.row#section4
     
