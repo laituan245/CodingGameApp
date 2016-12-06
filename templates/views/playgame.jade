@@ -26,7 +26,7 @@ block css
             background-color: rgba(39, 40, 34, 0.07);
         }
 
-        .run-container{
+        .ranking-section, .run-container{
             text-align: center;
             margin-bottom: 10px;
         }
@@ -54,6 +54,7 @@ block content
         var mapTemplate = !{JSON.stringify(mapTemplate)};
         var mapID = !{JSON.stringify(mapID)};
         var shouldShowTimer = !{JSON.stringify(shouldShowTimer)};
+        var gameResult = !{JSON.stringify(gameResult)};
 
     #rankingModal.modal.fade
         .modal-dialog
@@ -104,8 +105,8 @@ block content
             img#obstacle(src='http://i.istockimg.com/file_thumbview_approve/16563023/3/stock-illustration-16563023-decorative-stone-wall.jpg', style='display:none')
             //- img#endFlag(src='https://upload.wikimedia.org/wikipedia/commons/d/d5/Red_flag_waving_transparent.png', style='display:none')
             img#endFlag(src='https://ice3x.co.za/wp-content/uploads/2013/10/finish-flag-256.png', style='display:none')
-            img#background(src='/images/map.png', style='display:none')
-            img#background(src='http://sv1.upsieutoc.com/2016/12/05/map2c74c.jpg', style='display:none')
+            //- img#background(src='/images/map.png', style='display:none')
+            img#background(src='https://i.imgsafe.org/68be9a4516.png', style='display:none')
                 
             img#letter(src='http://www.bomastone.com/sites/all/themes/bydesign/images/mailto.png', style='display:none')
             img#arrowdown(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/simple-red-glossy-icons-arrows/009582-simple-red-glossy-icon-arrows-arrow-solid-down.png', style='display:none')
@@ -117,16 +118,12 @@ block content
             button#run-btn(type="button" class="btn btn-success")="RUN"
             button#reset-btn(type="button", class="btn btn-success", style="display:none")="RESET"
         #editor #{initialCode}
-            //- | def foo(items) {
-            //- | x = "All this is syntax highlighted";
-            //- | return x;
-            //- | }
-
-
         .instruction-header
             | Instruction
         #instruction
             .instruction-content
+        .ranking-section
+            button#ranking-btn(type="button" class="btn btn-success")="View Ranking Table"
 
 
     script.

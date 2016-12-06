@@ -68,9 +68,11 @@ exports = module.exports = function (app) {
 
 	// Get user results
 	app.post('/get_user_result', routes.apis.getUserResult);
-
+	app.post('/checkFirstEnteringGame', routes.apis.checkFirstEnteringGame);
+	
 	//One-time jobs
 	app.get('/onetimejobs/createmap', routes.oneTimeJobs.createMapTemplate.createMap);
 	app.get('/onetimejobs/createtutorial', routes.oneTimeJobs.createLessonTutorials.createLessonTutorials);
 	app.get('/userAnalytic', routes.views.userAnalytic);
+	
 };
