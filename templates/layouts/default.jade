@@ -62,6 +62,13 @@ html(lang='en')
                             li
                                 a(href='/login') Login
 
+                    div(style='text-align: center')
+                        form.navbar-form(role='search', action='/search', method='get')
+                            .input-group
+                                input.form-control(type='text', placeholder='What are you looking for ?', name='q')
+                                .input-group-btn
+                                    button.btn.btn-default(type='submit')
+                                        | Search
 
 
                         
