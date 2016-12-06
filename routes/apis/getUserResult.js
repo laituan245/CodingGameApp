@@ -2,32 +2,6 @@ var keystone = require('keystone');
 var User = keystone.list("User");
 var GameResult = keystone.list("GameResult");
 
-function readAllUsers(mapID, callback) {
-  User.model.find({}, function(err, users){
-    var tmpUsers = [];
-    for (var i = 0; i < users.length; i++) {
-      if (users[i].timeToFinish && JSON.parse(users[i].timeToFinish)[mapID]) {
-        tmpUsers.push({
-            email: users[i].email,
-            nickname: users[i].nickname,
-            time: parseInt(JSON.parse(users[i].timeToFinish)[mapID])
-          });
-      }
-    }
-
-    for (var i = 0; i < tmpUsers.length; i++) {
-      for (var j = i + 1; j < tmpUsers.length; j++) {
-        if (tmpUsers[j].time < tmpUsers[i].time) {
-          var tg = tmpUsers[i];
-          tmpUsers[i] = tmpUsers[j];
-          tmpUsers[j] = tg;
-        }
-      }
-    }
-    callback(tmpUsers);
-  });
-}
-
 function getRankingTable(mapID,callback){
   GameResult.model.find({isCompleted: true, mapID: mapID}, function(err, gameResults){
     console.log(gameResults.length);
