@@ -227,7 +227,6 @@ $( document ).ready(function() {
 					if (step.doHere.action === "showMessage"){
 						setTimeout(function(){
 							displayMessage("general_error",step.doHere.data.message);
-							drawAllObjectsExceptRobot();
 						}, timeout)
 					}
 					if (step.doHere.action === "showLetterContent"){

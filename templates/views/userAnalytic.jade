@@ -33,7 +33,7 @@ block content
                             var map = sub.mapName;
                             if (isSuccess)
                                 d[map] = "Completed";
-                            else if (d.map == "Not started")
+                            else if (d[map] == "Not started")
                                 d[map] = "Incompleted";
                         }
                     }

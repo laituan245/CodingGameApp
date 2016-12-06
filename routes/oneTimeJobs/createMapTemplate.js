@@ -58,7 +58,10 @@ function createMapTemplate1(req, res, callback){
 		startPoint : [0,0],
 		endPoint : [4,4],
 		map: createMatrix1(5, 5, [0,0], [4,4]),
-		instruction: "<p> The robot needs to move to the destination. The instructions given are goLeft(), goRight(), goUp(), goDown(). </p> <p> It is not allowed to go out of the board or go into the stones. </p>"
+		instruction: "<p> Your mission is to move the robot to the destination."+
+		" You are NOT allowed to go out of the board or jump into the obstacles. </p>"+
+		" <p> There are 4 functions given: <pre>goLeft(), goRight(), goUp(), goDown()</pre> "+
+		" For example, type <pre>goRight()</pre> to move the robot to the right</p>"
 	})
 
 	newMapTemplate.save(function(err){
@@ -76,7 +79,15 @@ function createMapTemplate2(req, res, callback){
 		startPoint : [0,0],
 		endPoint : [-1, -1], // random
 		map: null,
-		instruction: "The robot needs to find the treasure. You are given 6 functions: goLeft(), goRight(), goDown(), goUp(), onTreasure(), readLetter(). onTreasure() returnS true if robot is on the treasure. Otherwise, it returns false. readLetter() return the direction the robot should follow to find the treasure. The possible output of this function are: 'left', 'right', 'up', 'down'."
+		instruction: "<p> Your mission is to find the treasure hidden inside the board."+
+		" You are NOT allowed to go out of the board or jump into the hidden obstacles. </p>"+
+		" <p> You are given 4 functions to move your robot: <pre>goLeft(), goRight(), goUp(), goDown()</pre>"+
+		" For example, type <pre>goRight()</pre> to move the robot to the right</p>"+
+		" <p> There are also hidden guidance letters that give you the correct direction. Function <pre>readLetter()</pre>"+
+		" returns <em>'left', 'right', 'up' or 'down'</em>. Read the letters and move your robot to the corresponding direction.</p>"+
+		" <p> To check if you are on the treasure, use <pre>onTreasure()</pre>"+
+		" which returns true if robot is on the treasure, and false otherwise.</p>"+
+		" <p> You will win your final destination is on the treasure. Good luck!</p>"
 	})
 
 	newMapTemplate.save(function(err){
@@ -94,7 +105,14 @@ function createMapTemplateCondition(req, res, callback){
 		startPoint : [0,0],
 		endPoint : [-1, -1], // random
 		map: null,
-		instruction: "There is 2 finish flags on the map, but only one of them is real. Use function readLetter(), which returns 'right' or 'down' to find the direction, then follow the direction and functions goDown(), goRight() to go to the real end point, or you will be trapped by the fake endPoint."
+		instruction: "<p> There is 2 finish flags on the map, but only one of them is the real destination."+
+		" Your mission is to move the robot to the correct destination."+
+		" You are NOT allowed to go out of the board or jump into the obstacles. </p>"+
+		" <p> You are given 4 functions to move your robot: <pre>goLeft(), goRight(), goUp(), goDown()</pre>"+
+		" For example, type <pre>goRight()</pre> to move the robot to the right</p>"+
+		" <p> There is a guidance letter that gives you the correct direction. Function <pre>readLetter()</pre>"+
+		" returns <em>'right' or 'down'</em>. Read the letter and move your robot to the corresponding direction"+
+		" or your robot will be trapped by the fake destination. Good luck!</p>"
 	})
 
 	newMapTemplate.save(function(err){
@@ -146,7 +164,14 @@ function createMapTemplate3(req, res, callback){
 		startPoint : [0,0],
 		endPoint : [4,4],
 		map: createMatrix3(5, 5, [0,0], [4,4]),
-		instruction: " <p> The robot needs to move to the destination. The instructions given are goLeft(), goRight(), goUp(), goDown(). </p> <p> It is not allowed to go out of the board or go into the stones. </p><p>In each cell, there are two values: a number and a word. Your task is to determine the sum of the number and a string which is the concatination of the words in those cells.</p><p> Here, you are also given three other functions: readValue() which returns number of the current cell, and readWord(), which returns the word in the current cell, and finally announceSums(numberSum, wordSum) to annouce your results. </p>"
+		instruction: "<p> Your mission is to move the robot to the destination and annouce the correct sums."+
+		" You are NOT allowed to go out of the board or jump into the obstacles. </p>"+
+		" <p> You are given 4 functions to move your robot: <pre>goLeft(), goRight(), goUp(), goDown()</pre> "+
+		" For example, type <pre>goRight()</pre> to move the robot to the right</p>"+
+		" <p> In each available cell, there are two hidden values: a number and a word. At the destination, "+
+		"you have to 'annouce' the sum of every number and the concatination of every word in those cells.</p>"+
+		" <p> You are also given three helper functions. <pre>readValue()</pre> returns number of the current cell, <pre>readWord()</pre> returns the word in the current cell. </p>"+
+		" <p> At the destination, use <pre>announceSums(YOUR_NUMBER_SUM_VARIABLE, YOUR_WORD_SUM_VARIABLE)</pre> to annouce your results and win! </p>"
 	})
 
 	newMapTemplate.save(function(err){
