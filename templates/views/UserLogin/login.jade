@@ -3,7 +3,7 @@ extends ../../layouts/default
 block content
 	.row.col-md-6.col-md-offset-3
 		form.form-signin(action='/login', method='post')
-			h2.form-signin-heading Please sign in
+			h2.form-signin-heading() Please sign in
 			label.sr-only(for='inputEmail') Email address
 			input#inputEmail.form-control(name='username',type='email', placeholder='Email address', required='', autofocus='')
 			label.sr-only(for='inputPassword') Password
@@ -13,8 +13,8 @@ block content
 					input(type='checkbox', value='remember-me')
 					|  Remember me
 			button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
-			center
-				a(href='/signup') Sign Up
+			a.btn.btn-lg.btn-info.btn-block(href='/signup' style="margin-top: 10px") Sign Up
+				
 			
 	//- .container: .jumbotron
 	//- 	img(src='/images/logo.svg', width='160')

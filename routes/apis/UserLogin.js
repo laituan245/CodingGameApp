@@ -13,6 +13,7 @@ module.exports = {
 		var body = req.body;
 		var password = body.passwd;
 		var username = body.username;
+		res.locals.userID = "1";
 		console.log("User login with " + username + " " + password);
 		// Get user information
 		var params = {
@@ -65,6 +66,7 @@ module.exports = {
 
 	logout: function(req, res){
 		console.log("log out");
+		res.locals.userID;
 		UserSession.delete(req, res, function(result){
 			res.redirect('/');
 		});
@@ -72,19 +74,55 @@ module.exports = {
 	},
 
 	signup: function(req, res){
+		res.locals.userID = "1";
 		var body = req.body;
 		var password = body.passwd;
 		var username = body.username;
-		
-		var newUser = new User.model({
-			email: username,
-			password: password
+		var nickname = body.nickname;
+
+		var params = {email: username};
+
+		User.model.findOne(params, function(err, account){
+			if (!err){
+				console.log(account);
+				if (!account) {
+					var newUser = new User.model({
+						email: username,
+						password: password,
+						nickname: nickname
+					})
+					newUser.save(function(err){
+						if (err){
+							var result = {
+								status : "002",
+								data : err
+							}
+							return res.json(result);
+						}
+						console.log("New user created " + username + " " + password);
+						var result = {
+							status : "000",
+							data : "Successful"
+						}
+						return res.json(result);
+					});
+				} else {
+					var result = {
+						status : "003",
+						data : "User already exists"
+					}
+					return res.json(result);
+				}
+			} else {
+				var result = {
+					status : "002",
+					data : "Database Error"
+				}
+				return res.json(result);
+			}
 		})
 
-		newUser.save(function(err){
-			console.log("New user created " + username + " " + password);
-			res.redirect('/login');
-		});
+		
 	}
 }
 

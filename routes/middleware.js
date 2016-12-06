@@ -9,6 +9,9 @@
  */
 var UserSession = require("../services/UserSession")
 var _ = require('lodash');
+var keystone = require('keystone');
+var User = keystone.list("User");
+
 function parseCookies (request) {
     var list = {},
         rc = request.headers.cookie;
@@ -82,13 +85,22 @@ exports.checkUserAuthentication = function(req, res, next){
     console.log(result.hashInfo);
 		if (result.status == '000'){
 			locals.authenticated = true;
-      locals.userID = JSON.parse(result.hashInfo).userID;
+      		locals.userID = JSON.parse(result.hashInfo).userID;
+      		User.model.findById(locals.userID, function(err, account){
+      			locals.nickname = account.nickname;
+      			console.log("locals authenticated " + locals.authenticated);
+      			next();
+      		})
+      		
 		} else{
-
+			console.log("locals authenticated " + locals.authenticated);
+			locals.userID = "_";
+			locals.nickname = "_";
 			locals.authenticated = false;
+			next();
 		}
-		console.log("locals authenticated " + locals.authenticated);
-		next();
+		
+		
 	})
 }
 
@@ -96,3 +108,9 @@ exports.attachRedis = function(req, res, next){
 	res.locals.redis_client = redis_client;
 	next();
 }
+
+exports.addMoment = function(req, res, next){
+	res.locals.moment = require('moment');	
+	next();
+}
+

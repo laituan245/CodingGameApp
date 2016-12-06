@@ -8,6 +8,7 @@ function readAllUsers(mapID, callback) {
       if (users[i].timeToFinish && JSON.parse(users[i].timeToFinish)[mapID]) {
         tmpUsers.push({
             email: users[i].email,
+            nickname: users[i].nickname,
             time: parseInt(JSON.parse(users[i].timeToFinish)[mapID])
           });
       }
@@ -34,7 +35,7 @@ exports = module.exports = function (req, res) {
   User.model.findById(userID, function(err, user){
     var tmpObj = JSON.parse(user.timeToFinish || '{}')
     if (tmpObj[mapID]) {
-      tmpObj[mapID] = Math.min(userTimeToFinish, tmpObj[mapID]);
+      // tmpObj[mapID] = Math.min(userTimeToFinish, tmpObj[mapID]);
     } else {
       tmpObj[mapID] = userTimeToFinish;
     }

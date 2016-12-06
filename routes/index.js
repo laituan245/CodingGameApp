@@ -27,6 +27,7 @@ keystone.pre('routes', middleware.initLocals);
 keystone.pre('routes', middleware.attachRedis);
 keystone.pre('routes', middleware.checkUserAuthentication);
 keystone.pre('render', middleware.flashMessages);
+keystone.pre('routes', middleware.addMoment);
 
 
 // Import Route Controllers
@@ -71,4 +72,5 @@ exports = module.exports = function (app) {
 	//One-time jobs
 	app.get('/onetimejobs/createmap', routes.oneTimeJobs.createMapTemplate.createMap);
 	app.get('/onetimejobs/createtutorial', routes.oneTimeJobs.createLessonTutorials.createLessonTutorials);
+	app.get('/userAnalytic', routes.views.userAnalytic);
 };

@@ -23,10 +23,7 @@ instruction_arr = []
 correctWordSum = ""
 correctValueSum = 0
 
-class OutOfBoardException(Exception):
-	pass
-
-class RunningIntoObstacleException(Exception):
+class SemanticError(Exception):
 	pass
 
 
@@ -70,13 +67,13 @@ def is_valid(x, y):
 	return (not out_of_board(x,y)) and (not is_on_obstacle(x, y) and (not is_on_fake_endPoint(x, y)))
 
 def throw_out_of_board_exception():
-	raise OutOfBoardException("Your robot is running out of the board")
+	raise SemanticError("Your robot is running out of the board")
 
 def throw_running_into_obstacle_exception():
-	raise RunningIntoObstacleException("Your robot is running into an obstacle");
+	raise SemanticError("Your robot is running into an obstacle");
 
 def throw_running_into_fake_endpoint_exception():
-	raise RunningIntoObstacleException("Sorry! Your robot is trapped by the fake endpoint! Game over!");
+	raise SemanticError("Sorry! Your robot is trapped by the fake endpoint! Game over!");
 
 def goRight():
 	global cur_x
@@ -156,9 +153,16 @@ def readWord():
 	correctWordSum += my_map[cur_x][cur_y]['word']
 	return my_map[cur_x][cur_y]['word']
 
+variable_game = False;
+
 def announceSums(valueSum, wordSum):
-	global correctWordSum
-	global correctValueSum
+	global map
+	global variable_game
+	correctWordSum = (map['correctWordSum'])
+	correctValueSum = int(map['correctValueSum'])
+	if (correctValueSum != valueSum or correctWordSum != wordSum):
+		raise SemanticError('Your calculated results are not correct')
+	variable_game =	True	
 	instruction_arr.append({
 		'doHere': {
 			'action': "announceSums",
@@ -212,11 +216,21 @@ def goUp():
 		}
 
 def toJSONString(error, my_data):
+	complete = False
 	if error == "none":
+		if map['mapID'] == "variables_lgamevariable" and not variable_game:
+			error = "SemanticError: Fail to complete the task (you forget to call announceSums)"
+			return json.dumps({"error": error, "data": my_data, "complete": complete}, ensure_ascii=False)
 		do_here = 'none'
 		if cur_x == end_x and cur_y == end_y:
+			complete = True
+			
+
 			do_here =  {"action": 'showVictory', "data": []}
 			my_data.append({'doHere': do_here, 'doNext': 'none', 'pos': [cur_x, cur_y]})
-	return json.dumps({"error": error, "data": my_data}, ensure_ascii=False)
+		else:
+			complete = False
+			error = "SemanticError: Fail to complete the task"
+	return json.dumps({"error": error, "data": my_data, "complete": complete}, ensure_ascii=False)
 
 errorMessage = "none"

@@ -22,8 +22,11 @@ html(lang='en')
         //if lt IE 9
             script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
             script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+        script(src='/js/jquery.js')
         block css
+        
         block js
+
     body
         script.
           var userID = !{JSON.stringify(userID)};
@@ -45,10 +48,22 @@ html(lang='en')
                             a(href='#about') About
                         if (authenticated === true)
                             li
-                                a(href='/logout') Logout
+                                .dropdown(style="padding:15px")
+                                    a.dropdown-toggle(href="#", data-toggle='dropdown', style="text-decoration: none;color: black") #{nickname}
+                                        span.caret
+                                    ul.dropdown-menu
+                                        li
+                                            a(href='/userAnalytic') User Analytic
+                                        
+                                                
+                                        li
+                                            a(href='/logout') Logout
                         else
                             li
                                 a(href='/login') Login
+
+
+
                         
                 // /.navbar-collapse
             // /.container
@@ -74,7 +89,7 @@ html(lang='en')
         // Footer
         
         // jQuery
-        script(src='/js/jquery.js')
+        
         // Bootstrap Core JavaScript
         script(src='/js/bootstrap.min.js')
         script(src='/js/custom-logic/default.js')

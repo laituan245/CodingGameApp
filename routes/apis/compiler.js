@@ -2,6 +2,7 @@ var keystone = require('keystone');
 var fs = require('fs');
 var path = require('path');
 var exec = require('child_process').exec;
+var Submission = keystone.list("Submission");
 
 function deleteTmpFile(filePath) {
   // fs.unlink(filePath, function() {});
@@ -61,6 +62,8 @@ exports = module.exports = function (req, res) {
 
 */
 	var userCode = decodeURIComponent(req.body.userCode);
+
+	var originalUserCode = userCode;
 	var mapTemplate = req.body.mapTemplate;
 	//Create the first file
 	var d = new Date();
@@ -85,7 +88,7 @@ exports = module.exports = function (req, res) {
 			for (var i = 0; i < lines.length; i++){
 				userCode += "\n\t"+lines[i];
 			}
-			var fullCode = codeTemplate + '\ntry:\n' + userCode + "\nexcept Exception,e:\n\terrorMessage = str(e)\nfinally:\n\tprint (toJSONString(errorMessage,instruction_arr))";
+			var fullCode = codeTemplate + '\ntry:\n' + userCode + "\nexcept Exception,e:\n\terrorMessage = type(e).__name__ + ': ' + str(e)\nfinally:\n\tprint (toJSONString(errorMessage,instruction_arr))";
 			var fullCodeFilePath = __dirname + "/tmp/codeTemplate" + timestamp + ".py";
 			fs.writeFile(fullCodeFilePath, fullCode, function(err) {
 			    if(err) {
@@ -106,7 +109,11 @@ exports = module.exports = function (req, res) {
 				exec("python " + fullCodeFilePath + ' ' + fullTemplateFilePath, function(error, stdout, stderr){
 					processIsDone = true;
 					if (error) {
-						//Syntax error
+						//(*) not success 1: syntax error
+						var errorType = processError(error, 1);
+						createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, mapTemplate.name, "python", originalUserCode, function(error){
+							//done adding submission instance
+						})
 						console.log("exec error: " + error);
 						var tempPos = stderr.indexOf("line") + 5;
 						stderr = stderr.substr(stderr.indexOf(" ", tempPos) + 1);
@@ -134,8 +141,13 @@ exports = module.exports = function (req, res) {
 						steps: stdout.data
 					}
 
-					var realError = stdout.error;
+					var realError = stdout.error;    // run-time error, 
 					if (realError != "none"){
+						//(*) not success 2: process error (semantic, runtime)
+						var errorType = processError(realError, 2);
+						createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, mapTemplate.name, "python", decodeURIComponent(req.body.userCode), function(error){
+								//done adding submission instance
+						})
 						result.instructions.steps.push({
 							'doHere': {
 								action: "showMessage",
@@ -144,13 +156,21 @@ exports = module.exports = function (req, res) {
 								}
 							}, 'doNext': 'none'
 						})
+					} else {
+						//(*) success 
+						createSubmissionInstance(userID, true, null, mapTemplate.mapID, mapTemplate.name, "python", decodeURIComponent(req.body.userCode), function(error){
+							//done adding submission instance
+						})
+						
 					}
-          deleteTmpFile(fullCodeFilePath);
-          deleteTmpFile(fullTemplateFilePath);
+					
+					
+          			deleteTmpFile(fullCodeFilePath);
+          			deleteTmpFile(fullTemplateFilePath);
 					res.json(result);
 				});
 
-
+				
 				exec("ps -e | grep codeTemplate" + timestamp, function(error, stdout, stderr){
 					var lines = stdout.split('\n');
 					var foundLine = '';
@@ -165,6 +185,11 @@ exports = module.exports = function (req, res) {
 					setTimeout(function(){
 						console.log(processIsDone);
 						if (!processIsDone){
+							//(*) not success 3: error: infinitive loop
+							var errorType = processError("Infinitive loop", 3);
+							createSubmissionInstance(userID, false, errorType, mapTemplate.mapID, mapTemplate.name, "python", decodeURIComponent(req.body.userCode), function(error){
+									//done adding submission instance
+							})
 							exec("kill -9 " + pid, function(error, stdout, stderr){
 								console.log("DONE KILLING TOO LONG PROCESS");
 								result.instructions = {
@@ -194,3 +219,49 @@ exports = module.exports = function (req, res) {
 
 
 };
+//return type of error
+function processError(error, type){
+	if (type === 1){
+		return "Syntax Error";
+	} else if (type === 2){
+		//semantic or run-time
+		console.log("Error type 2 " + error); 
+		if (error.indexOf("Semantic Error") != -1){
+			//sematic
+			var endPos = error.indexOf(":");
+
+			return "Semantic Error"
+		} else {
+			var endPos = error.indexOf(":");
+			return error.substring(0, endPos);
+		}
+	} else {
+		return "Infinitive loop";
+	}
+}
+
+
+function createSubmissionInstance(userID, isSuccess, errorType, mapID, mapName, language, code, callback){
+	var lessonAndGameID = mapID.split("_");
+
+	var codeUrl = "/play/" + language + "/" + lessonAndGameID[0] + "/" + lessonAndGameID[1] + "?submissionID=";
+	var newSubmission = new Submission.model({
+		userID: userID,
+		isSuccess: isSuccess,
+		errorType: errorType,
+		mapID: mapID,
+		mapName: mapName,
+		language: language,
+		code: code,  
+		codeUrl: codeUrl
+	})
+
+	newSubmission.save(function(err){
+		console.log("New Submission created ");
+		newSubmission.codeUrl = newSubmission.codeUrl + newSubmission._id;
+		newSubmission.save(function(err){
+			callback(null);
+		})
+		
+	});
+}

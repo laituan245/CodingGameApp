@@ -1,0 +1,78 @@
+extends ../layouts/default
+block js
+    script(src='https://code.highcharts.com/highcharts.js')
+    script(src='https://code.highcharts.com/modules/data.js')
+    script(src='https://code.highcharts.com/modules/drilldown.js')
+block js-footer
+    script(src="/js/custom-logic/userAnalytic.js")
+
+block content
+    script.
+        var submissionDataForSection1 = !{JSON.stringify(userData.section1.submissions)};
+
+    - var section3Subs = userData.section3.submissions
+    .container
+        div.row#section1
+            h2 Overall Statistics
+            .col-xs-12
+                h2#nosubmissions_h2.text-center(style='display:none')
+                    | You have no submissions
+                #overall_stat_piechart_container
+
+
+        div.row#section2
+            h2 Striped Rows
+            p The .table-striped class adds zebra-stripes to a table:
+            table.table.table-striped
+                thead
+                    tr
+                        th Firstname
+                        th Lastname
+                        th Email
+                tbody
+                    tr
+                        td John
+                        td Doe
+                        td john@example.com
+                    tr
+                        td Mary
+                        td Moe
+                        td mary@example.com
+                    tr
+                        td July
+                        td Dooley
+                        td july@example.com
+
+        div.row#section3
+            if (section3Subs.length > 0)
+                h2 Submissions
+                
+                table.table.table-striped
+                    thead
+                        tr
+                            th Time
+                            th Game
+                            th Language
+                            th Status
+                            th Code
+                    tbody
+                        each sub, i in section3Subs
+                            tr
+                                td #{moment(sub.time).format("Do MMM YYYY hh:mm:ss a")}
+
+                                td #{sub.mapName}
+                                td #{sub.language}
+                                td 
+                                    if (sub.isSuccess)
+                                        | Completed
+                                    else
+                                        | Not completed
+                                td 
+                                    a(href=sub.codeUrl) Link to code
+
+                    
+
+        div.row#section4
+    
+
+            

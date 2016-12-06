@@ -1,6 +1,7 @@
 var keystone = require('keystone');
 var MapTemplate = keystone.list("MapTemplate");
 var User = keystone.list("User");
+var Submission = keystone.list("Submission");
 
 exports = module.exports = function (req, res) {
 
@@ -9,6 +10,8 @@ exports = module.exports = function (req, res) {
 	var language = req.params.language || "none";
 	var lessonID = req.params.lessonID || "none";
 	var gameID = req.params.gameID || "none";
+	var submissionID = req.query.submissionID || null;
+	console.log("submissionID " + submissionID );
 	if (!locals.authenticated) {
 		res.redirect('/login');
 		return;
@@ -26,7 +29,7 @@ exports = module.exports = function (req, res) {
 
 	MapTemplate.model.findOne(params, function(err, myMapTemplate){
 		console.log("mapID " + params.mapID);
-
+		myMapTemplate = JSON.parse(JSON.stringify(myMapTemplate));
 		// Render the view based on the map template for this game
 		if (gameID === "findtreasure") {
 			myMapTemplate.endPoint = getEndPoint()
@@ -35,6 +38,8 @@ exports = module.exports = function (req, res) {
 
 		if (gameID === "lgamevariable"){
 			createMap3(myMapTemplate);
+			console.log("lgamevariable map");
+			console.log(JSON.stringify(myMapTemplate));
 		}
 		if (gameID === "cgame"){
 			var rand = Math.floor(Math.random() * 2) * 4; // 0 or 4
@@ -53,7 +58,16 @@ exports = module.exports = function (req, res) {
 			} else {
 				locals.shouldShowTimer = true;
 			}
-			view.render('playgame');
+			if (submissionID != null){
+				Submission.model.findById(submissionID, function(err, submission){
+					locals.initialCode = submission.code;
+					view.render('playgame');
+				})
+			} else {
+				view.render('playgame');
+			}
+			
+			
 		})
 	})
 };
@@ -134,13 +148,21 @@ function createMap2(endPointX, endPointY){
 function createMap3(myMapTemplate){
 	var words = ['bullwhip','atomic', 'settler', 'dogtooth', 'painkiller', 'eternity',
 	'detainee', 'heaviest','chilly', 'detox', 'rose', 'insect', 'accepting', 'beard', 'silence', 'periodic'];
+	
 	var map = myMapTemplate.map;
+	myMapTemplate.correctWordSum = "";
+	myMapTemplate.correctValueSum = 0;
 	for (var i = 0; i < myMapTemplate.map_height; i++)
 		for (var j = 0; j < myMapTemplate.map_width; j++){
 			if (map[i][j].objectToDisplay !== "obstacle"){
 				console.log("empty cell " + i + "," + j);
 				map[i][j].value = Math.floor((Math.random() * 1000));
 				map[i][j].word = words[Math.floor((Math.random() * words.length))] + " ";
+				if (i != myMapTemplate.map_height -1 || j != myMapTemplate.map_width - 1){
+					myMapTemplate.correctWordSum += map[i][j].word;
+					myMapTemplate.correctValueSum += map[i][j].value;
+				}
+				
 				console.log(map[i][j].word + ".");
 			}
 		}

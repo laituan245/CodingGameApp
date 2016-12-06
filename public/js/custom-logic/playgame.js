@@ -191,7 +191,7 @@ $( document ).ready(function() {
 		for (var i = 0; i < Math.min(rankingTableData.length, 10); i++) {
 			var newTr = document.createElement('tr');
 			var userTd = document.createElement('td');
-			userTd.innerHTML = (rankingTableData[i].email);
+			userTd.innerHTML = (rankingTableData[i].nickname);
 			var timeTd = document.createElement('td');
 			timeTd.innerHTML = (rankingTableData[i].time) + ' seconds';
 			$(newTr).append(userTd);
@@ -372,5 +372,9 @@ $( document ).ready(function() {
 	//DISPLAY FIRST
 	//displayFirst();
 	initialize();
-	window.onload = displayFirst.bind(null);
+	$(window).on("load", function() {
+		displayFirst()
+	    // weave your magic here.
+	});
+	//window.onload = displayFirst.bind(null);
 });

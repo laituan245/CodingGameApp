@@ -4,6 +4,7 @@ var keystone = require('keystone');
 module.exports = {
 	login: function(req, res){
 		var locals =  res.locals;
+		res.locals.userID = "_";
 		if (locals.authenticated === true){
 			return res.redirect('/');
 		}
@@ -18,6 +19,7 @@ module.exports = {
 	},
 
 	signup: function(req, res){
+		res.locals.userID = "_";
 		var locals =  res.locals;
 		if (locals.authenticated === true){
 			return res.redirect('/');
