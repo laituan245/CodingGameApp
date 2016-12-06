@@ -37,6 +37,14 @@ exports = module.exports = function (req, res) {
 	}
 	function section2(callback) {
 	    // Duong - data in this section has to be in userData.section2
+	    var params = {
+			userID : userID
+		}
+		Submission.model.find(params)
+		.exec(function(err, submissions){
+			userData.section2.submissions = submissions;
+			callback(null);
+		})
 	    callback(null);
 	}
 	function section3(callback) {

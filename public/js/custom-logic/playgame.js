@@ -2,9 +2,9 @@ $( document ).ready(function() {
 	if (!shouldShowTimer) {
 		$('#timer').hide();
 	}
-	var initialSeconds = new Date().getTime() / 1000;
+
 	var shouldStopTimer = false;
-	startTime();
+	startTimer();
 	var TIME_PER_STEP = 50;
 	var NUM_FRAMES_PER_STEP = 10;
 
@@ -144,21 +144,23 @@ $( document ).ready(function() {
 
 	}
 
-	function startTime() {
+	function startTimer() {
+	    if (gameResult.isCompleted) return;
 	    var today = new Date();
-			var curTimeStamp = today.getTime();
+	    var initialSeconds = new Date(gameResult.createdTime).getTime() / 1000;
+		var curTimeStamp = today.getTime();
 	    var seconds = curTimeStamp / 1000;
-			seconds = seconds - initialSeconds;
-			var h = parseInt(seconds / 3600);
-			seconds = seconds - 3600 * h;
-			var m = parseInt(seconds / 60);
-			seconds = seconds - 60 * m;
-			var s = parseInt(seconds);
-			if (!shouldStopTimer) {
+		seconds = seconds - initialSeconds;
+		var h = checkTime(parseInt(seconds / 3600));
+		seconds = seconds - 3600 * h;
+		var m = checkTime(parseInt(seconds / 60));
+		seconds = seconds - 60 * m;
+		var s = checkTime(parseInt(seconds));
+		if (!shouldStopTimer) {
 		    document.getElementById('timer').innerHTML =
 		    h + ":" + m + ":" + s;
-		    var t = setTimeout(startTime, 500);
-			}
+		    var t = setTimeout(startTimer, 500);
+		}
 	}
 	function checkTime(i) {
 	    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
@@ -166,7 +168,9 @@ $( document ).ready(function() {
 	}
 
 	function sendUserResult() {
+		if (gameResult.isCompleted) return;
 		shouldStopTimer = true;
+		var initialSeconds = new Date(gameResult.createdTime).getTime() / 1000;
 		var finalSeconds = new Date().getTime() / 1000;
 		var dataToSend = finalSeconds - initialSeconds;
 		var endPoint = "/get_user_result";
@@ -184,8 +188,7 @@ $( document ).ready(function() {
 
 
 	function showRankingTable(rankingTableData) {
-		$('#run-btn').hide();
-		$('#reset-btn').show();
+		
 		var tBody = $('#rankingTableBody');
 		tBody.empty();
 		for (var i = 0; i < Math.min(rankingTableData.length, 10); i++) {
@@ -200,6 +203,18 @@ $( document ).ready(function() {
 		}
 		$('#rankingModal').modal('show');
 	}
+
+	$("#ranking-btn").click(function(){
+		console.log('Starting sending result');
+		var endPoint = "/get_user_result";
+		post(endPoint, {'timeToFinish': -1, 'mapID': mapID}, function(result){
+			if (result){
+				console.log("Sucessully sent result");
+				var rankingTableData = result;
+				showRankingTable(rankingTableData);
+			}
+		});
+	})
 
 	function executeInstructions(instructions){
 		var curX = instructions.startPos[0] * 80 + 10;
@@ -227,7 +242,7 @@ $( document ).ready(function() {
 					if (step.doHere.action === "showMessage"){
 						setTimeout(function(){
 							displayMessage("general_error",step.doHere.data.message);
-							drawAllObjectsExceptRobot();
+							//drawAllObjectsExceptRobot();
 						}, timeout)
 					}
 					if (step.doHere.action === "showLetterContent"){
@@ -284,7 +299,8 @@ $( document ).ready(function() {
 	}
 
 	$("#reset-btn").click(function(){
-		location.reload();
+		//alert(window.location.href );
+		window.location.href = window.location.href ;
 	});
 
 
@@ -316,6 +332,8 @@ $( document ).ready(function() {
 		FUNCTIONS LIBRARY
     */
 	function displayMessage(type, message){
+		$('#run-btn').hide();
+		$('#reset-btn').show();
 		if (type === "general_not_error"){
 			// $("#modalHeader").html("Error");
 			// $("#modalBody").html(message);
@@ -335,6 +353,8 @@ $( document ).ready(function() {
 	}
 
 	function announceSums(correctValueSum, correctWordSum, valueSum, wordSum){
+		$('#run-btn').hide();
+		$('#reset-btn').show();
 		$("#variable-game-notify").show();
 		if (valueSum !== correctValueSum || wordSum !== correctWordSum){
 			$("#variable-game-result").html("Wrong answer");
@@ -372,9 +392,9 @@ $( document ).ready(function() {
 	//DISPLAY FIRST
 	//displayFirst();
 	initialize();
-	$(window).on("load", function() {
+	/*$(window).on("load", function() {
 		displayFirst()
 	    // weave your magic here.
-	});
-	//window.onload = displayFirst.bind(null);
+	});*/
+	window.onload = displayFirst.bind(null);
 });

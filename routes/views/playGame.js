@@ -2,6 +2,7 @@ var keystone = require('keystone');
 var MapTemplate = keystone.list("MapTemplate");
 var User = keystone.list("User");
 var Submission = keystone.list("Submission");
+var GameResult = keystone.list("GameResult");
 
 exports = module.exports = function (req, res) {
 
@@ -20,6 +21,7 @@ exports = module.exports = function (req, res) {
 	// item in the header navigation.
 	locals.section = 'home';
 	var userID = res.locals.userID || null;
+	var userNickname = res.locals.nickname || null;
 	console.log("UserID " + userID);
 
 	//read database
@@ -27,49 +29,52 @@ exports = module.exports = function (req, res) {
 		mapID : lessonID + "_" + gameID
 	}
 
-	MapTemplate.model.findOne(params, function(err, myMapTemplate){
-		console.log("mapID " + params.mapID);
-		myMapTemplate = JSON.parse(JSON.stringify(myMapTemplate));
-		// Render the view based on the map template for this game
-		if (gameID === "findtreasure") {
-			myMapTemplate.endPoint = getEndPoint()
-			myMapTemplate.map = createMap2(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
-		}
-
-		if (gameID === "lgamevariable"){
-			createMap3(myMapTemplate);
-			console.log("lgamevariable map");
-			console.log(JSON.stringify(myMapTemplate));
-		}
-		if (gameID === "cgame"){
-			var rand = Math.floor(Math.random() * 2) * 4; // 0 or 4
-			myMapTemplate.endPoint = [rand, 4 - rand];
-			myMapTemplate.map = createMapCondition(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
-
-		}
-		locals.mapTemplate = myMapTemplate;
-		locals.mapID = params.mapID;
-
-
-		User.model.findById(userID, function(err, user){
-			var tmpObj = JSON.parse(user.timeToFinish || '{}')
-			if (tmpObj[locals.mapID]) {
-				locals.shouldShowTimer = false;
-			} else {
-				locals.shouldShowTimer = true;
+	checkGameResult(userID,userNickname, lessonID + "_" + gameID,language, function(err, gameResult){
+		locals.gameResult = gameResult;
+		console.log("createdTime for gameResult");
+		console.log(gameResult.createdTime.getTime());
+		if (err) return res.json({Error: err});
+		MapTemplate.model.findOne(params, function(err, myMapTemplate){
+			console.log("mapID " + params.mapID);
+			myMapTemplate = JSON.parse(JSON.stringify(myMapTemplate));
+			// Render the view based on the map template for this game
+			if (gameID === "findtreasure") {
+				myMapTemplate.endPoint = getEndPoint()
+				myMapTemplate.map = createMap2(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
 			}
-			if (submissionID != null){
-				Submission.model.findById(submissionID, function(err, submission){
-					locals.initialCode = submission.code;
+
+			if (gameID === "lgamevariable"){
+				createMap3(myMapTemplate);
+				console.log("lgamevariable map");
+				console.log(JSON.stringify(myMapTemplate));
+			}
+			if (gameID === "cgame"){
+				var rand = Math.floor(Math.random() * 2) * 4; // 0 or 4
+				myMapTemplate.endPoint = [rand, 4 - rand];
+				myMapTemplate.map = createMapCondition(myMapTemplate.endPoint[0], myMapTemplate.endPoint[1]);
+
+			}
+			locals.mapTemplate = myMapTemplate;
+			locals.mapID = params.mapID;
+
+
+			User.model.findById(userID, function(err, user){
+				locals.shouldShowTimer = !gameResult.isCompleted;
+				if (submissionID != null){
+					Submission.model.findById(submissionID, function(err, submission){
+						locals.initialCode = submission.code;
+						view.render('playgame');
+					})
+				} else {
 					view.render('playgame');
-				})
-			} else {
-				view.render('playgame');
-			}
-			
-			
+				}
+				
+				
+			})
 		})
 	})
+
+	
 };
 
 function getEndPoint() {
@@ -206,4 +211,34 @@ function createMapCondition(endPointX, endPointY){
 	console.log(endPointX + ' ' + endPointY);
 	return res;
 
+}
+
+
+function checkGameResult(userID,userNickname, mapID,language, callback){
+	GameResult.model.findOne({userID: userID, mapID: mapID}, function(err, gameResult){
+		if (err){
+			return callback(err);
+		}
+		if (!gameResult){
+			var newGameResult = new GameResult.model({
+				userID: userID,
+				userNickname: userNickname,
+				mapID: mapID,
+				isCompleted: false,
+				language: language,
+				timeToFinish: -1, //second
+				latestSubmissionID: -1,
+				bestSubmissionID: -1
+			})
+
+			newGameResult.save(function(err){
+				console.log("New GameResult created ");
+				return callback(null, newGameResult);
+			});
+		} else {
+			return callback(null,gameResult);
+		}
+	})
+	//Add new instance to GameResult
+	
 }
