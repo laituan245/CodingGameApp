@@ -66,6 +66,9 @@ exports = module.exports = function (app) {
 	app.get('/demogame', routes.views.demo.demogame);
 
 
+	// Get search result
+	app.get('/search', routes.views.search)
+
 	// Get user results
 	app.post('/get_user_result', routes.apis.getUserResult);
 	app.post('/checkFirstEnteringGame', routes.apis.checkFirstEnteringGame);

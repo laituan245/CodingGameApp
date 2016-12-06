@@ -1,0 +1,16 @@
+extends ../layouts/default
+block content
+    .container
+      hgroup.mb20
+        h1 Search Results
+        h2.lead
+          strong.text-danger #{searchResults.length}
+          |  results were found for the search for 
+          strong.text-danger #{userQuery}
+      each result in searchResults
+          section.col-xs-12.col-sm-6.col-md-12
+            article.search-result.row
+              .col-xs-12.col-sm-12.col-md-7.excerpet
+                h3
+                  a(href='#{result[0]}', title='') #{result[1]} 
+              span.clearfix.borda
