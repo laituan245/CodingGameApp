@@ -8,6 +8,45 @@ block js-footer
 
 block content
     script.
+        var language = "";
+        var section2Subs = !{JSON.stringify(userData.section2.submissions)};
+        $(document).ready(function(){
+            $("button").click(function(){
+                var e = document.getElementById("language");
+                language = e.options[e.selectedIndex].value;
+                if (language == "Python"){
+                    $("#progression_head").empty();
+                    var newHead = "<tr><th>L-Map</th><th>L-Map-Variable</th><th>If-else</th><th>Finding treasure</th></tr>";
+                    $("#progression_head").append(newHead);
+
+                    $("#progression_body").empty();
+                    var d = {
+                    "L-Map":"Not started", 
+                    "L-Map-Variable":"Not started", 
+                    "If-else":"Not started", 
+                    "Finding treasure":"Not started"
+                    };
+                    for (var i in section2Subs){
+                        var sub = section2Subs[i];
+                        if (sub.language == "python"){
+                            var isSuccess = sub.isSuccess;
+                            var map = sub.mapName;
+                            if (isSuccess)
+                                d[map] = "Completed";
+                            else if (d.map == "Not started")
+                                d[map] = "Incompleted";
+                        }
+                    }
+                    var newRowContent = "<tr><td>"+d["L-Map"]+"</td><td>"+d["L-Map-Variable"]+"</td><td>"+d["If-else"]+"</td><td>"+d["Finding treasure"]+"</td></tr>";
+                    $("#progression_body").append(newRowContent);
+                    } else{
+                    $("#progression_body").empty();
+                    $("#progression_head").empty();
+                    var newHead = "<tr><th>This language is not available at this moment!</th></tr>";
+                    $("#progression_head").append(newHead);
+                    }
+            });
+        });
         var submissionDataForSection1 = !{JSON.stringify(userData.section1.submissions)};
 
     - var section3Subs = userData.section3.submissions
@@ -21,27 +60,23 @@ block content
 
 
         div.row#section2
-            h2 Striped Rows
-            p The .table-striped class adds zebra-stripes to a table:
+            h2 Your progression
+            <div class="form-group">
+            <label for="Language">Select language</label>
+            <select class="form-control" id="language">
+            <option value="Python" selected="selected">Python</option>
+            <option value="Java">Java</option>
+            <option value="C++">C++</option>
+            <option value="JavaScript">JavaScript</option>
+            </select>
+            </div>
+            <button>Select this language</button>
+            <div id="1">
             table.table.table-striped
-                thead
-                    tr
-                        th Firstname
-                        th Lastname
-                        th Email
-                tbody
-                    tr
-                        td John
-                        td Doe
-                        td john@example.com
-                    tr
-                        td Mary
-                        td Moe
-                        td mary@example.com
-                    tr
-                        td July
-                        td Dooley
-                        td july@example.com
+                <thead id = "progression_head"></thead>
+                <tbody id = "progression_body"></tbody>
+            </div>
+            <ul id="list"></ul>
 
         div.row#section3
             if (section3Subs.length > 0)
