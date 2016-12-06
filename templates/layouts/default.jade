@@ -27,7 +27,7 @@ html(lang='en')
         
         block js
 
-    body
+    body(style="font-family: monaco,Consolas,'Lucida Console',monospace;")
         script.
           var userID = !{JSON.stringify(userID)};
         // Navigation
@@ -40,27 +40,27 @@ html(lang='en')
                         span.icon-bar
                         span.icon-bar
                         span.icon-bar
-                    a.navbar-brand.topnav(href='/') CodingGame
+                    a.navbar-brand.topnav(href='/', style="font-size: 20px") CodingGame
                 // Collect the nav links, forms, and other content for toggling
                 #bs-example-navbar-collapse-1.collapse.navbar-collapse
                     ul.nav.navbar-nav.navbar-right
                         li
-                            a(href='#about') About
+                            a(href='#about', style="font-size: 20px") About
                         if (authenticated === true)
                             li
-                                .dropdown(style="padding:15px")
-                                    a.dropdown-toggle(href="#", data-toggle='dropdown', style="text-decoration: none;color: black") #{nickname}
+                                .dropdown(style="padding:10.5px")
+                                    a.dropdown-toggle(href="#", data-toggle='dropdown', style="font-size: 20px;text-decoration: none;color: black") #{nickname}
                                         span.caret
                                     ul.dropdown-menu
                                         li
-                                            a(href='/userAnalytic') User Analytic
+                                            a(href='/userAnalytic', style="font-size: 20px") User Analytic
                                         
                                                 
                                         li
-                                            a(href='/logout') Logout
+                                            a(href='/logout', style="font-size: 20px") Logout
                         else
                             li
-                                a(href='/login') Login
+                                a(href='/login', style="font-size: 20px") Login
 
 
 

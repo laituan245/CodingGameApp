@@ -1,6 +1,79 @@
 $( document ).ready(function() {
     createPieChartOfSubmissions(getSubmissionDataForPieChart(submissionDataForSection1));
+    createBestTimeToCodeGraph(getDataForBestTimeGraph(submissionDataForSection1));
 });
+
+
+
+
+function createBestTimeToCodeGraph(data){
+    var categories = [];
+    //data = [];
+    for (var i = 0; i < 24; i++){
+        categories.push(i+"h");
+        //data.push(i);
+    }
+    var chart = Highcharts.chart('bestTimeContainer', {
+
+        title: {
+            text: 'Best time to code'
+        },
+
+        subtitle: {
+            text: '% successful submission / overall submissions'
+        },
+
+        yAxis: {min: 0, max: 100},
+
+        xAxis: {
+
+            categories: categories
+        },
+
+        series: [{
+            type: 'column',
+            colorByPoint: true,
+            data: data,
+            showInLegend: false
+        }]
+
+    });
+
+    chart.update({
+        chart: {
+            inverted: false,
+            polar: false
+        },
+       
+    });
+}
+
+function getDataForBestTimeGraph(submissions){
+    var dataByHour = [];
+    var success = [];
+    var total = [];
+    for (var i = 0; i < 24; i++){
+        success.push(0);
+        total.push(0);
+    }
+    for (var i = 0; i < submissions.length; i++){
+        var sub = submissions[i];
+        var hour = new Date(sub.time).getHours();
+        //var hour = new Date(sub.time).getHour();
+        console.log("hour " + hour);
+        total[hour]++;
+        if (sub.isSuccess){
+            success[hour]++;
+        }
+    }
+    for (var i = 0; i < 24; i++){
+        dataByHour.push(0);
+        if (total[i] > 0){
+            dataByHour[i] = parseInt((success[i] / total[i]) * 100);
+        }
+    }
+    return dataByHour;
+}
 
 function getSubmissionDataForPieChart(submissionData) {
     // Responsibility: Tuan Lai

@@ -27,7 +27,8 @@ module.exports = {
 						status : "001",
 						data : "Email not found"
 					}
-					return res.json(result);
+					return res.redirect("back")
+					//return res.json(result);
 				}
 
 				account._.password.compare(password, function(err, isMatch) {
