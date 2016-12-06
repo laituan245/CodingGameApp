@@ -17,13 +17,79 @@ block content
   #lessonTitle.h1(align="center").
     #{lessonTutorial.title}
   .div#skip-lesson-btn-ctn(align="center")
-    a#skip-lesson-btn(type="button" class="btn btn-info", href='/play/' + language + "/" + lessonID + "/" + gameID )="Skip Lesson. Start Exercise :)"
+    button#skip-lesson-btn(type="button" class="btn btn-info", style="display: none" )="Skip Lesson. Start Exercise :)"
   #lessonTutorialCtn.div
     | No content yet
   .div#start-exercise-btn-ctn(align="center")
-    a#start-exercise-btn(type="button" class="btn btn-success", href='/play/' + language + "/" + lessonID + "/" + gameID )="Start Exercise"
-  
+    button#start-exercise-btn(type="button" class="btn btn-success", style="display: none")="Start Exercise"
+
+  // Modal
+  #verify-modal.modal.fade(role='dialog')
+    .modal-dialog
+      // Modal content
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal') ×
+          h4.modal-title Notice
+        .modal-body
+          p(style = " font-family: monaco,Consolas,'Lucida Console',monospace;") This is the first time you play the game. Only your first win will be counted to ranking table. Do you wanna play right now?
+          center
+            span(style="margin-right: 5px")
+              a#yes-btn.btn.btn-info(href='/play/' + language + "/" + lessonID + "/" + gameID) YES
+            
+                
+            span(style="margin-left: 5px")
+              button.btn.btn-success(type='button', data-dismiss='modal') NO
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close
+
 block js-footer
   script.
     var lessonTutorial = !{JSON.stringify(lessonTutorial)};
+    var mapID = "#{lessonID + "_" + gameID}";
+    var language = "#{language}";
+    var lessonID = "#{lessonID}"
+    var gameID = "#{gameID}"
     $("#lessonTutorialCtn").html(lessonTutorial.content)
+    var isFirstTime = true;
+    post("/checkFirstEnteringGame",{userID: userID, mapID: mapID}, function(result){
+      if (result.status != "000"){
+        alert("Database Error");
+        return;
+      }
+      if (result.existing == true){
+        isFirstTime = false;
+        if (result.finished == true){
+          $("#skip-lesson-btn").html("Re-play the game for fun :)");
+          $("#start-exercise-btn").html("Re-play the game for fun :)");
+        } else {
+          $("#skip-lesson-btn").html("Continue playing the game");
+          $("#start-exercise-btn").html("Continue playing the game");
+        }
+        
+      } else {
+        isFirstTime = true;
+        $("#skip-lesson-btn").html("Skip Lesson. Start Exercise :)");
+        $("#start-exercise-btn").html("Start Exercise");
+      }
+      $("#skip-lesson-btn").show();
+      $("#start-exercise-btn").show();
+    })
+
+    $("#skip-lesson-btn").click(function(){
+      if (isFirstTime){
+        $("#verify-modal").modal("show");
+      } else {
+        window.location.href = '/play/' + language + "/" + lessonID + "/" + gameID;
+      }
+      
+      
+    })
+
+    $("#start-exercise-btn").click(function(){
+      if (isFirstTime){
+        $("#verify-modal").modal("show");
+      } else {
+        window.location.href = '/play/' + language + "/" + lessonID + "/" + gameID;
+      }
+    })
