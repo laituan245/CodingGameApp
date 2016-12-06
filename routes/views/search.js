@@ -44,13 +44,13 @@ exports = module.exports = function (req, res) {
         results.push(availableSearchData['conditionalstatements'][0])
         results.push(availableSearchData['conditionalstatements'][1])
     }
-    if (userQuery.indexOf('exercise') > -1) {
+    if (userQuery.indexOf('exercise') > -1 || userQuery.indexOf('practice') > -1) {
         results.push(availableSearchData['basicsyntax'][1])
         results.push(availableSearchData['conditionalstatements'][1])
         results.push(availableSearchData['loops'][1])
         results.push(availableSearchData['variables'][1])
     }
-    if (userQuery.indexOf('tutorial') > -1) {
+    if (userQuery.indexOf('tutorial') > -1 || userQuery.indexOf('study') > -1 || userQuery.indexOf('learn') > -1) {
         results.push(availableSearchData['basicsyntax'][0])
         results.push(availableSearchData['conditionalstatements'][0])
         results.push(availableSearchData['loops'][0])
