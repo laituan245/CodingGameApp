@@ -20,7 +20,7 @@ function createBestTimeToCodeGraph(data){
         },
 
         subtitle: {
-            text: '% successful submission / overall submissions'
+            text: '% Successful submissions / Total submissions'
         },
 
         yAxis: {min: 0, max: 100},

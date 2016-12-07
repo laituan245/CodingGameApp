@@ -54,7 +54,7 @@ block content
     - var section3Subs = userData.section3.submissions
     .container
         div.row#section1
-            h2 Overall Statistics
+            h2(style='font-family:courier;') Overall Statistics
             .col-xs-12
                 h2#nosubmissions_h2.text-center(style='display:none')
                     | You have no submissions
@@ -62,9 +62,8 @@ block content
 
 
         div.row#section2
-            h2 Your progression
+            h2(style='font-family:courier;') Your progression
             <div class="form-group">
-            <label for="Language">Select language</label>
             <select class="form-control" id="language">
             <option value="Python" selected="selected">Python</option>
             <option value="Java">Java</option>
@@ -82,7 +81,7 @@ block content
 
         div.row#section3
             if (section3Subs.length > 0)
-                h2 Submissions
+                h2(style='font-family:courier;') Submissions
                 
                 table.table.table-striped
                     thead
@@ -110,7 +109,7 @@ block content
                     
 
         div.row#section4
-            h2 Best time to code
+            h2(style='font-family:courier;') Best time to code
             .col-xs-12
                 #bestTimeContainer
                     
