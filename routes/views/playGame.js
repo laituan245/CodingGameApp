@@ -30,7 +30,7 @@ exports = module.exports = function (req, res) {
 		mapID : lessonID + "_" + gameID
 	}
 
-	var hostIP = process.env.IP || '127.0.0.1';
+	var hostIP = process.env.hostIP || '127.0.0.1';
 
 	checkGameResult(userID,userNickname, lessonID + "_" + gameID,language, function(err, gameResult){
 		locals.gameResult = gameResult;
