@@ -376,7 +376,7 @@ $( document ).ready(function() {
 		$(".instruction-content").html(mapTemplate.instruction);
 
 	}
-	websocketUrl = "ws://127.0.0.1";
+	websocketUrl = "ws://" + hostIP;
 	socket = new WebSocket(websocketUrl, "echo-protocol");
 
     socket.addEventListener("open", function(event) {

@@ -30,6 +30,8 @@ exports = module.exports = function (req, res) {
 		mapID : lessonID + "_" + gameID
 	}
 
+	var hostIP = process.env.IP || '127.0.0.1';
+
 	checkGameResult(userID,userNickname, lessonID + "_" + gameID,language, function(err, gameResult){
 		locals.gameResult = gameResult;
 		console.log("createdTime for gameResult");
@@ -58,7 +60,7 @@ exports = module.exports = function (req, res) {
 			locals.mapTemplate = myMapTemplate;
 			locals.mapID = params.mapID;
 
-
+			locals.hostIP = hostIP;
 			User.model.findById(userID, function(err, user){
 				locals.shouldShowTimer = !gameResult.isCompleted;
 				if (submissionID != null){
