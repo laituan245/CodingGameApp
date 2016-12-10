@@ -185,11 +185,11 @@ function initializeSocketServer(httpServer){
 	            
 
 				
-	            for (var i = 0; i < clients.length; i++){
+	            /*for (var i = 0; i < clients.length; i++){
 	            	if (clients[i].userID == userID && clients[i].mapID == mapID){
 	            		clients[i].connection.sendUTF(JSON.stringify(event));
 	            	}
-	            }
+	            }*/
 	            
 
 	        }
