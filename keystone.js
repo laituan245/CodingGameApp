@@ -2,13 +2,17 @@
 // customising the .env file in your project's root folder.
 require('dotenv').config();
 var redis = require("redis");
+var WebSocketServer = require('websocket').server;
 
 // Require keystone
 var keystone = require('keystone');
 
+
 // Initialise Keystone with your project's configuration.
 // See http://keystonejs.com/guide/config for available options
 // and documentation.
+
+
 
 keystone.init({
 	'name': 'CodingGameApp',
@@ -84,4 +88,118 @@ keystone.set('nav', {
 
 // Start Keystone to connect to your database and initialise the web server
 
-keystone.start();
+keystone.start({
+	onHttpServerCreated: function() { 
+		initializeSocketServer(keystone.httpServer) 
+	}
+});
+
+function initializeSocketServer(httpServer){
+	console.log("create socket server")
+	//WEBSOCKET
+	wsServer = new WebSocketServer({
+	    httpServer: httpServer,
+	    // You should not use autoAcceptConnections for production
+	    // applications, as it defeats all standard cross-origin protection
+	    // facilities built into the protocol and the browser.  You should
+	    // *always* verify the connection's origin and decide whether or not
+	    // to accept it.
+	    autoAcceptConnections: false
+	});
+
+	function originIsAllowed(origin) {
+	  // put logic here to detect whether the specified origin is allowed.
+	  return true;
+	}
+	var clients = [];
+	wsServer.on('request', function(request) {
+		console.log("new socket request")
+	    if (!originIsAllowed(request.origin)) {
+	      // Make sure we only accept requests from an allowed origin
+	      request.reject();
+	      console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
+	      return;
+	    }
+
+	    var connection = request.accept('echo-protocol', request.origin);
+	    console.log((new Date()) + ' Connection accepted.' + (connection));
+	    connection.on('message', function(message) {
+	        if (message.type === 'utf8') {
+
+	        	console.log(message);
+	        	var data = JSON.parse(decodeURIComponent(message.utf8Data));
+
+	        	var userID = data.userID;
+	        	var mapID = data.mapID;
+
+	        	if (data.type == 'initialize'){
+	        		clients.push({
+	        			userID: userID,
+	        			mapID: mapID,
+	        			connection: connection
+	        		})
+	        		return;
+	        	}
+
+	        	var userCode = data.userCode;
+	        	var event = data.event;
+	        	var userCodeRedis = "latestcode3/"+userID +'/' +mapID;
+	        	redis_client.get(userCodeRedis, function(err, reply){
+	        		console.log("errr get redis " + err);
+	        		if (reply){
+	        			console.log("still have session");
+	        			redis_client.ttl(userCodeRedis, function(err, data) {
+						    console.log('I live for this long yet: ' + data);
+						    redis_client.set(userCodeRedis,userCode);
+						    redis_client.expire(userCodeRedis, data);
+						});
+        				
+	        		} else {
+	        			console.log("has no session");
+	        			var timeout = 10;
+	        			redis_client.set(userCodeRedis,userCode);
+	        			redis_client.expire(userCodeRedis, timeout);
+	        			setTimeout(function(){
+	        				//save to mongodb
+	        				//console.log("save latest code to mongodb " + reply)
+	        				var GameResult = keystone.list("GameResult");
+	        				GameResult.model.findOne({userID: userID, mapID: mapID}, function(err, gameResult){
+	        					if (gameResult){
+	        						redis_client.get(userCodeRedis, function(err, reply){
+	        							if (reply){
+	        								gameResult.latestSubmissionID = reply;
+			        						gameResult.save(function(err){
+			        							console.log("save latest code to mongodb " + reply)
+			        						})
+	        							}
+	        						})
+	        						
+	        					}
+	        				})
+	        			}, timeout * 1000 - 1000)
+	        		}
+	        	})
+	            console.log('Received Message: ' + message.utf8Data);
+	            
+	            
+	            
+
+				
+	            for (var i = 0; i < clients.length; i++){
+	            	if (clients[i].userID == userID && clients[i].mapID == mapID){
+	            		clients[i].connection.sendUTF(JSON.stringify(event));
+	            	}
+	            }
+	            
+
+	        }
+	        else if (message.type === 'binary') {
+	            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+	            connection.sendBytes(message.binaryData);
+	        }
+	    });
+	    connection.on('close', function(reasonCode, description) {
+	        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+	    });
+	});
+}

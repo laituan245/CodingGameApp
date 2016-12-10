@@ -374,9 +374,93 @@ $( document ).ready(function() {
 
 	function initialize(){
 		$(".instruction-content").html(mapTemplate.instruction);
+
 	}
+	websocketUrl = "ws://127.0.0.1";
+	socket = new WebSocket(websocketUrl, "echo-protocol");
 
+    socket.addEventListener("open", function(event) {
+    	console.log("Open socket");
+    	socket.send(JSON.stringify({
+			type: 'initialize',
+			mapID: mapID,
+			userID: userID
+		}))
+    });
+    var hasSocketMessage = false;
+    var latestEditorEvent = {};
+    // Display messages received from the server
+    socket.addEventListener("message", function(event) {
+    	var stringEvent = event.data;
+    	var jsonEvent = JSON.parse(event.data);
+    	console.log("trigger change " + stringEvent);
+    	console.log(latestEditorEvent);
+    	console.log(stringEvent);
+    	if (stringEvent == latestEditorEvent)
+  			return;
+    	hasSocketMessage = true;
+      	//console.log("Server Says: " + event.data);
+      	console.log("Set new value for editor");
+      	if (jsonEvent.action == 'insert'){
+      		// var startRow = jsonEvent.start.row;
+      		// var startCol = jsonEvent.start.column;
+      		// var endRow = jsonEvent.end.row;
+      		// var endCol = jsonEvent.end.column;
+      		// editor.session.insert(jsonEvent.end, jsonEvent.lines[0])
+      		// for (var i = startRow + 1; i <= endRow; i++){
+      		// 	editor.session.insert({row:i,column:1}, '\n' + jsonEvent.lines[i - startRow])
+      		// 	//editor.session.insert(jsonEvent.end, jsonEvent.lines.join(''))
+      		// }
+      		// // for (int i = 0; i < lines.length;i++){
+      		// // 	console.log(charCodeAt[lines[]]
+      		// // }
+      		editor.session.insert(jsonEvent.end, jsonEvent.lines.join('\n'))
+      	} else if (jsonEvent.action == 'remove'){
+      		console.log(jsonEvent.start.row);
+      		console.log(jsonEvent.end.row);
+      		editor.session.remove(jsonEvent)
+      	}
+    });
 
+    // Display any errors that occur
+    socket.addEventListener("error", function(event) {
+      message.textContent = "Error: " + event;
+    });
+
+    socket.addEventListener("close", function(event) {
+      status.textContent = "Not Connected";
+    });
+    // Close the connection
+ //    close.addEventListener("click", function(event) {
+	// 	close.disabled = true;
+	// 	send.disabled = true;
+	// 	message.textContent = "";
+	// 	socket.close();
+	// });
+
+	editor.on("change", function(event){
+		latestEditorEvent = JSON.stringify(event);
+		if (hasSocketMessage){
+			if (event.action=='remove'){
+				return;
+			}
+			console.log("Just updated by server. No need to send this update");
+			hasSocketMessage = false;
+			return;
+		}
+		
+		var userCode = editor.getValue();
+		var dataToSend = {
+			userID: userID,
+			mapID: mapID,
+			userCode: userCode,
+			event: event
+		}
+		dataToSend = encodeURIComponent(JSON.stringify(dataToSend));
+		console.log("Sendinnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn " + hasSocketMessage);
+		console.log("sending event " + JSON.stringify(event));
+		socket.send(dataToSend);
+	})
 
 
 

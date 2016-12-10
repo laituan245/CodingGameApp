@@ -12,6 +12,7 @@ exports = module.exports = function (req, res) {
 	var lessonID = req.params.lessonID || "none";
 	var gameID = req.params.gameID || "none";
 	var submissionID = req.query.submissionID || null;
+	var redis = locals.redis_client;
 	console.log("submissionID " + submissionID );
 	if (!locals.authenticated) {
 		res.redirect('/login');
@@ -66,7 +67,34 @@ exports = module.exports = function (req, res) {
 						view.render('playgame');
 					})
 				} else {
-					view.render('playgame');
+					var userCodeRedis = "latestcode3/"+userID+'/'+params.mapID;
+	            	//console.log(temp + " " + temp.length);
+					redis.get(userCodeRedis, function(err, userCode){
+						if (userCode == null){
+							GameResult.model.findOne({userID: userID, mapID: params.mapID}, function(err, gameResult){
+								console.log(gameResult);
+								if (gameResult) locals.initialCode = gameResult.latestSubmissionID;
+								else locals.initialCode = "";
+								console.log("latest userCode1");
+								console.log(locals.initialCode );
+								
+								view.render('playgame');
+							})
+							
+						} else {
+
+							console.log("latest userCode");
+							console.log(userCode);
+							if (userCode){
+								locals.initialCode = userCode;
+							} else {
+								locals.initialCode = "";
+							}	
+							view.render('playgame');
+						}
+						
+					});
+					
 				}
 				
 				
