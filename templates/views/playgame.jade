@@ -94,14 +94,14 @@ block content
         p#noti-message-content
     .left-panel(style="width: 400px;font-family: monaco,Consolas,'Lucida Console',monospace;")
         .map-header
-            | Screen
+            | Playing game
         center(style="margin-top:10px")
             h2 #{mapTemplate.name}
            
         center(style="margin-top:4px")
-            a.btn.btn-info#timer(style="display:inline-block;width:150px")
-            a.btn.btn-info#ranking-btn(style="margin-left:5px; display:inline-block;width:150px" )="Ranking Table"
-            
+            a.btn.btn-info#ranking-btn(style="margin-right:5px;display:inline-block;width:150px" )="Ranking Table"
+            img(src='/img/alarm.gif', style='display:inline-block;width:60px;height:60px;')
+            a.btn.btn-info#timer(style="margin-left:5px; display:inline-block;width:150px")
         //- img#game-map(src="http://phaser.io/content/tutorials/coding-tips-005/pacman-game.png" )
         canvas#myCanvas(width='400', height='400', style='border:1px solid #c3c3c3;')
             | Your browser does not support the canvas element.

@@ -164,14 +164,14 @@ function createMapTemplate3(req, res, callback){
 		startPoint : [0,0],
 		endPoint : [4,4],
 		map: createMatrix3(5, 5, [0,0], [4,4]),
-		instruction: "<p> Your mission is to move the robot to the destination and annouce the correct sums."+
+		instruction: "<p> Your mission is to move the robot to the destination and announce the correct sums."+
 		" You are NOT allowed to go out of the board or jump into the obstacles. </p>"+
 		" <p> You are given 4 functions to move your robot: <pre>goLeft(), goRight(), goUp(), goDown()</pre> "+
 		" For example, type <pre>goRight()</pre> to move the robot to the right</p>"+
 		" <p> In each available cell, there are two hidden values: a number and a word. At the destination, "+
-		"you have to 'annouce' the sum of every number and the concatination of every word in those cells.</p>"+
+		"you have to 'announce' the sum of every number and the concatenation of every word in those cells.</p>"+
 		" <p> You are also given three helper functions. <pre>readValue()</pre> returns number of the current cell, <pre>readWord()</pre> returns the word in the current cell. </p>"+
-		" <p> At the destination, use <pre>announceSums(YOUR_NUMBER_SUM_VARIABLE, YOUR_WORD_SUM_VARIABLE)</pre> to annouce your results and win! </p>"
+		" <p> At the destination, use <pre>announceSums(YOUR_NUMBER_SUM_VARIABLE, YOUR_WORD_SUM_VARIABLE)</pre> to announce your results and win! </p>"
 	})
 
 	newMapTemplate.save(function(err){
