@@ -91,6 +91,24 @@ block content
         // /.modal-dialog
 
 
+    #instructions-modal.modal.fade.middle.drop.in(data-backdrop="static" data-keyboard="false")
+        .modal-dialog
+            .modal-content
+                .modal-body
+                    #load-bar-container
+                        .konvajs-content(role='presentation', style='position: relative; width: 520px; height: 60px;')
+                            canvas(width='520', height='60', style='padding: 0px; margin: 0px; border: 0px; background: transparent; position: absolute; top: 0px; left: 0px; width: 520px; height: 60px;')
+                    img#instructions-bg(alt='Bg', src='https://d2j5eocv5gptnv.cloudfront.net/assets/instructions/bg.png')
+                    p#instructions-text
+                        | Oh no! We must get our bananas back!
+                        br
+                        | Press 
+                        b Run!
+                        |  to get the monkey moving!
+                    center
+                        
+
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
 
 
     .fixed#variable-game-notify(style='display:none')
