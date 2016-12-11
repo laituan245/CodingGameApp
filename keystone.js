@@ -156,7 +156,7 @@ function initializeSocketServer(httpServer){
         				
 	        		} else {
 	        			console.log("has no session");
-	        			var timeout = 10;
+	        			var timeout = 100;
 	        			redis_client.set(userCodeRedis,userCode);
 	        			redis_client.expire(userCodeRedis, timeout);
 	        			setTimeout(function(){
@@ -176,7 +176,7 @@ function initializeSocketServer(httpServer){
 	        						
 	        					}
 	        				})
-	        			}, timeout * 1000 - 1000)
+	        			}, timeout * 1000 - 3000)
 	        		}
 	        	})
 	            console.log('Received Message: ' + message.utf8Data);
@@ -185,11 +185,14 @@ function initializeSocketServer(httpServer){
 	            
 
 				
-	            /*for (var i = 0; i < clients.length; i++){
-	            	if (clients[i].userID == userID && clients[i].mapID == mapID){
-	            		clients[i].connection.sendUTF(JSON.stringify(event));
-	            	}
-	            }*/
+	            // for (var i = 0; i < clients.length; i++){
+	            // 	if (clients[i].userID == userID && clients[i].mapID == mapID){
+	            // 		clients[i].connection.sendUTF(JSON.stringify({
+	            // 			event: event,
+	            // 			userCode: userCode
+	            // 		}));
+	            // 	}
+	            // }
 	            
 
 	        }

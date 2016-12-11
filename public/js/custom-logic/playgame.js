@@ -189,7 +189,7 @@ $( document ).ready(function() {
 
 
 	function showRankingTable(rankingTableData) {
-		
+
 		var tBody = $('#rankingTableBody');
 		tBody.empty();
 		for (var i = 0; i < Math.min(rankingTableData.length, 10); i++) {
@@ -204,6 +204,40 @@ $( document ).ready(function() {
 		}
 		$('#rankingModal').modal('show');
 	}
+
+	$('#my-replay-btn').click(function() {
+		window.location.href = window.location.href ;
+	})
+
+	$('#my-next-game-btn').click(function() {
+		// Hard coding (Responsibility: Tuan)
+		if (mapTemplate.mapID === 'basicsyntax_lgame') {
+			window.location.href = '/play/python/variables/lgamevariable'
+		} else if (mapTemplate.mapID === 'variables_lgamevariable') {
+			window.location.href = '/play/python/condition/cgame'
+		} else if (mapTemplate.mapID === 'condition_cgame') {
+			window.location.href = '/play/python/whileloop/findtreasure'
+		} else {
+			alert('No more game. New games will be created in the future.\nStay tuned :)')
+		}
+	})
+
+	$('#my-view-ranking-table-btn').click(function() {
+		console.log('Starting sending result');
+		var endPoint = "/get_user_result";
+		post(endPoint, {'timeToFinish': -1, 'mapID': mapID}, function(result){
+			if (result){
+				console.log("Sucessully sent result");
+			   	$("#instructions-modal").modal({
+			    	backdrop: 'static',
+			    	keyboard: false
+			  	})
+			  	$("#instructions-modal").modal('hide');
+				var rankingTableData = result;
+				showRankingTable(rankingTableData);
+			}
+		});
+	})
 
 	$("#ranking-btn").click(function(){
 		console.log('Starting sending result');
@@ -295,6 +329,9 @@ $( document ).ready(function() {
 				run(timeout, curX, curY, -80, 0);
 				curX -= 80;
 			}
+			if (step.doHere.action === "announceSums"){
+				break;
+			}
 			timeout += TIME_PER_STEP * NUM_FRAMES_PER_STEP;
 		}
 	}
@@ -333,44 +370,34 @@ $( document ).ready(function() {
 		FUNCTIONS LIBRARY
     */
 	function displayMessage(type, message){
+		$("#instructions-modal").modal('show');
 		$('#run-btn').hide();
 		$('#reset-btn').show();
 		if (type === "general_not_error"){
-			// $("#modalHeader").html("Error");
-			// $("#modalBody").html(message);
-			// $("#myModal").modal("show");noti-message-header
-			$("#noti-message").css("font-size", "30px").show();
-			$("#noti-message-header").html("Information")
-			$("#noti-message-content").html(message)/*.css("font-size", "40px")*/;
-
+			$("#instructions-text").html(message);
+			$('#instructions-text').css("color", "blue");
+			$('#instructions-text').css("font-size", "15px");
 		} else if (type === "general_error") {
-			// $("#modalHeader").html("Info");
-			// $("#modalBody").html(message);
-			// $("#myModal").modal("show");
-			$("#noti-message").css("font-size", "30px").css("background-color", "#f2dede").css("color","#a94442").css("border-color", "#ebcccc").show();
-			$("#noti-message-header").html("Error")
-			$("#noti-message-content").html(message);
+			$("#instructions-text").html(message);
+			$('#instructions-text').css("color", "red");
+			$('#instructions-text').css("font-size", "15px");
 		}
 	}
 
 	function announceSums(correctValueSum, correctWordSum, valueSum, wordSum){
 		$('#run-btn').hide();
 		$('#reset-btn').show();
-		$("#variable-game-notify").show();
-		if (valueSum !== correctValueSum || wordSum !== correctWordSum){
-			$("#variable-game-result").html("Wrong answer");
-			$("#variable-game-notify").css("background-color", "#f2dede").css("color","#a94442").css("border-color", "#ebcccc");
-			console.log("Wrong answer the correct result is (valueSum = " + correctValueSum + ", wordSum = " + wordSum + ")" );
-		} else {
-			$("#variable-game-result").html("Correct answer");
-			console.log("Correct answer !");
-			sendUserResult();
+		if (wordSum !== correctWordSum){
+			messageStr = "SemanticError: Your final string is not the same as the correct final string.";
+			displayMessage("general_error", messageStr);
+		} else if (valueSum !== correctValueSum) {
+			messageStr = "SemanticError: Your final sum of values is not the same as the final sum of values.";
+			displayMessage("general_error", messageStr);
 		}
-		$("#valueSum").html("Your sum of values = " + valueSum);
-		$("#wordSum").html("Your final string: \"" + wordSum + "\"");
-		$("#correctValueSum").html("Correct sum of values = " + correctValueSum);
-		$("#correctWordSum").html("Correct final string: \"" + correctWordSum + "\"");
-
+		else {
+			messageStr = "Correct answers. You won! Congratulation ^^";
+			displayMessage("general_not_error", messageStr);
+		}
 	}
 
 	function initialize(){
@@ -390,11 +417,13 @@ $( document ).ready(function() {
     });
     var hasSocketMessage = false;
     var latestEditorEvent = {};
+    editor.$blockScrolling = Infinity
     // Display messages received from the server
     socket.addEventListener("message", function(event) {
-    	var stringEvent = event.data;
+
     	var jsonEvent = JSON.parse(event.data);
-    	console.log("trigger change " + stringEvent);
+    	var stringEvent = JSON.stringify(jsonEvent.event);
+    	console.log("Get message from server " + stringEvent);
     	console.log(latestEditorEvent);
     	console.log(stringEvent);
     	if (stringEvent == latestEditorEvent)
@@ -402,25 +431,26 @@ $( document ).ready(function() {
     	hasSocketMessage = true;
       	//console.log("Server Says: " + event.data);
       	console.log("Set new value for editor");
-      	if (jsonEvent.action == 'insert'){
-      		// var startRow = jsonEvent.start.row;
-      		// var startCol = jsonEvent.start.column;
-      		// var endRow = jsonEvent.end.row;
-      		// var endCol = jsonEvent.end.column;
-      		// editor.session.insert(jsonEvent.end, jsonEvent.lines[0])
-      		// for (var i = startRow + 1; i <= endRow; i++){
-      		// 	editor.session.insert({row:i,column:1}, '\n' + jsonEvent.lines[i - startRow])
-      		// 	//editor.session.insert(jsonEvent.end, jsonEvent.lines.join(''))
-      		// }
-      		// // for (int i = 0; i < lines.length;i++){
-      		// // 	console.log(charCodeAt[lines[]]
-      		// // }
-      		editor.session.insert(jsonEvent.end, jsonEvent.lines.join('\n'))
-      	} else if (jsonEvent.action == 'remove'){
-      		console.log(jsonEvent.start.row);
-      		console.log(jsonEvent.end.row);
-      		editor.session.remove(jsonEvent)
-      	}
+      	// if (jsonEvent.action == 'insert'){
+      	// 	// var startRow = jsonEvent.start.row;
+      	// 	// var startCol = jsonEvent.start.column;
+      	// 	// var endRow = jsonEvent.end.row;
+      	// 	// var endCol = jsonEvent.end.column;
+      	// 	// editor.session.insert(jsonEvent.end, jsonEvent.lines[0])
+      	// 	// for (var i = startRow + 1; i <= endRow; i++){
+      	// 	// 	editor.session.insert({row:i,column:1}, '\n' + jsonEvent.lines[i - startRow])
+      	// 	// 	//editor.session.insert(jsonEvent.end, jsonEvent.lines.join(''))
+      	// 	// }
+      	// 	// // for (int i = 0; i < lines.length;i++){
+      	// 	// // 	console.log(charCodeAt[lines[]]
+      	// 	// // }
+      	// 	editor.session.insert(jsonEvent.end, jsonEvent.lines.join('\n'))
+      	// } else if (jsonEvent.action == 'remove'){
+      	// 	console.log(jsonEvent.start.row);
+      	// 	console.log(jsonEvent.end.row);
+      	// 	editor.session.remove(jsonEvent)
+      	// }
+      	editor.setValue(jsonEvent.userCode);
     });
 
     // Display any errors that occur
@@ -449,7 +479,7 @@ $( document ).ready(function() {
 			hasSocketMessage = false;
 			return;
 		}
-		
+
 		var userCode = editor.getValue();
 		var dataToSend = {
 			userID: userID,
