@@ -181,7 +181,7 @@ $( document ).ready(function() {
 			if (result){
 				console.log("Sucessully sent result");
 				var rankingTableData = result;
-				showRankingTable(rankingTableData);
+				// showRankingTable(rankingTableData);
 			}
 		});
 	}
@@ -532,7 +532,7 @@ $( document ).ready(function() {
 	  'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
 	  'nubPosition': 'auto',           // override on a per tooltip bases
 	  'scrollSpeed': 300,              // Page scrolling speed in ms
-	  'timer': 2000,                   // 0 = off, all other numbers = time(ms) 
+	  'timer': 2000,                   // 0 = off, all other numbers = time(ms)
 	  'startTimerOnClick': true,       // true/false to start timer on first click
 	  'nextButton': true,              // true/false for next button visibility
 	  'tipAnimation': 'pop',           // 'pop' or 'fade' in each tip
