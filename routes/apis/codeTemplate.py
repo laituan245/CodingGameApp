@@ -160,9 +160,6 @@ def announceSums(valueSum, wordSum):
 	global variable_game
 	correctWordSum = (map['correctWordSum'])
 	correctValueSum = int(map['correctValueSum'])
-	if (correctValueSum != valueSum or correctWordSum != wordSum):
-		raise SemanticError('Your calculated results are not correct')
-	variable_game =	True	
 	instruction_arr.append({
 		'doHere': {
 			'action': "announceSums",
@@ -174,7 +171,9 @@ def announceSums(valueSum, wordSum):
 			}
 		},
 		'doNext': 'none', })
-
+	if (correctValueSum != valueSum or correctWordSum != wordSum):
+		raise SemanticError('Your calculated results are not correct')
+	variable_game =	True
 
 
 def goDown():
@@ -224,7 +223,7 @@ def toJSONString(error, my_data):
 		do_here = 'none'
 		if cur_x == end_x and cur_y == end_y:
 			complete = True
-			
+
 
 			do_here =  {"action": 'showVictory', "data": []}
 			my_data.append({'doHere': do_here, 'doNext': 'none', 'pos': [cur_x, cur_y]})

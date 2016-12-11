@@ -99,17 +99,16 @@ block content
                         .konvajs-content(role='presentation', style='position: relative; width: 520px; height: 60px;')
                             canvas(width='520', height='60', style='padding: 0px; margin: 0px; border: 0px; background: transparent; position: absolute; top: 0px; left: 0px; width: 520px; height: 60px;')
                     img#instructions-bg(alt='Bg', src='https://d2j5eocv5gptnv.cloudfront.net/assets/instructions/bg.png')
-                    p#instructions-text
-                        | Oh no! We must get our bananas back!
-                        br
-                        | Press 
-                        b Run!
-                        |  to get the monkey moving!
+                    div#instructions-text
+                        | This is an instruction text
                     center
-                        
-
-                        button.btn.btn-default(type='button', data-dismiss='modal') Close
-
+                        .row(style='padding:30px;')
+                            .div.col-xs-4(style='padding:2px;')
+                                button#my-replay-btn.col-xs-12.btn.btn-default(type='button') Reset
+                            #next-game-btn-ctn.div.col-xs-4(style='padding:2px;')
+                                button#my-next-game-btn.col-xs-12.btn.btn-default(type='button') Next game
+                            .div.col-xs-4(style='padding:2px;')
+                                button#my-view-ranking-table-btn.col-xs-12.btn.btn-default(type='button') Ranking table
 
     .fixed#variable-game-notify(style='display:none')
         h1#variable-game-result
