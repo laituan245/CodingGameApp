@@ -1,26 +1,26 @@
 $( document ).ready(function() {
-    createPieChartOfSubmissions(getSubmissionDataForPieChart(submissionDataForSection1));
-    createBestTimeToCodeGraph(getDataForBestTimeGraph(submissionDataForSection1));
+    createPieChartOfSubmissions(getSubmissionDataForPieChart(section1Subs));
+    createBestTimeToCodeGraph(getDataForBestTimeGraph(section4Subs), getDataForBestTimeGraph(section1Subs));
 });
 
 
 
 
-function createBestTimeToCodeGraph(data){
+function createBestTimeToCodeGraph(overalldata, userdata){
     var categories = [];
     //data = [];
     for (var i = 0; i < 24; i++){
         categories.push(i+"h");
         //data.push(i);
     }
-    var chart = Highcharts.chart('bestTimeContainer', {
+    var chart1 = Highcharts.chart('bestTimeContainer1', {
 
         title: {
-            text: 'Best time to code'
+            text: 'The best time to code of all users'
         },
 
         subtitle: {
-            text: '% Successful submissions / Total submissions'
+            text: '% No. of Successful Submissions / No. of Submissions'
         },
 
         yAxis: {min: 0, max: 100},
@@ -33,13 +33,46 @@ function createBestTimeToCodeGraph(data){
         series: [{
             type: 'column',
             colorByPoint: true,
-            data: data,
+            data: overalldata,
             showInLegend: false
         }]
 
     });
 
-    chart.update({
+    chart1.update({
+        chart: {
+            inverted: false,
+            polar: false
+        },
+       
+    });
+    var chart2 = Highcharts.chart('bestTimeContainer2', {
+
+        title: {
+            text: 'Your best time to code'
+        },
+
+        subtitle: {
+            text: '% No. of Your Successful Submissions / No. of Your Submissions'
+        },
+
+        yAxis: {min: 0, max: 100},
+
+        xAxis: {
+
+            categories: categories
+        },
+
+        series: [{
+            type: 'column',
+            colorByPoint: true,
+            data: userdata,
+            showInLegend: false
+        }]
+
+    });
+
+    chart2.update({
         chart: {
             inverted: false,
             polar: false

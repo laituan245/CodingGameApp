@@ -1,6 +1,7 @@
 $( document ).ready(function() {
 	if (!shouldShowTimer) {
 		$('#timer').hide();
+		$('#alarm').hide();
 	}
 
 	var shouldStopTimer = false;
