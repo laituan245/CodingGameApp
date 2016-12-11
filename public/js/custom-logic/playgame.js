@@ -1,6 +1,7 @@
 $( document ).ready(function() {
 	if (!shouldShowTimer) {
 		$('#timer').hide();
+		$('#alarm').hide();
 	}
 
 	var shouldStopTimer = false;
@@ -188,7 +189,7 @@ $( document ).ready(function() {
 
 
 	function showRankingTable(rankingTableData) {
-		
+
 		var tBody = $('#rankingTableBody');
 		tBody.empty();
 		for (var i = 0; i < Math.min(rankingTableData.length, 10); i++) {
@@ -203,6 +204,56 @@ $( document ).ready(function() {
 		}
 		$('#rankingModal').modal('show');
 	}
+
+	$('#my-replay-btn').click(function() {
+		window.location.href = window.location.href ;
+	})
+
+	$('#read-tutorial-btn').click(function() {
+		// Hard coding (Responsibility: Tuan)
+		var prefix = '/study/python/'
+		var full_href;
+		if (mapTemplate.mapID === 'basicsyntax_lgame') {
+			full_href = prefix + 'basicsyntax/'
+		} else if (mapTemplate.mapID === 'variables_lgamevariable') {
+			full_href = prefix + 'variables/'
+		} else if (mapTemplate.mapID === 'condition_cgame') {
+			full_href = prefix + 'condition/'
+		} else if (mapTemplate.mapID === 'whileloop_findtreasure') {
+			full_href = prefix + 'whileloop/'
+		}
+		window.location.href = full_href
+	})
+
+	$('#my-next-game-btn').click(function() {
+		// Hard coding (Responsibility: Tuan)
+		if (mapTemplate.mapID === 'basicsyntax_lgame') {
+			window.location.href = '/play/python/variables/lgamevariable'
+		} else if (mapTemplate.mapID === 'variables_lgamevariable') {
+			window.location.href = '/play/python/condition/cgame'
+		} else if (mapTemplate.mapID === 'condition_cgame') {
+			window.location.href = '/play/python/whileloop/findtreasure'
+		} else {
+			alert('No more game. New games will be created in the future.\nStay tuned :)')
+		}
+	})
+
+	$('#my-view-ranking-table-btn').click(function() {
+		console.log('Starting sending result');
+		var endPoint = "/get_user_result";
+		post(endPoint, {'timeToFinish': -1, 'mapID': mapID}, function(result){
+			if (result){
+				console.log("Sucessully sent result");
+			   	$("#instructions-modal").modal({
+			    	backdrop: 'static',
+			    	keyboard: false
+			  	})
+			  	$("#instructions-modal").modal('hide');
+				var rankingTableData = result;
+				showRankingTable(rankingTableData);
+			}
+		});
+	})
 
 	$("#ranking-btn").click(function(){
 		console.log('Starting sending result');
@@ -294,6 +345,9 @@ $( document ).ready(function() {
 				run(timeout, curX, curY, -80, 0);
 				curX -= 80;
 			}
+			if (step.doHere.action === "announceSums"){
+				break;
+			}
 			timeout += TIME_PER_STEP * NUM_FRAMES_PER_STEP;
 		}
 	}
@@ -331,51 +385,35 @@ $( document ).ready(function() {
 	/*
 		FUNCTIONS LIBRARY
     */
- //    $("#instructions-modal").modal({
-	//     backdrop: 'static',
-	//     keyboard: false
-	// })
-	//$("#instructions-modal").modal('hide');
 	function displayMessage(type, message){
 		$("#instructions-modal").modal('show');
 		$('#run-btn').hide();
 		$('#reset-btn').show();
 		if (type === "general_not_error"){
-			// $("#modalHeader").html("Error");
-			// $("#modalBody").html(message);
-			// $("#myModal").modal("show");noti-message-header
-			$("#noti-message").css("font-size", "30px").show();
-			$("#noti-message-header").html("Information")
-			$("#noti-message-content").html(message)/*.css("font-size", "40px")*/;
-
+			$("#instructions-text").html(message);
+			$('#instructions-text').css("color", "blue");
+			$('#instructions-text').css("font-size", "15px");
 		} else if (type === "general_error") {
-			// $("#modalHeader").html("Info");
-			// $("#modalBody").html(message);
-			// $("#myModal").modal("show");
-			$("#noti-message").css("font-size", "30px").css("background-color", "#f2dede").css("color","#a94442").css("border-color", "#ebcccc").show();
-			$("#noti-message-header").html("Error")
-			$("#noti-message-content").html(message);
+			$("#instructions-text").html(message);
+			$('#instructions-text').css("color", "red");
+			$('#instructions-text').css("font-size", "15px");
 		}
 	}
 
 	function announceSums(correctValueSum, correctWordSum, valueSum, wordSum){
 		$('#run-btn').hide();
 		$('#reset-btn').show();
-		$("#variable-game-notify").show();
-		if (valueSum !== correctValueSum || wordSum !== correctWordSum){
-			$("#variable-game-result").html("Wrong answer");
-			$("#variable-game-notify").css("background-color", "#f2dede").css("color","#a94442").css("border-color", "#ebcccc");
-			console.log("Wrong answer the correct result is (valueSum = " + correctValueSum + ", wordSum = " + wordSum + ")" );
-		} else {
-			$("#variable-game-result").html("Correct answer");
-			console.log("Correct answer !");
-			sendUserResult();
+		if (wordSum !== correctWordSum){
+			messageStr = "SemanticError: Your final string is not the same as the correct final string.";
+			displayMessage("general_error", messageStr);
+		} else if (valueSum !== correctValueSum) {
+			messageStr = "SemanticError: Your final sum of values is not the same as the final sum of values.";
+			displayMessage("general_error", messageStr);
 		}
-		$("#valueSum").html("Your sum of values = " + valueSum);
-		$("#wordSum").html("Your final string: \"" + wordSum + "\"");
-		$("#correctValueSum").html("Correct sum of values = " + correctValueSum);
-		$("#correctWordSum").html("Correct final string: \"" + correctWordSum + "\"");
-
+		else {
+			messageStr = "Correct answers. You won! Congratulation ^^";
+			displayMessage("general_not_error", messageStr);
+		}
 	}
 
 	function initialize(){
@@ -398,7 +436,7 @@ $( document ).ready(function() {
     editor.$blockScrolling = Infinity
     // Display messages received from the server
     socket.addEventListener("message", function(event) {
-    	
+
     	var jsonEvent = JSON.parse(event.data);
     	var stringEvent = JSON.stringify(jsonEvent.event);
     	console.log("Get message from server " + stringEvent);
@@ -457,7 +495,7 @@ $( document ).ready(function() {
 			hasSocketMessage = false;
 			return;
 		}
-		
+
 		var userCode = editor.getValue();
 		var dataToSend = {
 			userID: userID,

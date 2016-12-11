@@ -21,7 +21,7 @@ exports = module.exports = function (req, res) {
 	};
 
 
-
+	//Statistic
 	function section1(callback) {
 		//Tuan - data in this section has to be in userData.section1
 		var params = {
@@ -35,6 +35,7 @@ exports = module.exports = function (req, res) {
 	    
 
 	}
+	//Progression
 	function section2(callback) {
 	    // Duong - data in this section has to be in userData.section2
 	    var params = {
@@ -47,11 +48,12 @@ exports = module.exports = function (req, res) {
 		})
 	    callback(null);
 	}
+	//Submission
 	function section3(callback) {
 		// Cuong - data in this section has to be in userData.section3
 	    //time, isSuccess, mapID, language, code
 	    var params = {
-			userID : userID
+	    	userID : userID
 		}
 		Submission.model.find(params)
 		.sort({time: -1})
@@ -80,8 +82,12 @@ exports = module.exports = function (req, res) {
 
 	function section4(callback) {
 		// Cuong - data in this section has to be in userData.section4
-
-	    callback(null);
+		Submission.model.find({})
+		.sort({time: -1})
+		.exec(function(err, submissions){
+			userData.section4.submissions = submissions;
+			callback(null);
+		})
 	}
 
 

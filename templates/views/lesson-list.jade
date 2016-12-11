@@ -5,6 +5,14 @@ block content
     - var alert_mes = "This topic is not available at this moment. Please come back later."
     .container
       .col-xs-12
+
+        ol.breadcrumb(style='margin-top:10px')
+            li.breadcrumb-item
+                a(href='/') Home
+            li.breadcrumb-item
+                a(href='/languages') Languages
+            li.breadcrumb-item.active Programming Concepts (Python)
+      
         h2 Programming concepts
         #myCarousel(style='margin-top:30px').carousel.slide
           .carousel-inner
@@ -54,7 +62,7 @@ block content
                   .fff
                     .thumbnail
                       a(href='#' onClick="alert('"+alert_mes+"')")
-                        img(src='http://placehold.it/360x240', alt='')
+                        img(src='/img/comingsoon.jpg', alt='')
                     .caption
                       a(href='#' onClick="alert('"+alert_mes+"')")
                         h4 Lists (Coming soon)
@@ -63,7 +71,7 @@ block content
                   .fff
                     .thumbnail
                       a(href='#' onClick="alert('"+alert_mes+"')")
-                        img(src='http://placehold.it/360x240', alt='')
+                        img(src='/img/comingsoon.jpg', alt='')
                     .caption
                       a(href='#' onClick="alert('"+alert_mes+"')")
                         h4 Dictionary (Coming soon)
@@ -72,7 +80,7 @@ block content
                   .fff
                     .thumbnail
                       a(href='#' onClick="alert('"+alert_mes+"')")
-                        img(src='http://placehold.it/360x240', alt='')
+                        img(src='/img/comingsoon.jpg', alt='')
                     .caption
                       a(href='#' onClick="alert('"+alert_mes+"')")
                         h4 Functions (Coming soon)
@@ -81,7 +89,7 @@ block content
                   .fff
                     .thumbnail
                       a(href='#' onClick="alert('"+alert_mes+"')")
-                        img(src='http://placehold.it/360x240', alt='')
+                        img(src='/img/comingsoon.jpg', alt='')
                     .caption
                       a(href='#' onClick="alert('"+alert_mes+"')")
                         h4 Classes and Objects (Coming soon)
