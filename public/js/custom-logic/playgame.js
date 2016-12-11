@@ -208,6 +208,22 @@ $( document ).ready(function() {
 		window.location.href = window.location.href ;
 	})
 
+	$('#read-tutorial-btn').click(function() {
+		// Hard coding (Responsibility: Tuan)
+		var prefix = '/study/python/'
+		var full_href;
+		if (mapTemplate.mapID === 'basicsyntax_lgame') {
+			full_href = prefix + 'basicsyntax/'
+		} else if (mapTemplate.mapID === 'variables_lgamevariable') {
+			full_href = prefix + 'variables/'
+		} else if (mapTemplate.mapID === 'condition_cgame') {
+			full_href = prefix + 'condition/'
+		} else if (mapTemplate.mapID === 'whileloop_findtreasure') {
+			full_href = prefix + 'whileloop/'
+		}
+		window.location.href = full_href
+	})
+
 	$('#my-next-game-btn').click(function() {
 		// Hard coding (Responsibility: Tuan)
 		if (mapTemplate.mapID === 'basicsyntax_lgame') {

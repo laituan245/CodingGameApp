@@ -151,10 +151,12 @@ block content
                     
                 .run-container
                     center
-                    
-                        button#run-btn(type="button" class="btn btn-success")="RUN"
-                        button#reset-btn(type="button", class="btn btn-success", style="display:none")="RESET"
-                
+                        .row(style='padding:5px;')
+                            .div.col-xs-6(style='padding:3px;')
+                                button.col-xs-12#run-btn(type="button" class="btn btn-warning")="RUN"
+                                button.col-xs-12#reset-btn(type="button", class="btn btn-warning", style="display:none")="RESET"
+                            .div.col-xs-6(style='padding:3px;')
+                                button.col-xs-12#read-tutorial-btn(type="button", class="btn btn-success")="READ TUTORIAL"
                 .instruction-header
                     | Instruction
                 #instruction

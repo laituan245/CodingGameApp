@@ -14,6 +14,14 @@ block css
       margin-bottom:10px;
     }
 block content
+  ol.breadcrumb
+    li.breadcrumb-item
+        a(href='/') Home
+    li.breadcrumb-item
+        a(href='/languages') Languages
+    li.breadcrumb-item.active
+        a(href='/python/lessonList') Programming Concepts (Python)
+    li.breadcrumb-item.active Tutorial (#{lessonTutorial.title})
   #lessonTitle.h1(align="center").
     #{lessonTutorial.title}
   .div#skip-lesson-btn-ctn(align="center")

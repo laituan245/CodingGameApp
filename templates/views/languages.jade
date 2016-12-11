@@ -7,6 +7,12 @@ block content
     - var alert_mes = "This language is not available at this moment. Please come back later."
     .container
       .col-xs-12
+
+        ol.breadcrumb(style='margin-top:10px')
+            li.breadcrumb-item
+                a(href='/') Home
+            li.breadcrumb-item.active Languages
+
         h2 Programming languages
         #myCarousel(style='margin-top:30px').carousel.slide
           .carousel-inner
