@@ -32,8 +32,9 @@ exports = module.exports = function (req, res) {
 
 	var hostIP = process.env.hostIP || '127.0.0.1';
 
-	checkGameResult(userID,userNickname, lessonID + "_" + gameID,language, function(err, gameResult){
+	checkGameResult(userID,userNickname, lessonID + "_" + gameID,language, function(err, gameResult, isFirstTime){
 		locals.gameResult = gameResult;
+		locals.isFirstTime = isFirstTime;
 		console.log("createdTime for gameResult");
 		console.log(gameResult.createdTime.getTime());
 		if (err) return res.json({Error: err});
@@ -264,10 +265,10 @@ function checkGameResult(userID,userNickname, mapID,language, callback){
 
 			newGameResult.save(function(err){
 				console.log("New GameResult created ");
-				return callback(null, newGameResult);
+				return callback(null, newGameResult, true);
 			});
 		} else {
-			return callback(null,gameResult);
+			return callback(null,gameResult, false);
 		}
 	})
 	//Add new instance to GameResult

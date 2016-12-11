@@ -3,16 +3,25 @@ block js
     script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js', type='text/javascript', charset='utf-8')
 block js-footer
     script(src="/js/custom-logic/playgame.js")
+    //- script(src='/js/foundation/foundation.js')
+    //- script(src='/js/foundation/foundation.joyride.js')
+    
+    
+
 block css
+    link(rel=' stylesheet', type='text/css', href='/css/joyride-2.1.css')
+
+        
     style(type='text/css').
-        //- #editor {
+        
+        #editor {
         //- position: absolute;
         //- top: 50px;
         //- right: 0;
         //- bottom: 0px;
         //- left: 400px;
-        //- font-size: 20px;
-        //- }
+        font-size: 20px;
+        }
 
         #myCanvas{
             margin: 10px 10px 10px 10px;
@@ -79,12 +88,7 @@ block content
                                 th User
                                 th Time To Finish
                         tbody#rankingTableBody
-                            tr
-                                td Long Island, NY, USA
-                                td 3
-                            tr
-                                td Chicago, Illinois, USA
-                                td 5
+                            
                 .modal-footer
                     button.btn.btn-default(type='button', data-dismiss='modal') Close
             // /.modal-content
@@ -162,8 +166,6 @@ block content
                     .instruction-content
             .col-xs-12.col-sm-8
                 #editor #{initialCode}
-            
-
 
     script.
         var editor = ace.edit("editor");
@@ -191,3 +193,62 @@ block content
         $(window).resize(resizeAce);
         //set initially
         resizeAce();
+
+block joyride
+    ol#joyRideTipContent
+        li(data-id='myCanvas', data-text='Next', data-options='tipLocation:right;tipAnimation:fade')
+            h2 Game Map
+            p
+                | This is the game map that you are going to play with
+        li(data-id='editor', data-text='Next', data-options='tipLocation:right;tipAnimation:fade')
+            h2 Editor
+            p
+                | You input your code here
+        li(data-id='instruction', data-button='Next', data-options='tipLocation:left;tipAnimation:fade')
+            h2 Game Instruction
+            p
+                | You need to read the instruction for each game to complete it
+        
+        li(data-id='run-btn', data-text='Next',data-options='tipLocation:top;tipAnimation:fade')
+            h2 Run your code
+            p
+                | Click this buttuon to run your code
+        li(data-id='timer', data-text='Next',data-options='tipLocation:top;tipAnimation:fade')
+            h2 Timer
+            p
+                | Check your time
+        li(data-id='ranking-btn', data-text='Next',data-options='tipLocation:top;tipAnimation:fade')
+            h2 View your ranking
+            p
+                | Click this button to see your rank
+        
+    // Run the plugin
+    //- script(type='text/javascript', src='../jquery-1.10.1.js')
+    script(type='text/javascript', src='/js/jquery.joyride-2.1.js')
+    script.
+        $(window).load(function() {
+        $('#joyRideTipContent').joyride({
+
+            //- autoStart : #{isFirstTime},
+            autoStart : true,
+            postStepCallback : function (index, tip) {
+            
+            },
+            modal:true,
+            
+            //- 'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
+            //-   'nubPosition': 'auto',           // override on a per tooltip bases
+            //-   'scrollSpeed': 300,              // Page scrolling speed in ms
+            //-   'timer': 2000,                   // 0 = off, all other numbers = time(ms) 
+            //-   'startTimerOnClick': true,       // true/false to start timer on first click
+            //-   'nextButton': true,              // true/false for next button visibility
+            //-   'tipAnimation': 'pop',           // 'pop' or 'fade' in each tip
+            //-   'pauseAfter': [],                // array of indexes where to pause the tour after
+            //-   'tipAnimationFadeSpeed': 300,    // if 'fade'- speed in ms of transition
+            //-   'cookieMonster': true,           // true/false for whether cookies are used
+            //-   'cookieName': 'JoyRide',         // choose your own cookie name
+            //-   'cookieDomain': false,           // set to false or yoursite.com
+            });
+        });
+
+    

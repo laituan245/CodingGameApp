@@ -40,7 +40,7 @@ html(lang='en')
                         span.icon-bar
                         span.icon-bar
                         span.icon-bar
-                    a.navbar-brand.topnav(href='/', style="font-size: 20px") CodingGame
+                    a#brand-name.navbar-brand.topnav(href='/', style="font-size: 20px") CodingGame
                 // Collect the nav links, forms, and other content for toggling
                 #bs-example-navbar-collapse-1.collapse.navbar-collapse
                     ul.nav.navbar-nav.navbar-right
@@ -63,7 +63,7 @@ html(lang='en')
                                 a(href='/login', style="font-size: 20px") Login
 
                     div(style='text-align: center')
-                        form.navbar-form(role='search', action='/search', method='get')
+                        form#search-area.navbar-form(role='search', action='/search', method='get')
                             .input-group
                                 input.form-control(type='text', placeholder='Eg: if, syntax, ...', name='q')
                                 .input-group-btn
@@ -75,6 +75,8 @@ html(lang='en')
                 // /.navbar-collapse
             // /.container
         // Header
+        div(style="heigth: 50px")
+            |" "
         div(style="margin-top: 50px")
             block content
             // Modal
@@ -101,3 +103,4 @@ html(lang='en')
         script(src='/js/bootstrap.min.js')
         script(src='/js/custom-logic/default.js')
         block js-footer
+        block joyride
