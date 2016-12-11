@@ -75,6 +75,7 @@ exports = module.exports = function (req, res) {
 						if (userCode == null){
 							GameResult.model.findOne({userID: userID, mapID: params.mapID}, function(err, gameResult){
 								console.log(gameResult);
+
 								if (gameResult) locals.initialCode = gameResult.latestSubmissionID;
 								else locals.initialCode = "";
 								console.log("latest userCode1");
@@ -257,7 +258,7 @@ function checkGameResult(userID,userNickname, mapID,language, callback){
 				isCompleted: false,
 				language: language,
 				timeToFinish: -1, //second
-				latestSubmissionID: -1,
+				latestSubmissionID: "",
 				bestSubmissionID: -1
 			})
 

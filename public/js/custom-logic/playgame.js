@@ -331,7 +331,13 @@ $( document ).ready(function() {
 	/*
 		FUNCTIONS LIBRARY
     */
+ //    $("#instructions-modal").modal({
+	//     backdrop: 'static',
+	//     keyboard: false
+	// })
+	//$("#instructions-modal").modal('hide');
 	function displayMessage(type, message){
+		$("#instructions-modal").modal('show');
 		$('#run-btn').hide();
 		$('#reset-btn').show();
 		if (type === "general_not_error"){
@@ -389,11 +395,13 @@ $( document ).ready(function() {
     });
     var hasSocketMessage = false;
     var latestEditorEvent = {};
+    editor.$blockScrolling = Infinity
     // Display messages received from the server
     socket.addEventListener("message", function(event) {
-    	var stringEvent = event.data;
+    	
     	var jsonEvent = JSON.parse(event.data);
-    	console.log("trigger change " + stringEvent);
+    	var stringEvent = JSON.stringify(jsonEvent.event);
+    	console.log("Get message from server " + stringEvent);
     	console.log(latestEditorEvent);
     	console.log(stringEvent);
     	if (stringEvent == latestEditorEvent)
@@ -401,25 +409,26 @@ $( document ).ready(function() {
     	hasSocketMessage = true;
       	//console.log("Server Says: " + event.data);
       	console.log("Set new value for editor");
-      	if (jsonEvent.action == 'insert'){
-      		// var startRow = jsonEvent.start.row;
-      		// var startCol = jsonEvent.start.column;
-      		// var endRow = jsonEvent.end.row;
-      		// var endCol = jsonEvent.end.column;
-      		// editor.session.insert(jsonEvent.end, jsonEvent.lines[0])
-      		// for (var i = startRow + 1; i <= endRow; i++){
-      		// 	editor.session.insert({row:i,column:1}, '\n' + jsonEvent.lines[i - startRow])
-      		// 	//editor.session.insert(jsonEvent.end, jsonEvent.lines.join(''))
-      		// }
-      		// // for (int i = 0; i < lines.length;i++){
-      		// // 	console.log(charCodeAt[lines[]]
-      		// // }
-      		editor.session.insert(jsonEvent.end, jsonEvent.lines.join('\n'))
-      	} else if (jsonEvent.action == 'remove'){
-      		console.log(jsonEvent.start.row);
-      		console.log(jsonEvent.end.row);
-      		editor.session.remove(jsonEvent)
-      	}
+      	// if (jsonEvent.action == 'insert'){
+      	// 	// var startRow = jsonEvent.start.row;
+      	// 	// var startCol = jsonEvent.start.column;
+      	// 	// var endRow = jsonEvent.end.row;
+      	// 	// var endCol = jsonEvent.end.column;
+      	// 	// editor.session.insert(jsonEvent.end, jsonEvent.lines[0])
+      	// 	// for (var i = startRow + 1; i <= endRow; i++){
+      	// 	// 	editor.session.insert({row:i,column:1}, '\n' + jsonEvent.lines[i - startRow])
+      	// 	// 	//editor.session.insert(jsonEvent.end, jsonEvent.lines.join(''))
+      	// 	// }
+      	// 	// // for (int i = 0; i < lines.length;i++){
+      	// 	// // 	console.log(charCodeAt[lines[]]
+      	// 	// // }
+      	// 	editor.session.insert(jsonEvent.end, jsonEvent.lines.join('\n'))
+      	// } else if (jsonEvent.action == 'remove'){
+      	// 	console.log(jsonEvent.start.row);
+      	// 	console.log(jsonEvent.end.row);
+      	// 	editor.session.remove(jsonEvent)
+      	// }
+      	editor.setValue(jsonEvent.userCode);
     });
 
     // Display any errors that occur
