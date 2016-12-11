@@ -45,15 +45,14 @@ html(lang='en')
                 #bs-example-navbar-collapse-1.collapse.navbar-collapse
                     ul.nav.navbar-nav.navbar-right
                         li
-                            a(href='#about', style="font-size: 20px") About
+                            a#analytic(href='/userAnalytic', style="font-size: 20px") Analytic
                         if (authenticated === true)
                             li
                                 .dropdown(style="padding:10.5px")
                                     a.dropdown-toggle(href="#", data-toggle='dropdown', style="font-size: 20px;text-decoration: none;color: black") #{nickname}
                                         span.caret
                                     ul.dropdown-menu
-                                        li
-                                            a(href='/userAnalytic', style="font-size: 20px") User Analytic
+                                        
                                         
                                                 
                                         li
@@ -75,9 +74,9 @@ html(lang='en')
                 // /.navbar-collapse
             // /.container
         // Header
-        div(style="heigth: 50px")
+        div(style="min-height: 50;")
             |" "
-        div(style="margin-top: 50px")
+        div(style='margin-top: 0px')
             block content
             // Modal
             #myModal.modal.fade(role='dialog')

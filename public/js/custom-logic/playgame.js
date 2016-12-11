@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 	if (!shouldShowTimer) {
-		$('#timer').hide();
-		$('#alarm').hide();
+		$('#timer').remove();
+		$('#alarm').remove();
 	}
 
 	var shouldStopTimer = false;

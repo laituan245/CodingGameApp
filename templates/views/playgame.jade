@@ -243,10 +243,14 @@ block joyride
             h2 Timer
             p
                 | Check your time
-        li(data-id='ranking-btn', data-text='Next',data-options='tipLocation:top;tipAnimation:fade')
+        li(data-id='ranking-btn', data-text='Next',data-options='tipLocation:bottom;tipAnimation:fade')
             h2 View your ranking
             p
                 | Click this button to see your rank
+        li(data-id='analytic', data-text='Finish',data-options='tipLocation:top;tipAnimation:fade')
+            h2 User Analytic
+            p
+                | Click this button to see analytic of your performance
         
     // Run the plugin
     //- script(type='text/javascript', src='../jquery-1.10.1.js')
@@ -255,12 +259,12 @@ block joyride
         $(window).load(function() {
         $('#joyRideTipContent').joyride({
 
-            //- autoStart : #{isFirstTime},
-            autoStart : true,
+            autoStart : #{isFirstTime},
+            //- autoStart : true,
             postStepCallback : function (index, tip) {
             
             },
-            modal:true,
+            //modal:true,
             
             //- 'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
             //-   'nubPosition': 'auto',           // override on a per tooltip bases
