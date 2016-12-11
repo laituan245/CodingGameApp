@@ -5,6 +5,10 @@ block js
     script(src='https://code.highcharts.com/modules/drilldown.js')
     script(src="https://code.highcharts.com/highcharts-more.js")
     script(src="https://code.highcharts.com/modules/exporting.js")
+    script(src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js")
+    script(src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js")
+block css
+    link(href='https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css', rel='stylesheet')
 block js-footer
     script(src="/js/custom-logic/userAnalytic.js")
 
@@ -15,6 +19,7 @@ block content
         var section1Subs = !{JSON.stringify(userData.section1.submissions)};
         var section4Subs = !{JSON.stringify(userData.section4.submissions)};
         $(document).ready(function(){
+            $('#my_submissions_table').DataTable();
             $("button").click(function(){
                 var e = document.getElementById("language");
                 language = e.options[e.selectedIndex].value;
@@ -84,7 +89,7 @@ block content
             if (section3Subs.length > 0)
                 h2(style='font-family:courier;') Your Submissions
                 
-                table.table.table-striped
+                table(id='my_submissions_table').table.table-striped
                     thead
                         tr
                             th Time
