@@ -119,6 +119,32 @@ block content
     .fixed#noti-message(style='display:none')
         h1#noti-message-header
         p#noti-message-content
+    //- .left-panel(style="width: 400px;font-family: monaco,Consolas,'Lucida Console',monospace;")
+    //-     .map-header
+    //-         | Playing game
+    //-     center(style="margin-top:10px")
+    //-         h2 #{mapTemplate.name}
+           
+    //-     center(style="margin-top:4px")
+    //-         a.btn.btn-info#ranking-btn(style="margin-right:5px;display:inline-block;width:150px" )="Ranking Table"
+    //-         img#alarm(src='/img/alarm.gif', style='display:inline-block;width:60px;height:60px;')
+    //-         a.btn.btn-info#timer(style="margin-left:5px; display:inline-block;width:150px")
+    //-     //- img#game-map(src="http://phaser.io/content/tutorials/coding-tips-005/pacman-game.png" )
+    //-     canvas#myCanvas(width='400', height='400', style='border:1px solid #c3c3c3;')
+    //-         | Your browser does not support the canvas element.
+    //-         //- img#robot(src='http://i.imgur.com/PQ3BaPr.png', style='display:none')
+    //-         img#robot(src='http://img.sj33.cn/uploads/allimg/200911/20091113222757169.png', style='display:none')
+    //-         img#obstacle(src='http://i.istockimg.com/file_thumbview_approve/16563023/3/stock-illustration-16563023-decorative-stone-wall.jpg', style='display:none')
+    //-         //- img#endFlag(src='https://upload.wikimedia.org/wikipedia/commons/d/d5/Red_flag_waving_transparent.png', style='display:none')
+    //-         img#endFlag(src='https://ice3x.co.za/wp-content/uploads/2013/10/finish-flag-256.png', style='display:none')
+    //-         //- img#background(src='/images/map.png', style='display:none')
+    //-         img#background(src='https://i.imgsafe.org/68be9a4516.png', style='display:none')
+                
+    //-         img#letter(src='http://www.bomastone.com/sites/all/themes/bydesign/images/mailto.png', style='display:none')
+    //-         img#arrowdown(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/simple-red-glossy-icons-arrows/009582-simple-red-glossy-icon-arrows-arrow-solid-down.png', style='display:none')
+    //-         img#arrowup(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/simple-red-glossy-icons-arrows/009585-simple-red-glossy-icon-arrows-arrow-solid-up.png', style='display:none')
+    //-         img#arrowright(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/simple-red-glossy-icons-arrows/009584-simple-red-glossy-icon-arrows-arrow-solid-right.png', style='display:none')
+    //-         img#arrowleft(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/simple-red-glossy-icons-arrows/009583-simple-red-glossy-icon-arrows-arrow-solid-left.png', style='display:none')
     .container-fluid
         .row
             .col-xs-12.col-sm-4.left-panel(style="font-family: monaco,Consolas,'Lucida Console',monospace;")
@@ -129,7 +155,7 @@ block content
                    
                 center(style="margin-top:4px")
                     a.btn.btn-info#ranking-btn(style="margin-right:5px;display:inline-block;width:150px" )="Ranking Table"
-                    img(src='/img/alarm.gif', style='display:inline-block;width:60px;height:60px;')
+                    img#alarm(src='/img/alarm.gif', style='display:inline-block;width:60px;height:60px;')
                     a.btn.btn-info#timer(style="margin-left:5px; display:inline-block;width:150px")
                 //- img#game-map(src="http://phaser.io/content/tutorials/coding-tips-005/pacman-game.png" )
                 center
@@ -147,8 +173,7 @@ block content
                         img#arrowdown(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/simple-red-glossy-icons-arrows/009582-simple-red-glossy-icon-arrows-arrow-solid-down.png', style='display:none')
                         img#arrowup(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/simple-red-glossy-icons-arrows/009585-simple-red-glossy-icon-arrows-arrow-solid-up.png', style='display:none')
                         img#arrowright(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/simple-red-glossy-icons-arrows/009584-simple-red-glossy-icon-arrows-arrow-solid-right.png', style='display:none')
-                        img#arrowleft(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/simple-red-glossy-icons-arrows/009583-simple-red-glossy-icon-arrows-arrow-solid-left.png', style='display:none')
-                    
+                        img#arrowleft(src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/simple-red-glossy-icons-arrows/009583-simple-red-glossy-icon-arrows-arrow-solid-left.png', style='display:none')                    
                 .run-container
                     center
                         .row(style='padding:5px;')

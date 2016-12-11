@@ -12,6 +12,8 @@ block content
     script.
         var language = "";
         var section2Subs = !{JSON.stringify(userData.section2.submissions)};
+        var section1Subs = !{JSON.stringify(userData.section1.submissions)};
+        var section4Subs = !{JSON.stringify(userData.section4.submissions)};
         $(document).ready(function(){
             $("button").click(function(){
                 var e = document.getElementById("language");
@@ -49,7 +51,6 @@ block content
                     }
             });
         });
-        var submissionDataForSection1 = !{JSON.stringify(userData.section1.submissions)};
 
     - var section3Subs = userData.section3.submissions
     .container
@@ -81,7 +82,7 @@ block content
 
         div.row#section3
             if (section3Subs.length > 0)
-                h2(style='font-family:courier;') Submissions
+                h2(style='font-family:courier;') Your Submissions
                 
                 table.table.table-striped
                     thead
@@ -111,7 +112,8 @@ block content
         div.row#section4
             h2(style='font-family:courier;') Best time to code
             .col-xs-12
-                #bestTimeContainer
+                #bestTimeContainer1
+                #bestTimeContainer2
                     
 
             
